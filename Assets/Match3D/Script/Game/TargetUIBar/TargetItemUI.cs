@@ -117,6 +117,69 @@ public class TargetItemUI : MonoBehaviour {
 		}
 	}
 
+	#region Public - box sort mode
+	///<summary> Box capacity. 0 mean this card is NOT a box (classic target card mode) </summary>
+	int _boxCapacity;
+	///<summary> Toys already assigned to this box (flying or delivered). Prevent over-filling when many toys fly in at the same time </summary>
+	int _boxReserved;
+	///<summary> Toys reached the box </summary>
+	int _boxDelivered;
+
+	///<summary> True if this card works as a box: receive [capacity] toys of the same type then close </summary>
+	public bool IsBoxMode => _boxCapacity > 0;
+	///<summary> Box got enough toys </summary>
+	public bool IsBoxComplete => IsBoxMode && _boxDelivered >= _boxCapacity;
+	///<summary> Number of toys this box still can reserve </summary>
+	public int BoxFreeSlot => IsBoxMode ? Mathf.Max(0, _boxCapacity - _boxReserved) : 0;
+
+	///<summary> Call from TargetUIBar (box sort mode). This card will be a box which receive [capacity] toys of rootPrefab </summary>
+	public void SetupAsBox(GameObject rootPrefab, Sprite thumbnailSprite, int capacity) {
+		if(isFailedConfig || !IsUsable())
+			return;
+		_rootPrefab = rootPrefab;
+		_targetToyList = null;
+		_boxCapacity = Mathf.Max(1, capacity);
+		_boxReserved = 0;
+		_boxDelivered = 0;
+		thumbnailImage.sprite = thumbnailSprite;
+		remainItemText.text = _boxCapacity.ToString();
+		this.name = $"Box_{rootPrefab.name}";
+	}
+
+	///<summary> Check if this box can receive a toy of [prefab] </summary>
+	public bool CanReserveToy(GameObject prefab) {
+		if(isFailedConfig || !IsUsable() || !IsBoxMode)
+			return false;
+		return prefab == _rootPrefab && _boxReserved < _boxCapacity;
+	}
+
+	///<summary> Mark 1 slot of this box is taken by a flying toy </summary>
+	public void ReserveToy() {
+		if(!IsBoxMode)
+			return;
+		_boxReserved = Mathf.Min(_boxReserved + 1, _boxCapacity);
+	}
+
+	///<summary> Call when the flying toy reach the box. Update remain text, show checker when complete </summary>
+	public void DeliverToy() {
+		if(!IsBoxMode)
+			return;
+		_boxDelivered = Mathf.Min(_boxDelivered + 1, _boxCapacity);
+		if(!IsUsable())
+			return;
+		var remain = _boxCapacity - _boxDelivered;
+		remainItemText.text = remain.ToString();
+		// small punch to feel the toy dropped in
+		LeanTween.cancel(gameObject);
+		transform.localScale = Vector3.one;
+		LeanTween.scale(gameObject, Vector3.one * 1.15f, 0.08f).setLoopPingPong(1);
+		if(remain == 0) {
+			remainItemText.enabled = false;
+			finishCheckerImage.enabled = true;
+		}
+	}
+	#endregion//Public - box sort mode
+
 	public void MoveToTargetAndFaceUp(Vector2 targetAnchorPosition) {
 		if(isFailedConfig || !IsUsable())
 			return;

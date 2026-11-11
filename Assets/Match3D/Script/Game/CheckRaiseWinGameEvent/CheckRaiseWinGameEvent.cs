@@ -45,6 +45,9 @@ public class CheckRaiseWinGameEvent : MonoBehaviour {
 	///<summary> Destroy toy from active list, cost 1 frame, so we need to delay 1 frame </summary>
 	async UniTaskVoid DelayCheckRaiseWingameEvent() {
 		await UniTask.Yield();
+		// box sort mode: toys still waiting in slots or flying to boxes, not win yet
+		if(ToyBoxGroup.HasToyWaitingForBox)
+			return;
 		if(toyStats.RemainTargetcount == 0) {
 			// all toy clear raise first, some module need to stop (clock, input..)
 			allTargetClearEvent.Raise();

@@ -65,6 +65,15 @@ public class MagnetBoosterAffector : MonoBehaviour {
 			return;
 		}
 
+		// box sort mode: magnet fills the open box (from waiting slots first, then from the field)
+		var targetBar = FindObjectOfType<TargetUIBar>();
+		if(targetBar != null && targetBar.IsBoxSortMode) {
+			if(!toyBoxGroup.TryMagnetFillOpenBox()) {
+				boosterInventory.AddBooster(mangetBoosterID, 1);
+			}
+			return;
+		}
+
 		// NOTES: need to dividable by 3
 		const int AMOUNT_TO_DESTROY = 3;
 		var toDestroyList = toyStats.GetListOfRandomTargetToyWhichSameRootPrefab(AMOUNT_TO_DESTROY);

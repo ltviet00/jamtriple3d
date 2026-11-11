@@ -30,6 +30,11 @@ public class TargetUIBar : MonoBehaviour {
 	[Header("Event out")]
 	[SerializeField] GameEvent targetClearEvent;
 
+	[Header("Box sort mode")]
+	[Tooltip("ON: each card is a box receiving [toyPerBox] toys of the same type, matching toys fly straight into the box, others wait in the ToyBoxGroup slots. OFF: classic triple-match target cards")]
+	[SerializeField] bool boxSortMode = true;
+	[SerializeField] int toyPerBox = 3;
+
 	[Header("Validation")]
 	[SerializeField] bool isFailedConfig;
 	void OnValidate() {
@@ -54,6 +59,53 @@ public class TargetUIBar : MonoBehaviour {
 
 
 	#region Public
+	///<summary> Box sort mode is active </summary>
+	public bool IsBoxSortMode => boxSortMode && !isFailedConfig;
+	///<summary> Box sort mode: raised when the open boxes changed (a box closed, new box opened) </summary>
+	public event Action OnActiveBoxesChanged;
+
+	///<summary> Box sort mode: find an open box that can receive this toy type, reserve 1 slot and return it. Null if no box accept </summary>
+	public TargetItemUI ReserveBoxForToy(GameObject rootPrefab) {
+		if(!IsBoxSortMode || rootPrefab == null)
+			return null;
+		for(int n = 0; n < _activeCards.Count; n++) {
+			var card = _activeCards[n];
+			if(card == null || _queuedDestroyCards.Contains(card))
+				continue;
+			if(card.CanReserveToy(rootPrefab)) {
+				card.ReserveToy();
+				return card;
+			}
+		}
+		return null;
+	}
+
+	///<summary> Box sort mode: return first open box which still has free slot (for magnet booster) </summary>
+	public TargetItemUI GetFirstOpenBoxHasFreeSlot() {
+		if(!IsBoxSortMode)
+			return null;
+		for(int n = 0; n < _activeCards.Count; n++) {
+			var card = _activeCards[n];
+			if(card != null && !_queuedDestroyCards.Contains(card) && card.BoxFreeSlot > 0)
+				return card;
+		}
+		return null;
+	}
+
+	///<summary> Box sort mode: call when a toy reached the box. Return true if the box just got completed </summary>
+	public bool NotifyToyDeliveredToBox(TargetItemUI box) {
+		if(!IsBoxSortMode || box == null)
+			return false;
+		box.DeliverToy();
+		if(box.IsBoxComplete) {
+			if(_queuedDestroyCards.Add(box)) {
+				_toDestroyCards.Enqueue(box);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	///<summary> Called from Mainflow, when finsh toy spawning, get data from LevelToyStats to generate target bar </summary>
 	public async UniTask Init(CancellationToken cancelToken) {
 		if(isFailedConfig)
@@ -65,8 +117,12 @@ public class TargetUIBar : MonoBehaviour {
 		_queuedDestroyCards.Clear();
 		var targetMap = toyStats.TargetMap;
 		var beginPostition = GetAnchorPositionForCardAtIndex(0);
+		// box sort mode: split each toy type into boxes
+		if(IsBoxSortMode) {
+			SpawnBoxCards(targetMap, beginPostition);
+		}
 		// spawn card, add to stack first
-		foreach(var target in targetMap) {
+		else foreach(var target in targetMap) {
 			// retrieve data for item
 			var rootPrefab = target.Key;
 			var toyList = target.Value;
@@ -115,6 +171,9 @@ public class TargetUIBar : MonoBehaviour {
 	}
 
 	void OnTargeRemainChanged(int totalRemain) {
+		// box sort mode: box progress is updated by NotifyToyDeliveredToBox(), not by the remain toy list
+		if(IsBoxSortMode)
+			return;
 		TargetItemUI toDestroyCard = null;
 		// all item list got ref to the list they're tracking, just call update
 		for(int n = 0; n < _activeCards.Count; n++) {
@@ -169,6 +228,15 @@ public class TargetUIBar : MonoBehaviour {
 	///<summary> Only allow toy in activeCard list to be picked. Update to the ToyStats </summary>
 	void UpdateAllowTargetToToyStats() {
 		var toySet = new HashSet<GameObject>();
+		// box sort mode: every target toy is pickable, toy not match any open box will wait in the slots
+		if(IsBoxSortMode) {
+			foreach(var target in toyStats.TargetMap) {
+				toySet.Add(target.Key);
+			}
+			toyStats.SetAllowTargetToyMap(toySet);
+			OnActiveBoxesChanged?.Invoke();
+			return;
+		}
 		for(int n = 0; n < _activeCards.Count; n++) {
 			if(_activeCards[n] != null && _activeCards[n].RootToyPrefab != null) {
 				toySet.Add(_activeCards[n].RootToyPrefab);
@@ -244,6 +312,44 @@ public class TargetUIBar : MonoBehaviour {
 		}
 		finally {
 			_queuedDestroyCards.Remove(toDestroy);
+		}
+	}
+
+	///<summary> Box sort mode: create box cards. Each toy type split into boxes of [toyPerBox], shuffle so the same type not always next to each other </summary>
+	void SpawnBoxCards(Dictionary<GameObject, List<ToyView>> targetMap, Vector2 beginPostition) {
+		var boxes = new List<KeyValuePair<GameObject, int>>();
+		var perBox = Mathf.Max(1, toyPerBox);
+		foreach(var target in targetMap) {
+			var remain = target.Value.Count;
+			while(remain > 0) {
+				var capacity = Mathf.Min(perBox, remain);
+				boxes.Add(new KeyValuePair<GameObject, int>(target.Key, capacity));
+				remain -= capacity;
+			}
+		}
+		MathUtils.ShuffleList(boxes);
+		// avoid 2 same boxes standing next to each other if possible
+		for(int n = 1; n < boxes.Count; n++) {
+			if(boxes[n].Key != boxes[n - 1].Key)
+				continue;
+			for(int k = n + 1; k < boxes.Count; k++) {
+				if(boxes[k].Key != boxes[n - 1].Key) {
+					var tmp = boxes[n];
+					boxes[n] = boxes[k];
+					boxes[k] = tmp;
+					break;
+				}
+			}
+		}
+		// stack is LIFO, push reverse to open boxes from the first one
+		for(int n = boxes.Count - 1; n >= 0; n--) {
+			var rootPrefab = boxes[n].Key;
+			var thumbnail = thumbnailStorage.GetThumbnail(rootPrefab);
+			var item = Instantiate(itemPrefab, rootItemTrans).GetComponent<TargetItemUI>();
+			_cardStack.Push(item);
+			item.SetupAsBox(rootPrefab, thumbnail, boxes[n].Value);
+			item.FaceDown();
+			(item.transform as RectTransform).anchoredPosition = beginPostition;
 		}
 	}
 
