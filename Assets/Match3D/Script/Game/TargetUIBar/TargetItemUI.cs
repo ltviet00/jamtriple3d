@@ -70,11 +70,19 @@ public class TargetItemUI : MonoBehaviour {
 	public void FaceDown() {
 		if(isFailedConfig || !IsUsable())
 			return;
+		// box sort mode (reference video): waiting crate still show item + count, darken by an overlay color
+		if(IsCrateVisual) {
+			remainItemText.enabled = true;
+			thumbnailImage.enabled = true;
+			backgroundImage.sprite = _crateOpenSprite;
+			SetCrateTint(CRATE_WAITING_TINT);
+			return;
+		}
 		// disable content
 		remainItemText.enabled = false;
 		thumbnailImage.enabled = false;
 		// show backface
-		backgroundImage.sprite = backfaceSprite;
+		backgroundImage.sprite = BackSprite;
 	}
 
 	///<summary> Active backface without animation </summary>
@@ -85,7 +93,9 @@ public class TargetItemUI : MonoBehaviour {
 		remainItemText.enabled = true;
 		thumbnailImage.enabled = true;
 		// show backface
-		backgroundImage.sprite = frontFaceSprite;
+		backgroundImage.sprite = FrontSprite;
+		if(IsCrateVisual)
+			SetCrateTint(Color.white);
 	}
 
 	public void MoveToTarget(Vector2 target) {
@@ -144,6 +154,56 @@ public class TargetItemUI : MonoBehaviour {
 		thumbnailImage.sprite = thumbnailSprite;
 		remainItemText.text = _boxCapacity.ToString();
 		this.name = $"Box_{rootPrefab.name}";
+		ApplyCrateLayout();
+	}
+
+	///<summary> Box sort mode: crate sprites, loaded from Resources/BoxSort </summary>
+	static Sprite _crateOpenSprite, _crateClosedSprite;
+	const string CRATE_OPEN_PATH = "BoxSort/crate_open";
+	const string CRATE_CLOSED_PATH = "BoxSort/crate_closed";
+	static readonly Vector2 CRATE_SIZE = new Vector2(270f, 240f);
+
+	const float CRATE_FLY_UP_DISTANCE = 140f;
+	const float CRATE_FLY_UP_TIME = 0.3f;
+	static readonly Color CRATE_WAITING_TINT = new Color(0.38f, 0.38f, 0.42f, 1f);
+	bool IsCrateVisual => IsBoxMode && _crateOpenSprite != null;
+
+	void SetCrateTint(Color color) {
+		backgroundImage.color = color;
+		thumbnailImage.color = color;
+		remainItemText.color = color;
+	}
+
+	Sprite FrontSprite => IsBoxMode && _crateOpenSprite != null ? _crateOpenSprite : frontFaceSprite;
+	Sprite BackSprite => IsBoxMode && _crateClosedSprite != null ? _crateClosedSprite : backfaceSprite;
+
+	///<summary> Box sort mode: card look like a wooden crate (reference video). Item icon on the crate front, remain count at bottom-right </summary>
+	void ApplyCrateLayout() {
+		if(_crateOpenSprite == null)
+			_crateOpenSprite = Resources.Load<Sprite>(CRATE_OPEN_PATH);
+		if(_crateClosedSprite == null)
+			_crateClosedSprite = Resources.Load<Sprite>(CRATE_CLOSED_PATH);
+		if(_crateOpenSprite == null || _crateClosedSprite == null)
+			return;
+		if(CacheRectTrans != null)
+			CacheRectTrans.sizeDelta = CRATE_SIZE;
+		backgroundImage.preserveAspect = false;
+		SetRect(thumbnailImage.rectTransform, new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.74f), Vector2.zero, Vector2.zero);
+		SetRect(remainItemText.rectTransform, new Vector2(0.84f, 0.2f), new Vector2(0.84f, 0.2f), Vector2.zero, new Vector2(70f, 60f));
+		SetRect(finishCheckerImage.rectTransform, new Vector2(0.78f, 0.24f), new Vector2(0.78f, 0.24f), Vector2.zero, new Vector2(84f, 72f));
+		remainItemText.alignment = TextAlignmentOptions.Center;
+		remainItemText.enableAutoSizing = false;
+		remainItemText.fontSize = 54f;
+	}
+
+	static void SetRect(RectTransform rect, Vector2 anchorMin, Vector2 anchorMax, Vector2 anchoredPos, Vector2 sizeDelta) {
+		if(rect == null)
+			return;
+		rect.anchorMin = anchorMin;
+		rect.anchorMax = anchorMax;
+		rect.pivot = new Vector2(0.5f, 0.5f);
+		rect.anchoredPosition = anchoredPos;
+		rect.sizeDelta = sizeDelta;
 	}
 
 	///<summary> Check if this box can receive a toy of [prefab] </summary>
@@ -299,6 +359,15 @@ public class TargetItemUI : MonoBehaviour {
 			if(objectRef == null)
 				return;
 			LeanTween.cancel(objectRef);
+			// box sort mode (reference video): completed crate fly up while shrinking
+			if(IsCrateVisual && CacheRectTrans != null) {
+				LeanTween.moveLocalY(objectRef, objectRef.transform.localPosition.y + CRATE_FLY_UP_DISTANCE, CRATE_FLY_UP_TIME).setEaseInQuad();
+				LeanTween.scale(objectRef, Vector3.zero, CRATE_FLY_UP_TIME).setEaseInQuad();
+				await UniTask.Delay(TimeSpan.FromSeconds(CRATE_FLY_UP_TIME), cancellationToken: cancelToken);
+				if(objectRef != null)
+					Destroy(objectRef);
+				return;
+			}
 			LeanTween.scale(objectRef, Vector3.zero, animConfig.scaleDownTime);
 			await UniTask.Delay(TimeSpan.FromSeconds(animConfig.scaleDownTime), cancellationToken: cancelToken);
 			// then carefully check null here

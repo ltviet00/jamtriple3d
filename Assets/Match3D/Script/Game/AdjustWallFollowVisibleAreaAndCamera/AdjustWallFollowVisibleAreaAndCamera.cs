@@ -46,6 +46,7 @@ public class AdjustWallFollowVisibleAreaAndCamera : MonoBehaviour {
 	public void AdjustWallPositionFollowVieaArea() {
 		// we changed gravity direction, now the "Ground" will be in vertical.
 		// the left-top and right-nottom on UI also the left-top and right-bottom limit for the ground
+		ApplyBoxSortLayout();
 		var leftTopPos = leftTopCornerOnUIVar.Value.position;
 		var rightBottomPos = rightBottomCornerOnUIVar.Value.position;
 		var centerPos = Vector3.Lerp(leftTopPos, rightBottomPos, 0.5f);
@@ -70,6 +71,42 @@ public class AdjustWallFollowVisibleAreaAndCamera : MonoBehaviour {
 		wallBottomPos.y = rightBottomPos.y;
 		wallBottom.position = wallBottomPos;
 	}
+
+	///<summary> Box sort mode (reference video): slots stay right below the boxes on top, toys use the whole area down to the footer.
+	/// Move the corner transforms too, so the toy spawner (same corner variables) also use the new area </summary>
+	void ApplyBoxSortLayout() {
+		if(_boxSortLayoutApplied)
+			return;
+		var bar = FindObjectOfType<TargetUIBar>();
+		var toyBoxAdjustor = FindObjectOfType<ToyBoxGroupAdjustPositionFollowScreen>();
+		if(bar == null || !bar.IsBoxSortMode || toyBoxAdjustor == null)
+			return;
+		var leftTopTrans = leftTopCornerOnUIVar.Value;
+		var rightBottomTrans = rightBottomCornerOnUIVar.Value;
+		if(leftTopTrans == null || rightBottomTrans == null)
+			return;
+		_boxSortLayoutApplied = true;
+		var (footerBottomY, slotsBottomY) = toyBoxAdjustor.MoveTopEdgeTo(leftTopTrans.position.y);
+		var topDeltaWorld = slotsBottomY - leftTopTrans.position.y;
+		var bottomDeltaWorld = footerBottomY - rightBottomTrans.position.y;
+		// corners are children of the input panel (it also receive touch). Resize the panel so touch area = play area
+		var panel = leftTopTrans.parent as RectTransform;
+		if(panel != null && panel == rightBottomTrans.parent && panel.lossyScale.y > 0f) {
+			var scale = panel.lossyScale.y;
+			panel.offsetMax += new Vector2(0f, topDeltaWorld / scale);
+			panel.offsetMin += new Vector2(0f, bottomDeltaWorld / scale);
+			Canvas.ForceUpdateCanvases();
+			return;
+		}
+		// fallback: move the corners only
+		var pos = leftTopTrans.position;
+		pos.y = slotsBottomY;
+		leftTopTrans.position = pos;
+		pos = rightBottomTrans.position;
+		pos.y = footerBottomY;
+		rightBottomTrans.position = pos;
+	}
+	bool _boxSortLayoutApplied;
 
 	[Button]
 	void TestAdjust() {

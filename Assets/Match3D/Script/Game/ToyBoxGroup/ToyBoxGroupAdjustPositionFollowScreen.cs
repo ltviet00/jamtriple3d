@@ -66,6 +66,21 @@ public class ToyBoxGroupAdjustPositionFollowScreen : MonoBehaviour {
 		// distance from mainTransform to UIFooter = distance from it to anchor point
 		AdjustToyBoxPosMarginToFooterUI();
 	}
+
+	///<summary> Box sort mode: bottom Y of the group at its footer position (before moving to top). Null when not moved </summary>
+	float? _footerBottomY;
+
+	///<summary> Box sort mode (reference video): move the waiting slots right below the boxes on top.
+	/// Return (old bottom Y at footer, new bottom Y) so the play area can use the freed footer space </summary>
+	public (float footerBottomY, float newBottomY) MoveTopEdgeTo(float worldTopY) {
+		if(!_footerBottomY.HasValue)
+			_footerBottomY = anchorRightBottom.position.y;
+		var topOffset = anchorLeftTop.position.y - mainTransform.position.y;
+		var pos = mainTransform.position;
+		pos.y = worldTopY - topOffset;
+		mainTransform.position = pos;
+		return (_footerBottomY.Value, anchorRightBottom.position.y);
+	}
 	#endregion//Public
 
 

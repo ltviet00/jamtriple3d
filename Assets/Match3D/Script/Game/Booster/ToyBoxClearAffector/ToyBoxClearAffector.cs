@@ -58,16 +58,20 @@ public class ToyBoxClearAffector : MonoBehaviour {
 	async UniTask ClearBoxesAndPushToyBackToGround() {
 		// wait a bit, cause user often ClearBox when use coin or watch ads on BoxFull popup, wait sometime for the popup to fadeout
 		await UniTask.Delay(300, cancellationToken:_cancelToken.Token);
-		// throw toy
+		// throw toy. Box sort mode: slots are on top of the screen, throw toys down to the field
+		var bar = FindObjectOfType<TargetUIBar>();
+		var throwDirection = bar != null && bar.IsBoxSortMode ? -1f : 1f;
 		for(int n = 0; n < toyInBoxesListVar.Count; n++) {
 			var toy = toyInBoxesListVar[n];
+			if(toy == null)
+				continue;
 			// let them same height to the elevator, so they won't collide with other toy when be throwned back
 			var pos = toy.transform.position;
 			pos.z = grabToyElevationVar.Value.position.z;
 			toy.transform.position = pos;
 			// add velocity to let the fly back. Remember to active physics, cause they got disable in ToyBoxGroup
 			toy.SetActivePhysics(true);
-			var veloForToy = new Vector3(0, RandomThrowVelo(), 0);
+			var veloForToy = new Vector3(0, throwDirection * RandomThrowVelo(), 0);
 			toy.mainRigid.velocity = veloForToy;
 			// remember to disable auto rotate component - which was added when toy pull to ToyBox
 			toy.DisableAutoRotate();
@@ -81,13 +85,15 @@ public class ToyBoxClearAffector : MonoBehaviour {
 		// So if we throw the toy back like above, they will collide with the bottom wall, so, disable the collider a bit then re-enable them later
 		for(int n = 0; n < toyInBoxesListVar.Count; n++) {
 			var toy = toyInBoxesListVar[n];
-			toy.SetActiveCollider(false);
+			if(toy != null)
+				toy.SetActiveCollider(false);
 		}
 		// wait a bit to make sure they 
 		await UniTask.Delay((int)(delayBeforeReactiveColliderForToy * 1000), cancellationToken: _cancelToken.Token);
 		for(int n = 0; n < toyInBoxesListVar.Count; n++) {
 			var toy = toyInBoxesListVar[n];
-			toy.SetActiveCollider(true);
+			if(toy != null)
+				toy.SetActiveCollider(true);
 		}
 		// final, clear the toyInBoxList (reset to null, not clear). Read more in toyBoxGroup
 		var toyInBoxCapacity = toyInBoxesListVar.Value.Capacity;

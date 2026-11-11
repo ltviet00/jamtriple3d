@@ -487,17 +487,56 @@ public class ToyBoxGroup : MonoBehaviour {
 			if(isFromField) {
 				toyStats.RemoveToy(toy);
 			}
-			var targetPos = GetWorldPositionOfBox(box);
-			var targetScale = toy.transform.localScale * animConfig.scaleForToyInsideBoxVar.Value * 0.6f;
+			// reference video: toy flies up high above the crate, then drops down into the crate mouth.
+			// UI canvas (screen space camera) stand in front of the toys. While flying, bring the toy closer to camera than the canvas so it's drawn over the UI,
+			// at the crate rim push it back behind the canvas so the crate body hide it (look like falling inside)
+			var cam = Camera.main;
+			var upDir = cam != null ? cam.transform.up : Vector3.up;
+			var crateHeight = Vector3.Distance(GetWorldPositionOfBox(box, 0f), GetWorldPositionOfBox(box, 1f));
+			// keep the toy big while flying (reference video), shrink a bit only when going inside the crate
+			var fieldScale = toy.transform.localScale;
+			// toy waiting in a slot was scaled down, get back its field scale
+			if(!isFromField && animConfig.scaleForToyInsideBoxVar.Value > 0f)
+				fieldScale /= animConfig.scaleForToyInsideBoxVar.Value;
+			var targetScale = fieldScale * FLY_SCALE;
+			var frontDepth = GetDepthInFrontOfUI(box);
+			var rimPos = ToCameraDepth(GetWorldPositionOfBox(box, 1f), frontDepth);
+			var abovePos = rimPos + upDir * Mathf.Max(crateHeight * DROP_HEIGHT_BY_CRATE, 0.5f);
+			var riseTime = flyToBoxDuration;
+			var dropTime = Mathf.Max(0.1f, flyToBoxDuration * 0.4f);
+			var insideTime = 0.08f;
 			LeanTween.cancel(toy.gameObject);
-			LeanTween.move(toy.gameObject, targetPos, flyToBoxDuration).setEase(LeanTweenType.easeInOutQuad);
-			LeanTween.scale(toy.gameObject, targetScale, flyToBoxDuration).setEase(LeanTweenType.easeInQuad);
-			LeanTween.rotate(toy.gameObject, animConfig.toyRotationWhenIdle, flyToBoxDuration);
-			await UniTask.Delay(TimeSpan.FromSeconds(flyToBoxDuration), cancellationToken: _cancelToken.Token);
+			// rise: start in front of the UI, arc to the point above the crate
+			toy.transform.position = ToCameraDepth(toy.transform.position, frontDepth);
+			LeanTween.move(toy.gameObject, abovePos, riseTime).setEase(LeanTweenType.easeOutQuad);
+			LeanTween.scale(toy.gameObject, targetScale, riseTime).setEase(LeanTweenType.easeOutQuad);
+			LeanTween.rotate(toy.gameObject, animConfig.toyRotationWhenIdle, riseTime);
+			await UniTask.Delay(TimeSpan.FromSeconds(riseTime), cancellationToken: _cancelToken.Token);
+			// drop: fall straight down to the crate rim (crate may moved on the conveyor, get its position again)
+			if(box != null)
+				rimPos = ToCameraDepth(GetWorldPositionOfBox(box, 1f), frontDepth);
+			if(toy != null) {
+				LeanTween.cancel(toy.gameObject);
+				// keep the height, move right above the rim (crate may shifted)
+				toy.transform.position = rimPos + upDir * Vector3.Dot(toy.transform.position - rimPos, upDir);
+				LeanTween.move(toy.gameObject, rimPos, dropTime).setEase(LeanTweenType.easeInQuad);
+			}
+			await UniTask.Delay(TimeSpan.FromSeconds(dropTime), cancellationToken: _cancelToken.Token);
+			// inside: go behind the canvas, keep falling a bit, the crate body cover it
+			var mouthPos = box != null ? GetWorldPositionOfBox(box, CRATE_MOUTH_HEIGHT - 0.3f) : rimPos;
+			if(toy != null) {
+				LeanTween.cancel(toy.gameObject);
+				toy.transform.position = ToCameraDepth(toy.transform.position, GetDepthOf(mouthPos));
+				LeanTween.move(toy.gameObject, mouthPos, insideTime);
+				LeanTween.scale(toy.gameObject, targetScale * 0.7f, insideTime);
+			}
+			await UniTask.Delay(TimeSpan.FromSeconds(insideTime), cancellationToken: _cancelToken.Token);
 			if(toy != null) {
 				LeanTween.cancel(toy.gameObject);
 				Destroy(toy.gameObject);
 			}
+			// vfx in front of the UI, at the crate mouth
+			var targetPos = ToCameraDepth(GetWorldPositionOfBox(box, CRATE_MOUTH_HEIGHT), frontDepth);
 			var vfx = ObjectPool.SpawnObject(vfxNormalToyExplodePrefab);
 			vfx.transform.position = targetPos;
 			var isBoxCompleted = TargetBar != null && TargetBar.NotifyToyDeliveredToBox(box);
@@ -550,7 +589,45 @@ public class ToyBoxGroup : MonoBehaviour {
 	}
 
 	///<summary> Convert the box UI position to world position, same depth with the slots </summary>
-	Vector3 GetWorldPositionOfBox(TargetItemUI box) {
+	///<summary> Crate mouth (the opening on top of crate sprite), normalized height from bottom of the crate </summary>
+	const float CRATE_MOUTH_HEIGHT = 0.84f;
+	///<summary> How high above the mouth the toy flies before dropping, by crate height </summary>
+	const float DROP_HEIGHT_BY_CRATE = 0.9f;
+	///<summary> Toy scale while flying to the crate, by its scale on the field </summary>
+	const float FLY_SCALE = 0.9f;
+
+	///<summary> Camera depth that is in front of the UI canvas (canvas in screen space camera mode). Fallback: depth of the slots </summary>
+	float GetDepthInFrontOfUI(TargetItemUI box) {
+		var slotDepth = GetDepthOf(GetPositionOfToyBoxIndex(0));
+		var canvas = box != null ? box.GetComponentInParent<Canvas>() : null;
+		if(canvas != null)
+			canvas = canvas.rootCanvas;
+		var cam = Camera.main;
+		if(cam == null || canvas == null || canvas.renderMode != RenderMode.ScreenSpaceCamera)
+			return slotDepth;
+		var depth = canvas.planeDistance * 0.5f;
+		return Mathf.Max(depth, cam.nearClipPlane + 0.5f);
+	}
+
+	float GetDepthOf(Vector3 worldPos) {
+		var cam = Camera.main;
+		if(cam == null)
+			return 0f;
+		return Vector3.Dot(worldPos - cam.transform.position, cam.transform.forward);
+	}
+
+	///<summary> Keep the screen position (orthographic camera), change the distance to camera </summary>
+	Vector3 ToCameraDepth(Vector3 worldPos, float depth) {
+		var cam = Camera.main;
+		if(cam == null)
+			return worldPos;
+		var forward = cam.transform.forward;
+		var current = Vector3.Dot(worldPos - cam.transform.position, forward);
+		return worldPos + forward * (depth - current);
+	}
+
+	///<summary> Convert a point on the box UI (normalizedY: 0 bottom, 0.5 center, 1 top) to world position, same depth with the slots </summary>
+	Vector3 GetWorldPositionOfBox(TargetItemUI box, float normalizedY = 0.5f) {
 		var fallback = GetPositionOfToyBoxIndex(0);
 		var cam = Camera.main;
 		var rect = box != null ? box.transform as RectTransform : null;
@@ -563,7 +640,12 @@ public class ToyBoxGroup : MonoBehaviour {
 			if(canvas.renderMode != RenderMode.ScreenSpaceOverlay)
 				uiCam = canvas.worldCamera;
 		}
-		var screenPoint = RectTransformUtility.WorldToScreenPoint(uiCam, rect.position);
+		var corners = new Vector3[4];
+		rect.GetWorldCorners(corners);
+		var bottomCenter = (corners[0] + corners[3]) * 0.5f;
+		var topCenter = (corners[1] + corners[2]) * 0.5f;
+		var uiPoint = Vector3.LerpUnclamped(bottomCenter, topCenter, normalizedY);
+		var screenPoint = RectTransformUtility.WorldToScreenPoint(uiCam, uiPoint);
 		var depth = Vector3.Dot(fallback - cam.transform.position, cam.transform.forward);
 		if(depth <= cam.nearClipPlane)
 			return fallback;

@@ -34,6 +34,10 @@ public class TargetUIBar : MonoBehaviour {
 	[Tooltip("ON: each card is a box receiving [toyPerBox] toys of the same type, matching toys fly straight into the box, others wait in the ToyBoxGroup slots. OFF: classic triple-match target cards")]
 	[SerializeField] bool boxSortMode = true;
 	[SerializeField] int toyPerBox = 3;
+	[Tooltip("Box sort mode: number of boxes open at the same time (reference video: 2 open + 1 face down waiting). 0 = use maxConcurrentTargetCfg")]
+	[SerializeField] int openBoxCount = 2;
+	[Tooltip("Box sort mode: distance between 2 crates (crates are bigger than cards)")]
+	[SerializeField] float boxItemDistance = 320f;
 
 	[Header("Validation")]
 	[SerializeField] bool isFailedConfig;
@@ -137,8 +141,8 @@ public class TargetUIBar : MonoBehaviour {
 		}
 
 		// move from stack to activeList. First update to stats
-		while(_cardStack.Count > 0 && _activeCards.Count < maxConcurrentTargetCfg.Value) {
-			_activeCards.Add(_cardStack.Pop());
+		while(_cardStack.Count > 0 && _activeCards.Count < MaxActiveCards) {
+			_activeCards.Add(PopNextCard());
 		}
 		UpdateAllowTargetToToyStats();
 
@@ -221,7 +225,16 @@ public class TargetUIBar : MonoBehaviour {
 		if(_cardStack.Count > 0) {
 			index++;
 		}
-		result.x = farLeftItemPosition + itemDistance * index;
+		// box sort mode: few boxes, center the row (open boxes + 1 face down slot)
+		var isCrateRow = IsBoxSortMode && openBoxCount > 0;
+		var distance = isCrateRow ? boxItemDistance : itemDistance;
+		var left = farLeftItemPosition;
+		if(isCrateRow) {
+			// stack not empty (or init): open crates + 1 face down crate. Else only the remain open crates, centered
+			var slotCount = _cardStack.Count > 0 || _activeCards.Count == 0 ? MaxActiveCards + 1 : _activeCards.Count;
+			left = -distance * (slotCount - 1) * 0.5f;
+		}
+		result.x = left + distance * index;
 		return result;
 	}
 
@@ -246,6 +259,10 @@ public class TargetUIBar : MonoBehaviour {
 	}
 
 	async UniTask DestroyCardAndArrangeRemainList(TargetItemUI toDestroy) {
+		if(IsBoxSortMode && openBoxCount > 0) {
+			await DestroyCrateAndShiftConveyor(toDestroy);
+			return;
+		}
 		try {
 			if(toDestroy == null)
 				return;
@@ -264,7 +281,7 @@ public class TargetUIBar : MonoBehaviour {
 			await UniTask.Delay(TimeSpan.FromSeconds(toDestroy.AnimConfig.DestroyDuration), cancellationToken: _disableToken.Token);
 			// if stack has more than 1, then pick one and fill to the missing place
 			if(_cardStack.Count > 1) {
-				var replacement = _cardStack.Pop();
+				var replacement = PopNextCard();
 				_activeCards[indexOfDestroyCard] = replacement;
 				var positionForReplacement = GetAnchorPositionForCardAtIndex(indexOfDestroyCard);
 				replacement.MoveToTargetAndFaceUp(positionForReplacement);
@@ -290,6 +307,7 @@ public class TargetUIBar : MonoBehaviour {
 				// add last Card to active list. And reorder the list
 				_activeCards[_activeCards.Count - 1] = lastCard;
 				_activeCards.BringLastToFirst();
+				RealignCratesWhenStackEmpty();
 				// update for stats
 				UpdateAllowTargetToToyStats();
 				return;
@@ -305,6 +323,7 @@ public class TargetUIBar : MonoBehaviour {
 				var posForCard = GetAnchorPositionForCardAtIndex(n);
 				card.MoveToTarget(posForCard);
 			}
+			RealignCratesWhenStackEmpty();
 			// update for stats
 			UpdateAllowTargetToToyStats();
 		}
@@ -313,6 +332,92 @@ public class TargetUIBar : MonoBehaviour {
 		finally {
 			_queuedDestroyCards.Remove(toDestroy);
 		}
+	}
+
+	///<summary> Box sort mode (reference video): crates stand on a conveyor, waiting crate on the left.
+	/// A crate completed -> it flies away, every crate on its left shift 1 place to the right, the waiting crate opens, next waiting crate shows up on the left </summary>
+	async UniTask DestroyCrateAndShiftConveyor(TargetItemUI toDestroy) {
+		try {
+			if(toDestroy == null)
+				return;
+			var index = _activeCards.IndexOf(toDestroy);
+			if(index < 0)
+				return;
+			toDestroy.DisappearAndDestroy();
+			await UniTask.Delay(TimeSpan.FromSeconds(toDestroy.AnimConfig.DestroyDuration), cancellationToken: _disableToken.Token);
+			_activeCards.RemoveAt(index);
+			// waiting crate enter the conveyor at the leftmost open place
+			TargetItemUI entering = null;
+			if(_cardStack.Count > 0) {
+				entering = PopNextCard();
+				_activeCards.Insert(0, entering);
+			}
+			// shift all crates to their place (crates right of the completed one keep their place)
+			for(int n = 0; n < _activeCards.Count; n++) {
+				var card = _activeCards[n];
+				if(card == null)
+					continue;
+				var pos = GetAnchorPositionForCardAtIndex(n);
+				if(card == entering)
+					card.MoveToTargetAndFaceUp(pos);
+				else
+					card.MoveToTarget(pos);
+			}
+			UpdateAllowTargetToToyStats();
+		}
+		catch(OperationCanceledException) {
+		}
+		finally {
+			_queuedDestroyCards.Remove(toDestroy);
+		}
+	}
+
+	///<summary> Box sort mode: no face down crate left, move all open crates to the centered positions </summary>
+	void RealignCratesWhenStackEmpty() {
+		if(!IsBoxSortMode || openBoxCount <= 0 || _cardStack.Count > 0)
+			return;
+		for(int n = 0; n < _activeCards.Count; n++) {
+			if(_activeCards[n] != null && !_queuedDestroyCards.Contains(_activeCards[n]))
+				_activeCards[n].MoveToTarget(GetAnchorPositionForCardAtIndex(n));
+		}
+	}
+
+	int MaxActiveCards => IsBoxSortMode && openBoxCount > 0 ? openBoxCount : maxConcurrentTargetCfg.Value;
+
+	///<summary> Pop next card to open. Box sort mode: prefer a box whose toy type is not open yet, so 2 open boxes never ask for the same toy </summary>
+	TargetItemUI PopNextCard() {
+		var picked = PickNextCardFromStack();
+		// box sort mode: waiting crates stand at the same place and show their content, keep the real next crate on top
+		if(IsBoxSortMode && _cardStack.Count > 0 && _cardStack.Peek() != null)
+			_cardStack.Peek().transform.SetAsLastSibling();
+		if(IsBoxSortMode && picked != null)
+			picked.transform.SetAsLastSibling();
+		return picked;
+	}
+
+	TargetItemUI PickNextCardFromStack() {
+		if(!IsBoxSortMode || _cardStack.Count <= 1)
+			return _cardStack.Pop();
+		var openTypes = new HashSet<GameObject>();
+		for(int n = 0; n < _activeCards.Count; n++) {
+			var card = _activeCards[n];
+			if(card != null && !_queuedDestroyCards.Contains(card) && card.RootToyPrefab != null)
+				openTypes.Add(card.RootToyPrefab);
+		}
+		var top = _cardStack.Peek();
+		if(top == null || !openTypes.Contains(top.RootToyPrefab))
+			return _cardStack.Pop();
+		// enumerate stack from top to bottom
+		var list = new List<TargetItemUI>(_cardStack);
+		var pickIndex = list.FindIndex(c => c != null && !openTypes.Contains(c.RootToyPrefab));
+		if(pickIndex < 0)
+			return _cardStack.Pop();
+		var picked = list[pickIndex];
+		list.RemoveAt(pickIndex);
+		_cardStack.Clear();
+		for(int n = list.Count - 1; n >= 0; n--)
+			_cardStack.Push(list[n]);
+		return picked;
 	}
 
 	///<summary> Box sort mode: create box cards. Each toy type split into boxes of [toyPerBox], shuffle so the same type not always next to each other </summary>

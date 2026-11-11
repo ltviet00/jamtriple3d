@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Level_738
   m_EditorClassIdentifier: 
   totalInfo:
-    totalTriad: 83
-    typeUsed: 16
+    totalTriad: 41
+    typeUsed: 10
   targetInfo:
-    totalTriad: 23
-    typeUsed: 5
+    totalTriad: 41
+    typeUsed: 10
   supportToyList: []
-  levelDuration: 420
+  levelDuration: 410

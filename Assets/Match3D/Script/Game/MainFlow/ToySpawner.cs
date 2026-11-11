@@ -70,6 +70,15 @@ public class ToySpawner : MonoBehaviour {
 		var toyGroup = toyStorage.SelectToyPrefabGroupForLevel(levelData);
 		// decoy and target
 		var (decoySpawnInfo, targetSpawnInfo) = PrepareSpawnDataForDecoyAndTarget(levelData, toyGroup);
+		// box sort mode (reference video): every toy on the field belongs to a box, no decoy
+		var targetBar = FindObjectOfType<TargetUIBar>();
+		if(targetBar != null && targetBar.IsBoxSortMode) {
+			foreach(var decoy in decoySpawnInfo) {
+				if(decoy.Item2 > 0)
+					targetSpawnInfo.Add(decoy);
+			}
+			decoySpawnInfo.Clear();
+		}
 		
 		// Spawn them on screen
 		var spawnedDecoys = SpawnToysOnScene(decoySpawnInfo, leftTopPos, areaSize);

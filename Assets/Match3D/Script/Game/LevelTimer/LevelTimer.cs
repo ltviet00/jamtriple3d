@@ -149,6 +149,14 @@ public class LevelTimer : MonoBehaviour {
 		enabled = false;
 	}
 
+	///<summary> Timer stop when the toy bar full. Call this when user clear the bar (coin / ads / free) to keep counting from the remain time </summary>
+	public void ResumeAfterBarCleared() {
+		if(!enabled || remainTimeInSecondVar.Value <= 0)
+			return;
+		ClearRunningTasks();
+		ReduceTimerAsync().Forget();
+	}
+
 	void OnUserRevive() {
 		// like a restart game
 		//StartClock();

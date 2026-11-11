@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: Level_44
   m_EditorClassIdentifier: 
   totalInfo:
-    totalTriad: 46
-    typeUsed: 10
-  targetInfo:
-    totalTriad: 14
+    totalTriad: 16
     typeUsed: 5
-  supportToyList:
-  - id: {fileID: 11400000, guid: 2e7fa30ca4e00fd478ded4da9841b95f, type: 2}
-    amount: 1
-  levelDuration: 305
+  targetInfo:
+    totalTriad: 16
+    typeUsed: 5
+  supportToyList: []
+  levelDuration: 230
