@@ -1,0 +1,17 @@
+{
+    "name": "CartoonItemPack_asm",
+    "rootNamespace": "",
+    "references": [
+        "Unity.RenderPipelines.Universal.Shaders",
+        "StandardAssets_asm"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

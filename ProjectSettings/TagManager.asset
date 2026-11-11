@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - LoadingScreen
+  - Toys
+  - Wall
+  - ToyCatcherPlaceholder
+  - GrabbingToy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1177831093
+    locked: 0
+  - name: FX
+    uniqueID: 1948508801
+    locked: 0
+  - name: UI
+    uniqueID: 2355936165
+    locked: 0
+  - name: FX_UI
+    uniqueID: 538906381
+    locked: 0
+  - name: LoadingScreen
+    uniqueID: 2526573315
+    locked: 0
+  - name: TutorialScreen
+    uniqueID: 207900659
+    locked: 0

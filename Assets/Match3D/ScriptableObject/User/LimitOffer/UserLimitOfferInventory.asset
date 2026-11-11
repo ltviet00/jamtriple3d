@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7fcebf546b19540a0ef0456a79689e, type: 3}
+  m_Name: UserLimitOfferInventory
+  m_EditorClassIdentifier: 
+  SAVE_NAME_EDTOR: UserLimitOffer-EditorNameOnly.data
+  SAVE_NAME: fg4y4677ywret7.data
+  KEY: sfgj45626sa
+  offerDurationInHour: 48
+  isFailedConfig: 0
+  _data:
+    offerEndTime: -8585429865765864480

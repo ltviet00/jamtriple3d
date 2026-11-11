@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d5cc13f1f75d940a87a38a5781d179, type: 3}
+  m_Name: Cfg_Booster_Undo_CoolDownDuration
+  m_EditorClassIdentifier: 
+  developerDescription: Time between 2 time use booster, prevent user from spamming
+    booster button
+  activeLogOnValueChanged: 0
+  _value: 1.5
+  protectedType: 0
+  _initValue: 0

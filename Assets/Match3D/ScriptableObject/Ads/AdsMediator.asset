@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 272a50f7b04f676448e7c1206ebf3edf, type: 3}
+  m_Name: AdsMediator
+  m_EditorClassIdentifier: 
+  adsControllerList:
+  - {fileID: 11400000, guid: de3899e8039293e4aa23c3209fffa2db, type: 2}
+  - {fileID: 11400000, guid: 621fb23ee143c43dcb63ea09db2717b6, type: 2}
+  selectedAdsNetworkNameVar: {fileID: 11400000, guid: 531cb2cfff2d6974a9a6184192661c7a, type: 2}
+  enableAdsGloballyVar: {fileID: 11400000, guid: bacd37447b7ab1349807ace43a0a8710, type: 2}
+  adsBlockVersionChecker:
+    adsBlockByGameVersionVar: {fileID: 11400000, guid: e555603a7f39e9740a4a1ca36bcd19cc, type: 2}
+  rewardAdsSuccessEvent: {fileID: 11400000, guid: 99afcc1dde84e214e9afc2e1a9ef90b3, type: 2}
+  rewardAdsFailedEvent: {fileID: 11400000, guid: 2ee78dcf37f8c0446b735835a1896039, type: 2}
+  interstitialAdsCloseEvent: {fileID: 11400000, guid: 225d06a986a31894d880b1e9268d895c, type: 2}
+  isFailedConfig: 0

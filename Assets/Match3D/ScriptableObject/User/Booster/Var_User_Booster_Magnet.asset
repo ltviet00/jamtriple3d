@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e989d21a058971c4192404ac9daf5156, type: 3}
+  m_Name: Var_User_Booster_Magnet
+  m_EditorClassIdentifier: 
+  developerDescription: 'Work with UserBoosterInventory
+
+'
+  activeLogOnValueChanged: 0
+  _value: 0
+  protectedType: 0
+  _initValue: 0

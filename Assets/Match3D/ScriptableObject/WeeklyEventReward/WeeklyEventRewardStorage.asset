@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c45f1abaf36d34d97522a6fac0f236, type: 3}
+  m_Name: WeeklyEventRewardStorage
+  m_EditorClassIdentifier: 
+  levelToUnlock: 10
+  randomSpawnToyRange: {x: 4, y: 6}
+  rewardList:
+  - {fileID: 11400000, guid: 942bf50ef4748d5438b722462d405c0c, type: 2}
+  - {fileID: 11400000, guid: 390c5a2ac5b318b4d92acde1f023ffeb, type: 2}
+  - {fileID: 11400000, guid: f2fa10cfba6fdfe479c505510ed19e42, type: 2}
+  - {fileID: 11400000, guid: de27a7c1c8dcd93498424ae9078418e6, type: 2}
+  - {fileID: 11400000, guid: 11bac7af91dce5b4d905ae7ed5096ba6, type: 2}
+  - {fileID: 11400000, guid: 29d55ba86972f94429992e3c7d63dfb2, type: 2}
+  - {fileID: 11400000, guid: 4a4907d67bc9f014ea818a1db3344035, type: 2}
+  - {fileID: 11400000, guid: ad88750507e0b454ea8da23c8c6acab4, type: 2}
+  - {fileID: 11400000, guid: 99727161be720944ebf100442d387d91, type: 2}
+  - {fileID: 11400000, guid: dfdc7b504a46c414d8d3376e512e1bdd, type: 2}
+  - {fileID: 11400000, guid: 945319c2b096cac459affa94737ef3b2, type: 2}
+  - {fileID: 11400000, guid: 858f984212706ea488ecf70476507e1b, type: 2}
+  - {fileID: 11400000, guid: cee2f2af5b77f2448810acb1acf46e4d, type: 2}
+  - {fileID: 11400000, guid: 08acf173d24605142ace240fc52ce3f4, type: 2}
+  - {fileID: 11400000, guid: dcea2dd2f6c859b428ac21e923ad0f54, type: 2}
+  - {fileID: 11400000, guid: 67a3d5be972d70745bb90c8d1505c852, type: 2}
+  - {fileID: 11400000, guid: f7c942a35aab9f0479c137de4a41de99, type: 2}
+  - {fileID: 11400000, guid: db6d79740fa0a664aab6128ed4269d8e, type: 2}
+  - {fileID: 11400000, guid: eb9a15281a063cd48ba3110f43cd93a3, type: 2}
+  - {fileID: 11400000, guid: c8ab575c67c226544997b2b79c6ed6c2, type: 2}
+  - {fileID: 11400000, guid: 2fa5d67e131d3064991f1b14316295b5, type: 2}
+  - {fileID: 11400000, guid: a6e84c6e380252145ac9a9b44a17de95, type: 2}
+  - {fileID: 11400000, guid: 57a2b3ad435b03045bddf64a6cb9815e, type: 2}
+  - {fileID: 11400000, guid: 0d13fac52f611e14fa0aa0a6be37e36f, type: 2}
+  - {fileID: 11400000, guid: 2733f0aeada614443a1554dd585262d4, type: 2}
+  - {fileID: 11400000, guid: 00878e8842fbf8042b30a25d7d571238, type: 2}
+  - {fileID: 11400000, guid: 2c6a70dde6a42a649ba4070b3ef48f00, type: 2}
+  - {fileID: 11400000, guid: 5b2fb5cd12b87fc4bbe6ec20e03f2304, type: 2}
+  - {fileID: 11400000, guid: a6fed4bd862a1f64e832de9cd7518b19, type: 2}
+  - {fileID: 11400000, guid: cbf8b9cf63d750f4b8f314464432af5e, type: 2}
+  isFailedConfig: 0
+  collectRequireIncreaseConfig:
+    begin: 3
+    increasePerLevel: 3
+    max: 25

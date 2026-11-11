@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9923fcff57e2845bbebf3a752eb045, type: 3}
+  m_Name: UnityRemoteConfigManager
+  m_EditorClassIdentifier: 
+  syncKeyList:
+  - {fileID: 11400000, guid: 6815bf4ea901be443b75a16c23e4cbbd, type: 2}
+  - {fileID: 11400000, guid: 0eaf3b6d0888e8b4dab373203dff4979, type: 2}
+  environmentIdVar: {fileID: 11400000, guid: adad70366c26e7342b6b638a7309da4a, type: 2}
+  isFailedConfig: 0

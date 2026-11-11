@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cbc5e1d04402649bff253efb5ecc8c, type: 3}
+  m_Name: Task3_Game_UsingFan
+  m_EditorClassIdentifier: 
+  id: Task3_UsingFan
+  location: {fileID: 11400000, guid: 57b4793e9cbe5014bb7e758a85008d9f, type: 2}
+  priority: 1
+  conditions:
+  - {fileID: 11400000, guid: 48f58b8d3c094664c86198648577e83b, type: 2}
+  actions:
+  - {fileID: 11400000, guid: 16709f45e82f995468c97a75270aa7ba, type: 2}
+  - {fileID: 11400000, guid: 1f7e9fc707ce6a74dae02e334b087215, type: 2}
+  - {fileID: 11400000, guid: 0659717b938513d4c8ca50f51ff3df4b, type: 2}
+  - {fileID: 11400000, guid: 47cd930fe24eb154d959e5415045448f, type: 2}
+  - {fileID: 11400000, guid: 67e646c0bb90c034590e1e0fd593cd9d, type: 2}
+  isFailedConfig: 0

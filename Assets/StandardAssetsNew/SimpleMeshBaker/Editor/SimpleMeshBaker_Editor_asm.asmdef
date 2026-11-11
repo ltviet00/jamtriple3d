@@ -1,0 +1,18 @@
+{
+    "name": "SimpleMeshBaker_Editor_asm",
+    "rootNamespace": "",
+    "references": [
+        "SimpleMeshBaker_asm"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

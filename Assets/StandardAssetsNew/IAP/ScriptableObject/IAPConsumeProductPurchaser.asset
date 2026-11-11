@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6875a85f321314694bebbbda099a82b1, type: 3}
+  m_Name: IAPConsumeProductPurchaser
+  m_EditorClassIdentifier: 
+  selectedPackageVar: {fileID: 11400000, guid: 347d73f9908f9734d86cfc94e7ee9db9, type: 2}
+  fakeStoreUIMode: 2
+  purchaseStartingEvent: {fileID: 11400000, guid: 81707348179aa61479aea9fc5cb68522, type: 2}
+  purchaseSuccessEvent: {fileID: 11400000, guid: ddb8670272adda44d9558fb40878e58c, type: 2}
+  purchaseFailedEvent: {fileID: 11400000, guid: 5af614813caee8c46b8cae7312e9dbac, type: 2}
+  restorePurchaseSuccessEvent: {fileID: 11400000, guid: 09630dcaa6fbae04b875aec54d1d626c, type: 2}
+  restorePurchaseFailedEvent: {fileID: 11400000, guid: b79c339abdfc7ae488f3dc373fd01348, type: 2}
+  productsList:
+  - {fileID: 11400000, guid: f55e81ae74e8c8a458f7b02f0ff472bc, type: 2}
+  - {fileID: 11400000, guid: e4256f0c2dfcfe14c915834f572f3b40, type: 2}
+  - {fileID: 11400000, guid: caaaae8032144bc49b30c81263d19f66, type: 2}
+  - {fileID: 11400000, guid: 6bb91d6a36c43b3448c72e0f668d1845, type: 2}
+  - {fileID: 11400000, guid: a4e18ff7a003ca348962ac2046ee8710, type: 2}
+  - {fileID: 11400000, guid: 88fb7cecaf6a0f74dbad30c116b69450, type: 2}
+  - {fileID: 11400000, guid: bdfe3b84a45009249b9b83cd1d8bd410, type: 2}
+  - {fileID: 11400000, guid: 7d75e6258026dc543a0d87a491bf566a, type: 2}
+  - {fileID: 11400000, guid: 7751360b41edea14f954b58c1316f074, type: 2}
+  - {fileID: 11400000, guid: 377a78628c220404b84f69f85799598c, type: 2}
+  - {fileID: 11400000, guid: 16b59d3cf35f56d4796380d9c07afaf2, type: 2}
+  - {fileID: 11400000, guid: c4e524c74c32b0b40a363c138c1bf98d, type: 2}
+  - {fileID: 11400000, guid: 696366c44f6ce5d4392f90f204b095fe, type: 2}
+  - {fileID: 11400000, guid: 8e7b68f945918294e8cf15705a47e585, type: 2}
+  - {fileID: 11400000, guid: 8d043229647382f43ad453aa4a1c8e09, type: 2}
+  - {fileID: 11400000, guid: a9c2b6df6908bf2469090a2c266ed601, type: 2}
+  - {fileID: 11400000, guid: 8793653c750b2fc47914f2915977c8f0, type: 2}
+  - {fileID: 11400000, guid: 138586a44bffd614c965d8b894c5c9f6, type: 2}
+  isFailedConfig: 0

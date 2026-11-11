@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7393405eb06db2147a9fc730018189ad, type: 3}
+  m_Name: Task3_Action_IntructionPopup
+  m_EditorClassIdentifier: 
+  disposeOnFinish: 0
+  disposePreviousActions: 0
+  message: Tap the charged Fan to shuffle and find hidden items
+  popupPrefab: {fileID: 4355879287741050682, guid: 275362f229fd87c448dddcc19cffb55d, type: 3}
+  popupAnchorPosition: {x: -170, y: -550}
+  activeBlackCoverScreen: 1
+  isFailedConfig: 0

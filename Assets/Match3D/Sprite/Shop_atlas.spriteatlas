@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shop_atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 80
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 28fd0b741e437fd44add3e86c13055d0, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 5b5fc590c875dc74aba6c59515903a5f: 21300000
+    - 8d15aa219ee64cc47a18ac46b77f33bf: 21300000
+    - 918e9e81e85fa5e46b1a0f4e283484de: 21300000
+    - 5a161612fa113a048b71a5148787df46: 21300000
+    - a041744231ac31446beb4ba70be0f93e: 21300000
+    - a7fef562e3d04e249bb43413de690a22: 21300000
+    - 2ae8929220bfd574b9dcfcca737a9910: 21300000
+    - c7c67ec2acdc9ea4d940132cddbb19fb: 21300000
+    - f9b5de949198e494b9a52447f5d057a5: 21300000
+    - 374be515cc146f74190f7042b8bc2eeb: 21300000
+    - 1640d1458f4e201488f3e012c3d6bac8: 21300000
+    - 1f70888568d1c9f4999ab1a374cfcb0e: 21300000
+    - de61ab952cfbe5840be4a036d9653d38: 21300000
+    - 75c0c2b64f28af14dba06851a72cc936: 21300000
+    - 9eeba06750e762e42a64b2a49c636459: 21300000
+    - 91dc5608fb1f01b43ad10e05c19cc200: 21300000
+    - 13fcacb9b194d984ba444bf18d972196: 21300000
+    - 35f5f06a7a3a11a4db150e14a8fdc3d1: 21300000
+    - 145d29caba3e9ef43a431dca6e22e2ab: 21300000
+    - f07592fbf9ca26b4994b01b3e94afd09: 21300000
+    - a2993b8c1d7f4944d841584b0dcfc555: 21300000
+    - 719bd8ac4df8ed146b0c8967f52abeba: 21300000
+    - 1ea5cb5d7163f8e40a982066944e802a: 1905617337
+    - a65e957f9019475448dc75407080d6c3: 21300000
+    - d94e1fefbc05ba54bbd52d2270c7bbd7: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 5b5fc590c875dc74aba6c59515903a5f, type: 3}
+  - {fileID: 21300000, guid: 8d15aa219ee64cc47a18ac46b77f33bf, type: 3}
+  - {fileID: 21300000, guid: 918e9e81e85fa5e46b1a0f4e283484de, type: 3}
+  - {fileID: 21300000, guid: 5a161612fa113a048b71a5148787df46, type: 3}
+  - {fileID: 21300000, guid: a041744231ac31446beb4ba70be0f93e, type: 3}
+  - {fileID: 21300000, guid: a7fef562e3d04e249bb43413de690a22, type: 3}
+  - {fileID: 21300000, guid: 2ae8929220bfd574b9dcfcca737a9910, type: 3}
+  - {fileID: 21300000, guid: c7c67ec2acdc9ea4d940132cddbb19fb, type: 3}
+  - {fileID: 21300000, guid: f9b5de949198e494b9a52447f5d057a5, type: 3}
+  - {fileID: 21300000, guid: 374be515cc146f74190f7042b8bc2eeb, type: 3}
+  - {fileID: 21300000, guid: 1640d1458f4e201488f3e012c3d6bac8, type: 3}
+  - {fileID: 21300000, guid: 1f70888568d1c9f4999ab1a374cfcb0e, type: 3}
+  - {fileID: 21300000, guid: de61ab952cfbe5840be4a036d9653d38, type: 3}
+  - {fileID: 21300000, guid: 75c0c2b64f28af14dba06851a72cc936, type: 3}
+  - {fileID: 21300000, guid: 9eeba06750e762e42a64b2a49c636459, type: 3}
+  - {fileID: 21300000, guid: 91dc5608fb1f01b43ad10e05c19cc200, type: 3}
+  - {fileID: 21300000, guid: 13fcacb9b194d984ba444bf18d972196, type: 3}
+  - {fileID: 21300000, guid: 35f5f06a7a3a11a4db150e14a8fdc3d1, type: 3}
+  - {fileID: 21300000, guid: 145d29caba3e9ef43a431dca6e22e2ab, type: 3}
+  - {fileID: 21300000, guid: f07592fbf9ca26b4994b01b3e94afd09, type: 3}
+  - {fileID: 21300000, guid: a2993b8c1d7f4944d841584b0dcfc555, type: 3}
+  - {fileID: 21300000, guid: 719bd8ac4df8ed146b0c8967f52abeba, type: 3}
+  - {fileID: 1905617337, guid: 1ea5cb5d7163f8e40a982066944e802a, type: 3}
+  - {fileID: 21300000, guid: a65e957f9019475448dc75407080d6c3, type: 3}
+  - {fileID: 21300000, guid: d94e1fefbc05ba54bbd52d2270c7bbd7, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Shop_Coins_1000
+  - Shop_Coins_5000
+  - Shop_Bundle_4_Pro
+  - Shop_Coins_10000
+  - Shop_Coin_BG
+  - Shop_Coins_10
+  - Shop_FreeCoin_RemainAdsCount_BG
+  - Shop_Price_BG
+  - Shop_Ads_Icon
+  - Shop_Title_BG
+  - Shop_Bundle_6_Legendary
+  - Shop_Bundle_3_Extra
+  - Shop_Plus_Icon
+  - Shop_Bundle_BG_Beginer
+  - Shop_Bundle_BG_Normal
+  - Shop_RemoveAds_BG
+  - Shop_Coins_500
+  - Shop_Bundle_5_Ultra
+  - Shop_Bundle_1_Beginers
+  - Shop_LimitOffer_BG
+  - Shop_Coins_2500
+  - Shop_Bundle_2_Find
+  - Shop_Bundle_Halo_0
+  - Shop_Coins_100
+  - Shop_RewardItem_BG
+  m_RenderDataMap: {}
+  m_Tag: Shop_atlas
+  m_IsVariant: 0

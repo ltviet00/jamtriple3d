@@ -1,0 +1,19 @@
+{
+    "name": "Standard.Tutorial",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "StandardAssets_asm",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

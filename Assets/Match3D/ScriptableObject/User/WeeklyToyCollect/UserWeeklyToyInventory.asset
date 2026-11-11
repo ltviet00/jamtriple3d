@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6852edd7bd21c44b979947add106188, type: 3}
+  m_Name: UserWeeklyToyInventory
+  m_EditorClassIdentifier: 
+  saveNameEditor: UserWeeklyToyInventory-EditorNameOnly.data
+  saveNameDevice: nofb3nebfagnma902349.data
+  encriptKey: fbstwfas53
+  isFailedConfig: 0
+  _saveData:
+    isLocked: 0
+    unlockDate: -8585375680854775808
+    collectedMoreFromLevels: 30
+    collectedItemAmount: 15
+    currentMilestone: 7
+  userScoreInventory: {fileID: 11400000, guid: 1c3db318eb6499d48a5c027f786d0ce7, type: 2}
+  weeklyEventRewardStorage: {fileID: 11400000, guid: 5024988d3f95ced4d85d1bcca7a56231, type: 2}

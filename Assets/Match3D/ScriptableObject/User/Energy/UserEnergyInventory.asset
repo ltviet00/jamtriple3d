@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95747d17c9af30e45a6b447b075b47f0, type: 3}
+  m_Name: UserEnergyInventory
+  m_EditorClassIdentifier: 
+  SAVE_NAME_EDTOR: UserEnergy-EditorNameOnly.data
+  SAVE_NAME: ghdajyykfdsf.data
+  KEY: ndf6846khsf
+  maxEnergy: 5
+  timeToGetOneEnergyInMinutes: 30
+  remainEneryVar: {fileID: 11400000, guid: 72425cab401f6d8408dad600c1d8a1c4, type: 2}
+  isFailedConfig: 0
+  _data:
+    lastDeductEnergy: -8585431593766104527
+    energyRemain: 5

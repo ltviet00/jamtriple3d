@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191dd921c6fda1c499715a3992611207, type: 3}
+  m_Name: UserLuckyDrawInventory
+  m_EditorClassIdentifier: 
+  SAVE_NAME_EDTOR: UserLuckyDraw-EditorNameOnly.data
+  SAVE_NAME: madfubeqbyaf.data
+  KEY: 157352sffgsd
+  freeDrawPerDayVar: {fileID: 11400000, guid: f55cb5e7a0017664788f79d107c9a176, type: 2}
+  freeAdsToDrawPerDayVar: {fileID: 11400000, guid: ab11697857d318f4982f4afbea1c7f8f, type: 2}
+  isFailedConfig: 0
+  _data:
+    saveDateBinary: -8585431593765754452
+    freeDrawUsed: 0
+    adsWatchedCount: 0

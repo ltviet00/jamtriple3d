@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ddf08ae586bc5489e2f57cf979ff00, type: 3}
+  m_Name: SFX_Combo_List
+  m_EditorClassIdentifier: 
+  developerDescription: 
+  protectedType: 0
+  _list:
+  - {fileID: 11400000, guid: 5b827fd1335b9a04298494d8fa9ec6e8, type: 2}
+  - {fileID: 11400000, guid: f00bb18d5eddf5844a934b1f0240ed3d, type: 2}
+  - {fileID: 11400000, guid: d9b6e331d9f083b4f91999a98a87fbcf, type: 2}
+  - {fileID: 11400000, guid: ee6953d667471f24fb6e0430e08bdde2, type: 2}
+  - {fileID: 11400000, guid: 0732acd5f694cef408cbb830826b1ca1, type: 2}
+  - {fileID: 11400000, guid: 604c3bd42d609254e9da9ee80d262f03, type: 2}
+  - {fileID: 11400000, guid: 72c01df8ef82f5441ba504c4ef5a2279, type: 2}
+  - {fileID: 11400000, guid: ca98e9398788612449b91d62bc4296db, type: 2}
+  - {fileID: 11400000, guid: 1b46a3928cd2a26458f43c99809abcc8, type: 2}
+  - {fileID: 11400000, guid: b311c016104293b498e2932a13819256, type: 2}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 28b0c66dd88e7f74d9d2fee86c857c0d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - toySpriteMapper: {instanceID: 0}
+  - weeklyEventData: {instanceID: 0}
+  - toyStorage: {fileID: 11400000, guid: 9e12daaed40312b47b1799a9757a13c5, type: 2}
+  - targetImage: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

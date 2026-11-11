@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f1729bf9113d24fa822829899c635d, type: 3}
+  m_Name: Var_InputHandler_PickedToy
+  m_EditorClassIdentifier: 
+  developerDescription: '- Written by UserInputHandler
+
+    - the toy user picked
+    (finish dragging on a toy -> that the picked one)
+
+'
+  activeLogOnValueChanged: 0
+  allowNullAssign: 1
+  _value: {fileID: 0}
+  _initValue: {fileID: 0}
+  protectedType: 0
+  behaviorOnDisable: 0

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: d47bc158c5f33ba4c9da82e69972d953
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - adsMediator: {fileID: 11400000, guid: 1ec8884180104dd4d810268b8339d886, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

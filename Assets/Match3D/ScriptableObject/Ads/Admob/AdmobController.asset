@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c556e7bd6c03b4880d090a2ecc59f7, type: 3}
+  m_Name: AdmobController
+  m_EditorClassIdentifier: 
+  identicalName: admob
+  placementAndroid:
+    banner: {fileID: 11400000, guid: 8eda1235aca9b174d84cae348f93fe15, type: 2}
+    video: {fileID: 11400000, guid: a6fc5794e4453bf438a648d592c382ad, type: 2}
+    reward: {fileID: 11400000, guid: 38236ba693e9d7b4d9a7bda137e168ae, type: 2}
+  placementIOS:
+    banner: {fileID: 11400000, guid: 1395d06d9f14f464c821cb554a92979d, type: 2}
+    video: {fileID: 11400000, guid: b1ea90e11450d4c419ff5518f7498ee7, type: 2}
+    reward: {fileID: 11400000, guid: 61c70e5e2f09de84f90a4d4936c093cc, type: 2}
+  placementAmazon:
+    banner: {fileID: 11400000, guid: 6aedb5fbcb048ac459259ec71da3102e, type: 2}
+    video: {fileID: 11400000, guid: 72edf87bd76e74b4c998f1cdb6d937b9, type: 2}
+    reward: {fileID: 11400000, guid: 1b4925ded8a95c544a0fc55a50b63a9f, type: 2}
+  consentManager: {fileID: 11400000, guid: 29d072f4081e470b83f5439912ccbd31, type: 2}
+  delayReloadAdsWhenLoadFailed: 3.5
+  maxRetryDelaySeconds: 64
+  preloadBannerAfterInit: 1
+  preloadRewardAfterInit: 1
+  preloadInterstitialAfterInit: 1
+  bannerDisplayOnLoad: 1
+  isFailedConfig: 0

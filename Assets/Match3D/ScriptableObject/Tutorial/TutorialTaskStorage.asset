@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736821dc57ca3b04dba6f8b146cbbe85, type: 3}
+  m_Name: TutorialTaskStorage
+  m_EditorClassIdentifier: 
+  tasks:
+  - {fileID: 11400000, guid: db5b48eca66f6834a93450d5450eb0bb, type: 2}
+  - {fileID: 11400000, guid: f8f5de6439c0c18429ddfac6135b27df, type: 2}
+  - {fileID: 11400000, guid: c0d0fd65e1c6f6149bceb4d9b28759fb, type: 2}
+  - {fileID: 11400000, guid: 000555c4cdb68d74aa15da2c75d90451, type: 2}
+  - {fileID: 11400000, guid: 48f0b94898548484a9a68e58b285610f, type: 2}
+  - {fileID: 11400000, guid: 6c387ee50f289aa4ca748e43051d5443, type: 2}
+  - {fileID: 11400000, guid: 6461f4301fd27df428b65f1b7b74f754, type: 2}
+  - {fileID: 11400000, guid: 4963b086a1fcb8a4e84b9288fbbe2339, type: 2}
+  - {fileID: 11400000, guid: 74299637d29cc054d8c14df9fe1f0319, type: 2}
+  - {fileID: 11400000, guid: d2df32d5049920b4fa243b111fd5657f, type: 2}
+  isFailedConfig: 0

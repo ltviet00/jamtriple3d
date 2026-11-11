@@ -1,0 +1,360 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3e928c2a4c7cb4fafb019206843ae7, type: 3}
+  m_Name: CarToon_AtlasConfig
+  m_EditorClassIdentifier: 
+  atlas: {fileID: 2800000, guid: 37f8fbad8ffd1bc4697d9c209a49438a, type: 3}
+  material: {fileID: 2100000, guid: 3cc14c402ffeabb44bd8acd3b6b53d7f, type: 2}
+  uvMaps:
+  - texture: {fileID: 2800000, guid: 3a56ca681cfd28640b4bf9ea11ea7bf3, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 6457bcfa0e27eb74ea0d67a8c91e4ec3, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: af580006892390c41a89948814764c3b, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 026658d6b1839db4b8cc37c3191b325c, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 1653891a41bb27342be0aaf66113b176, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 962fa0ff9f37ddf408eca716c624420f, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: f1ec1368224305247b3e10c9f01fc2df, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 3fd43d6111419cd4b946e538d53be9ad, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 8acf59185787d2941b20ed7d977c0bc4, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 3b3b9b4f12cc23542948a413c6519934, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: b3dffe532d74d134a90d8326eaa28665, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 0f8b44c3442f8314ca8958e5179804c9, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: c41134a7944253a458d567f7c96d4569, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0.76171875
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 6d03e4c29d527aa46aacf2325086cb2c, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 0d3efe0adb7ec9240a5164fec469f309, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 75541c0a71bbcb64a9682d42c7f47d22, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 772d733c38f4c5c42a45bc299c005369, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 923fe127dbd05d24f805a5b3d667ed5c, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 8154ea824625a124d8ac257c733a69cd, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0.12695312
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 0063a078d2185f34682a859f3b749236, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: b6f95bd7a7df6d349867e4ea626856a6, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 91eb1bb54bb6ea44791a67eee65cfc75, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: d616057c8f3d21f40aca9097960615bb, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: fd97fed12d4459e4a89f0b0cce9270b3, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.12695312
+      y: 0.76171875
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 5f68ec7e82422394193afd4abf257555, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: e3fb886fdcdd06441ae711a05b627f49, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 8bb52e0c88528ea4eb8e613d4acfe36a, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: a13caf3374e8f694dab3836e93ce3488, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 9c33ef1f174705f4da7bb5740471f862, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0.25390625
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 25d76ada235aa344da3b24859501acfa, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 29b001cea1b026c4eaf243b1b2d5ed0c, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 7bca127d4c2448d47bfb0754fd6f563e, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 8217da783675ec045b6773f7832b0a9d, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.25390625
+      y: 0.76171875
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: cfc192aad6e29334a8830fc32d896fc2, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 491bea3db7d8cd047b9ac44de31923ef, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 4c72d867b39b7834180819253bae5621, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 243e5f36ec1af974b97189e80548f3be, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0.38085938
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: c9503ce2183711a4e9fcfb090e7d2d4d, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 9e2a7ac551c775e49b0d73a585e48f1e, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 7bf866fd187df5a4da9720deb0775878, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.38085938
+      y: 0.76171875
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: bf73caec58a7c184f98e744785f87987, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: c9b0b887a3ba8e045a0f8546a9eeff7e, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: aca866172720bd5409e30e43a05d7100, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0.5078125
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 317cc72e135e26f4d9c2373929f38a11, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 2ded48ec2ee352341abed3657d68440c, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.5078125
+      y: 0.76171875
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 62fddfcb4aa87494ea457bf455b9bc8f, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 24902f61c3a704945affeab92bc81167, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0.6347656
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: d2edc9796609ad4428110e0d2c244d83, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.6347656
+      y: 0.76171875
+      width: 0.125
+      height: 0.125
+  - texture: {fileID: 2800000, guid: 38d21ab8786ac154fb6dc4eac1614655, type: 3}
+    rect:
+      serializedVersion: 2
+      x: 0.76171875
+      y: 0.76171875
+      width: 0.125
+      height: 0.125

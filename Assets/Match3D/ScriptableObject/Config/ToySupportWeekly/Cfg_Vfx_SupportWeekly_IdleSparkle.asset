@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a2f855d4ac44cbb9acf4110e2c66a9, type: 3}
+  m_Name: Cfg_Vfx_SupportWeekly_IdleSparkle
+  m_EditorClassIdentifier: 
+  developerDescription: Use by ToySpawner, when spawn special toys (Support, Weekly),
+    it spawn sparkle and let vfx follow these toy
+  activeLogOnValueChanged: 0
+  allowNullAssign: 0
+  _value: {fileID: 4809987224409626692, guid: c54377ccf80acbb42820f5a043d4e287, type: 3}
+  _initValue: {fileID: 0}
+  protectedType: 2
+  behaviorOnDisable: 1

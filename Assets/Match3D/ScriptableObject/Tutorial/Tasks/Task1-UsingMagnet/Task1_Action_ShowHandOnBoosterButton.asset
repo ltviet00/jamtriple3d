@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdbddf0ba838054a80250951c605597, type: 3}
+  m_Name: Task1_Action_ShowHandOnBoosterButton
+  m_EditorClassIdentifier: 
+  disposeOnFinish: 0
+  disposePreviousActions: 0
+  path: Canvas/MainInGamePage/Footer/RootBoosterBar/BoosterUIButton_Magnet
+  offset: {x: 30, y: -50}
+  handPrefab: {fileID: 6846127718953437541, guid: a16aa668e1e9f1f4ba8672c937e371ca, type: 3}
+  isFailedConfig: 0

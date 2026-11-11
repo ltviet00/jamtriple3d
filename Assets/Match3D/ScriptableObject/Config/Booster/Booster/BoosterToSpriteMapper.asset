@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10290135fa042154d81bf39d69eb3c57, type: 3}
+  m_Name: BoosterToSpriteMapper
+  m_EditorClassIdentifier: 
+  data:
+  - boosterID: {fileID: 11400000, guid: bd0e9e4d58253f947979f5dd4424a430, type: 2}
+    sprite: {fileID: 21300000, guid: 7e3dc33392f284b4bb624c827e041a37, type: 3}
+  - boosterID: {fileID: 11400000, guid: c09543a03f887374abe35bab042ed2f2, type: 2}
+    sprite: {fileID: 21300000, guid: e5f33a08adb0a874d91c33664df505bd, type: 3}
+  - boosterID: {fileID: 11400000, guid: 21ea06f570fec054ba795fbd47cf1cde, type: 2}
+    sprite: {fileID: 21300000, guid: 7014e04c22ec48d4da4810b0732feb26, type: 3}
+  - boosterID: {fileID: 11400000, guid: f931891ca3dac27429a8e5bc1cae2828, type: 2}
+    sprite: {fileID: 21300000, guid: 0503e625df89d2241bd47948a1a0bd23, type: 3}
+  - boosterID: {fileID: 11400000, guid: 016342dc5fd01f74c8991b9a0e4af57e, type: 2}
+    sprite: {fileID: 21300000, guid: f3aa877f05d72fa45af184a8ebceca91, type: 3}
+  - boosterID: {fileID: 11400000, guid: 44a7b61003e98844b9dab4ef57ebb187, type: 2}
+    sprite: {fileID: 21300000, guid: 2a686a4a1d011684390d6702bcf6bf33, type: 3}
+  - boosterID: {fileID: 11400000, guid: 5072f8d5ac5c7994fa30d67900db1b93, type: 2}
+    sprite: {fileID: 21300000, guid: 56615e1197d22f4458a31168b5abdf0e, type: 3}
+  isFailedConfig: 0

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 701c510b449f69143a9ba4174557abac, type: 3}
+  m_Name: Task3_Action_FinishFanCoolDownDuration
+  m_EditorClassIdentifier: 
+  disposeOnFinish: 1
+  disposePreviousActions: 0
+  targetVar: {fileID: 11400000, guid: 154278c99749df24ba0d89995af8b53a, type: 2}
+  value: 10
+  isFailedConfig: 0

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3a9ddad732d1949b6fc8e1cc4fbd71, type: 3}
+  m_Name: UserStarInventory
+  m_EditorClassIdentifier: 
+  SAVE_NAME_EDTOR: UserStar-EditorNameOnly.data
+  SAVE_NAME: bsftasgjgb67345.data
+  KEY: avsh547thsr
+  userStarVar: {fileID: 11400000, guid: fc15036829859e2409c47d70a77d464f, type: 2}
+  isFailedConfig: 0
+  _data:
+    stars: 0

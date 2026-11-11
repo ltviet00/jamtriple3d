@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47c3e87e9d881d449d43703ee4bd0cd, type: 3}
+  m_Name: WeeklyEventRewardIconMapper
+  m_EditorClassIdentifier: 
+  iconList:
+  - reward: 0
+    icon: {fileID: 21300000, guid: 87af9f4b7de7a2849aed2d0a8c7b4fcc, type: 3}
+  - reward: 200
+    icon: {fileID: 21300000, guid: 56615e1197d22f4458a31168b5abdf0e, type: 3}
+  - reward: 201
+    icon: {fileID: 21300000, guid: 2a686a4a1d011684390d6702bcf6bf33, type: 3}
+  - reward: 202
+    icon: {fileID: 21300000, guid: f3aa877f05d72fa45af184a8ebceca91, type: 3}
+  - reward: 300
+    icon: {fileID: 21300000, guid: b69a4ba05ad916d42a111f550712803f, type: 3}

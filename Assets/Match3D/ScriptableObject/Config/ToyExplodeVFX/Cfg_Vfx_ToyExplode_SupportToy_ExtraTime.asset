@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a2f855d4ac44cbb9acf4110e2c66a9, type: 3}
+  m_Name: Cfg_Vfx_ToyExplode_SupportToy_ExtraTime
+  m_EditorClassIdentifier: 
+  developerDescription: Refs to explode VFX prefab, use for toy when got catched
+    by ToyCatcher
+  activeLogOnValueChanged: 0
+  allowNullAssign: 0
+  _value: {fileID: 966302664854556473, guid: b2fdbf1b5289ce14f84b189f211e354c, type: 3}
+  _initValue: {fileID: 0}
+  protectedType: 2
+  behaviorOnDisable: 1

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4390ed8a13997040ac70bc90e046980, type: 3}
+  m_Name: UserBoosterInventory
+  m_EditorClassIdentifier: 
+  SAVE_NAME_EDTOR: Booster-EditorNameOnly.data
+  SAVE_NAME: hfsgrtfhasdae.data
+  KEY: dfhrtue5635
+  allBoosterID:
+  - {fileID: 11400000, guid: bd0e9e4d58253f947979f5dd4424a430, type: 2}
+  - {fileID: 11400000, guid: c09543a03f887374abe35bab042ed2f2, type: 2}
+  - {fileID: 11400000, guid: 21ea06f570fec054ba795fbd47cf1cde, type: 2}
+  - {fileID: 11400000, guid: f931891ca3dac27429a8e5bc1cae2828, type: 2}
+  - {fileID: 11400000, guid: 016342dc5fd01f74c8991b9a0e4af57e, type: 2}
+  - {fileID: 11400000, guid: 5072f8d5ac5c7994fa30d67900db1b93, type: 2}
+  - {fileID: 11400000, guid: 44a7b61003e98844b9dab4ef57ebb187, type: 2}
+  shareVarList:
+  - boosterID: {fileID: 11400000, guid: bd0e9e4d58253f947979f5dd4424a430, type: 2}
+    variable: {fileID: 11400000, guid: 208e4942ad23af0478eaffc37975ea51, type: 2}
+  - boosterID: {fileID: 11400000, guid: c09543a03f887374abe35bab042ed2f2, type: 2}
+    variable: {fileID: 11400000, guid: 9969ce91056c6e64d97494bc9429e2f4, type: 2}
+  - boosterID: {fileID: 11400000, guid: 21ea06f570fec054ba795fbd47cf1cde, type: 2}
+    variable: {fileID: 11400000, guid: c5769cfe3827b44448f564ea7097a2f4, type: 2}
+  - boosterID: {fileID: 11400000, guid: f931891ca3dac27429a8e5bc1cae2828, type: 2}
+    variable: {fileID: 11400000, guid: f6980b4e838cb644d99babdbf83ceffb, type: 2}
+  - boosterID: {fileID: 11400000, guid: 016342dc5fd01f74c8991b9a0e4af57e, type: 2}
+    variable: {fileID: 11400000, guid: 162312f53d996f840ad881d7537bd994, type: 2}
+  - boosterID: {fileID: 11400000, guid: 5072f8d5ac5c7994fa30d67900db1b93, type: 2}
+    variable: {fileID: 11400000, guid: 9cca14026c7c9214eabcf3aef89e5475, type: 2}
+  - boosterID: {fileID: 11400000, guid: 44a7b61003e98844b9dab4ef57ebb187, type: 2}
+    variable: {fileID: 11400000, guid: 31838965ad18d8a4ead9c00dc8dae22c, type: 2}
+  isFailedConfig: 0

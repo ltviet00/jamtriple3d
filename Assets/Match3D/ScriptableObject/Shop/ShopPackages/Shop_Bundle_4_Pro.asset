@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: befaea53b1ad290409e6d7b2e65052a6, type: 3}
+  m_Name: Shop_Bundle_4_Pro
+  m_EditorClassIdentifier: 
+  productID: {fileID: 11400000, guid: 696366c44f6ce5d4392f90f204b095fe, type: 2}
+  productName: Pro Bundle
+  coinAmount: 4000
+  boosterMagnetAmount: 40
+  boosterUndoAmount: 40
+  boosterFanAmount: 40
+  boosterFreezeAmount: 40
+  boosterExtraTimeAmount: 40
+  boosterLightingStormAmount: 40
+  unlimitEnergyDuration: 12
+  chestSprite: {fileID: 21300000, guid: 918e9e81e85fa5e46b1a0f4e283484de, type: 3}
+  isFailedConfig: 0

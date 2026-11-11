@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cbc5e1d04402649bff253efb5ecc8c, type: 3}
+  m_Name: Task0_PickToy
+  m_EditorClassIdentifier: 
+  id: Task0_PickToy
+  location: {fileID: 11400000, guid: 57b4793e9cbe5014bb7e758a85008d9f, type: 2}
+  priority: 2
+  conditions: []
+  actions:
+  - {fileID: 11400000, guid: 7c88d755d8f92ed4ca5938575f7f7751, type: 2}
+  - {fileID: 11400000, guid: db74aab30f2528a4eae540d6ac3cda3f, type: 2}
+  - {fileID: 11400000, guid: d98b519b35bfb9e46a39a280ef7d77d4, type: 2}
+  - {fileID: 11400000, guid: 6602133cf308b464ebea6b38d4964d08, type: 2}
+  isFailedConfig: 0

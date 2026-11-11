@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5287cb53f1ec3864c97102e04e0448c2, type: 3}
+  m_Name: UnityAdsController
+  m_EditorClassIdentifier: 
+  identicalName: unity
+  gameIdAndroidVar: {fileID: 11400000, guid: c1a618c811d771344aedd28a933b789e, type: 2}
+  gameIdIosVar: {fileID: 11400000, guid: 4a590ba1b4cd72245b2b3034d0b09a02, type: 2}
+  gameIdAmazonVar: {fileID: 11400000, guid: a6a415008d0243043ba725ffc34179e1, type: 2}
+  testModeVar: {fileID: 11400000, guid: 962d9810497f014418b9ba98074e38b9, type: 2}
+  placementAndroid:
+    banner: {fileID: 11400000, guid: 48b193d9d67151346946a1e55a2b1ed0, type: 2}
+    video: {fileID: 11400000, guid: 83e87103c50314e4c8d691971f8d28a9, type: 2}
+    reward: {fileID: 11400000, guid: 5a797b764529f874698b2e1328c1befe, type: 2}
+  placementIOS:
+    banner: {fileID: 11400000, guid: 0087d88c5cb710d49a9cc6442172a99a, type: 2}
+    video: {fileID: 11400000, guid: b8d26442098eb744da6ea03e304ed08c, type: 2}
+    reward: {fileID: 11400000, guid: 6272c00bdeb706d49925703ca1560744, type: 2}
+  placementAmazon:
+    banner: {fileID: 11400000, guid: b784106196bb2cb428887de007d19350, type: 2}
+    video: {fileID: 11400000, guid: 13f990c403ff09c4ab0be48fcaa924ae, type: 2}
+    reward: {fileID: 11400000, guid: 29a3c8870a8264044b6a0efecdce84b3, type: 2}
+  adsReadyStatus:
+    isBannerReady: 0
+    isVideoReady: 0
+    isRewardReady: 0
+  isFailedConfig: 0

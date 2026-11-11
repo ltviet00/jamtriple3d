@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &452347603311696669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3059145829551090167}
+  - component: {fileID: 1847682117872569135}
+  m_Layer: 0
+  m_Name: TrackOtherBoosters (Hint, Freeze)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3059145829551090167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452347603311696669}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2695089014710969286}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1847682117872569135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452347603311696669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a086a7f7327ad847afbfdeb3093d907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  successUseBoosterEvent: {fileID: 11400000, guid: 06b2c821dbdb1bd4f842180b4e739454, type: 2}
+  trackingEventNameVar: {fileID: 11400000, guid: e0bf170930836b745a353f8fd5ab23cf, type: 2}
+  parameterBoosterUseName: {fileID: 11400000, guid: 3b0db24558a69b446967346ec4d851f7, type: 2}
+  userSelectedBoosterIDVar: {fileID: 11400000, guid: 0db04ecefdcd1f9418e17a8e3e706cd4, type: 2}
+  parameterLevelName: {fileID: 11400000, guid: 40a70e2aa4c23904dbb6202472a3cdf8, type: 2}
+  userSelectedLevelVar: {fileID: 11400000, guid: 43e6fd4efde00db40897e09b8c64b4f1, type: 2}
+  logWhenTrack: 0
+  isFailedConfig: 0
+--- !u!1 &2695089014710969337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2695089014710969286}
+  m_Layer: 0
+  m_Name: TrackingInGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2695089014710969286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695089014710969337}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7308056346486006415}
+  - {fileID: 5146191042364080042}
+  - {fileID: 530919379838558356}
+  - {fileID: 3059145829551090167}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3007967614928777507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5146191042364080042}
+  - component: {fileID: 1736392566625051039}
+  m_Layer: 0
+  m_Name: TrackGameLose
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5146191042364080042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3007967614928777507}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2695089014710969286}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1736392566625051039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3007967614928777507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64e38ff5a801ac34c975f20a135e6725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToListen: {fileID: 11400000, guid: 4ea2ddda6ec0bf145a3b0f0b3726672b, type: 2}
+  trackingEventNameVar: {fileID: 11400000, guid: c9a3ff27d5fa5e94eb0daad8e97e5b6a, type: 2}
+  parameterName: {fileID: 11400000, guid: 40a70e2aa4c23904dbb6202472a3cdf8, type: 2}
+  parameterValue: {fileID: 11400000, guid: 43e6fd4efde00db40897e09b8c64b4f1, type: 2}
+  logWhenTrack: 0
+  isFailedConfig: 0
+--- !u!1 &5758249499170957322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7308056346486006415}
+  - component: {fileID: 5609722514324482957}
+  m_Layer: 0
+  m_Name: TrackGameWin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7308056346486006415
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5758249499170957322}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2695089014710969286}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5609722514324482957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5758249499170957322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64e38ff5a801ac34c975f20a135e6725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToListen: {fileID: 11400000, guid: 482e0734c13f7be40a78c9e13ba1d3ca, type: 2}
+  trackingEventNameVar: {fileID: 11400000, guid: d8e87ec18f620694ba10a1fd3c8ed85b, type: 2}
+  parameterName: {fileID: 11400000, guid: 40a70e2aa4c23904dbb6202472a3cdf8, type: 2}
+  parameterValue: {fileID: 11400000, guid: 43e6fd4efde00db40897e09b8c64b4f1, type: 2}
+  logWhenTrack: 0
+  isFailedConfig: 0
+--- !u!1 &9009079192030468738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 530919379838558356}
+  - component: {fileID: 3244303065708912043}
+  m_Layer: 0
+  m_Name: TrackPreboosterMagnetExtraTime
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &530919379838558356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9009079192030468738}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2695089014710969286}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3244303065708912043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9009079192030468738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aad5af6e8bfbef49b6f1a1d64c1eb38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeMagnetBoosterVar: {fileID: 11400000, guid: 28a994002ab064749bb08ea562e717de, type: 2}
+  activeExtraTimeBoosterVar: {fileID: 11400000, guid: d5d3bb455e26ca649a734ff85af866ff, type: 2}
+  userReachLevelVar: {fileID: 11400000, guid: 43e6fd4efde00db40897e09b8c64b4f1, type: 2}
+  magnetID: {fileID: 11400000, guid: f931891ca3dac27429a8e5bc1cae2828, type: 2}
+  extraTimeID: {fileID: 11400000, guid: bd0e9e4d58253f947979f5dd4424a430, type: 2}
+  trackingEventNameVar: {fileID: 11400000, guid: e0bf170930836b745a353f8fd5ab23cf, type: 2}
+  parameterBoosterUseName: {fileID: 11400000, guid: 3b0db24558a69b446967346ec4d851f7, type: 2}
+  parameterLevelName: {fileID: 11400000, guid: 40a70e2aa4c23904dbb6202472a3cdf8, type: 2}
+  logWhenTrack: 0
+  isFailedConfig: 0

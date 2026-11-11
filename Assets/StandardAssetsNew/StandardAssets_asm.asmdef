@@ -1,0 +1,21 @@
+{
+    "name": "StandardAssets_asm",
+    "rootNamespace": "",
+    "references": [
+        "UniRx",
+        "GoogleMobileAds",
+        "UnityEngine.Advertisements",
+        "Unity.TextMeshPro",
+        "UniTask",
+        "Unity.RenderPipelines.Universal.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

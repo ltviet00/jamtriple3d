@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c3a94b9965d384e87d17ec5e21bd7a, type: 3}
+  m_Name: Firebase_SyncKey_EnableAdsGlobally
+  m_EditorClassIdentifier: 
+  keyName: ads_enable_globally
+  developerDes: Work with FirebaseRemoteConfigManager
+  defaultValue: 1
+  shareVar: {fileID: 11400000, guid: bacd37447b7ab1349807ace43a0a8710, type: 2}
+  isFailedConfig: 0

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c91b98a6b820f8d408e760004c6d61c7, type: 3}
+  m_Name: Shop_Coin_5
+  m_EditorClassIdentifier: 
+  productID: {fileID: 11400000, guid: 88fb7cecaf6a0f74dbad30c116b69450, type: 2}
+  displaySprite: {fileID: 21300000, guid: 8d15aa219ee64cc47a18ac46b77f33bf, type: 3}
+  coinAmount: 5000
+  isFailedConfig: 0

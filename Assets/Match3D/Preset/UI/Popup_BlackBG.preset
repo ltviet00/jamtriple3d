@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Popup_BlackBG
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: a66dd15b99830bb42a0f3f66c56df0f9, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showTransitions.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showTransitions.Array.data[0].transitionType
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showTransitions.Array.data[0].begin
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showTransitions.Array.data[0].end
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showTransitions.Array.data[0].duration
+    value: 0.2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showTransitions.Array.data[0].easing
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: hideTranstions.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: hideTranstions.Array.data[0].transitionType
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: hideTranstions.Array.data[0].begin
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: hideTranstions.Array.data[0].end
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: hideTranstions.Array.data[0].duration
+    value: 0.15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: hideTranstions.Array.data[0].easing
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.position.x
+    value: 540
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.position.y
+    value: 1080
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.eulerRotation.x
+    value: -0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.eulerRotation.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.eulerRotation.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.scale.x
+    value: 0.9996
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.scale.y
+    value: 0.9996
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _defaultTrans.scale.z
+    value: 0.9996
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

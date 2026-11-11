@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b03123f17bb8b42bd835608dc15f1e8b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - appKeyAndroidVar: {fileID: 11400000, guid: 5fcfbc6a0539f4fe2b43fd43f22769ee, type: 2}
+  - appKeyIosVar: {fileID: 11400000, guid: 6c54a434845534bbda96a577e5fadb8f, type: 2}
+  - appKeyAmazonVar: {fileID: 11400000, guid: 0649fa0be822746a5b2329e22b0f8992, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

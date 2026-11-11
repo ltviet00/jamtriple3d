@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd464b5ed6bb6c4418e22fede40a38c6, type: 3}
+  m_Name: DailyRewardStorage
+  m_EditorClassIdentifier: 
+  rewardList:
+  - {fileID: 11400000, guid: 2727832301712cd43a1cfcabec703758, type: 2}
+  - {fileID: 11400000, guid: 2d8ef37bfb18b91458a78c490746b3e1, type: 2}
+  - {fileID: 11400000, guid: 81865946b532b924ea5a594411e54420, type: 2}
+  - {fileID: 11400000, guid: 1152f96151097b64ab94a96f2c722f61, type: 2}
+  - {fileID: 11400000, guid: 3097540e05cf8e546977030a13d88444, type: 2}
+  - {fileID: 11400000, guid: 6374bd526e5029149a73305160b85de3, type: 2}
+  - {fileID: 11400000, guid: c6023433f593f6d43a38254784483707, type: 2}

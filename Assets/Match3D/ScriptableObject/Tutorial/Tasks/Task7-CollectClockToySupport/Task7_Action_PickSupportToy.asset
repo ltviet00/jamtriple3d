@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6351e634f6978f4e8a5e29e20b908cb, type: 3}
+  m_Name: Task7_Action_PickSupportToy
+  m_EditorClassIdentifier: 
+  disposeOnFinish: 0
+  disposePreviousActions: 0
+  toyStats: {fileID: 11400000, guid: aa02cd41d6d9b8c4a8d044b4fd62083f, type: 2}
+  userPickToyVar: {fileID: 11400000, guid: e9d89576946fec04a904f59ede337d6d, type: 2}
+  specialToyType: 1
+  instructionHandPrefab: {fileID: 2079414081731130550, guid: f0a0950f4dce78c479d9373a8fdfd033, type: 3}
+  offsetHandToTarget: 3
+  isFailedConfig: 0
