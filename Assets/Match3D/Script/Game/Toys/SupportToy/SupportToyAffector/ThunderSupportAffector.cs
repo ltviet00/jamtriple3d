@@ -47,6 +47,9 @@ public class ThunderSupportAffector : SupportToyAffectorController.BaseSupportTo
 	public override void TriggerAffect() {
 		if(isFailedConfig)
 			return;
+		// box sort mode has no decoy toy: the bolt strikes one set of 3 toys and they fly into an open box
+		if(TryStrikeOneBoxSet())
+			return;
 		// destroy toy queue
 		_remainToProcess += destroyToyPerItemVar.Value;
 		// if we're running, then do nothing, if not, then start new one
@@ -70,11 +73,28 @@ public class ThunderSupportAffector : SupportToyAffectorController.BaseSupportTo
 			_remainToProcess--;
 			// destroy toys, take random, also remove it out of stats
 			var toy = toyStats.GetRandomDecoyToy();
+			// no decoy left, nothing to destroy
+			if(toy == null)
+				break;
 			toyStats.RemoveToy(toy);
 			// delay a bit for effect
 			await UniTask.Delay(TimeSpan.FromSeconds(delayBetweenThunder), cancellationToken: _disableToken.Token);
 			SpawnThunderAndDestroyToy(toy).Forget();
 		}
+	}
+
+	///<summary> Box sort mode: strike the toys that fill the first open box. False if not box sort mode, or no box to fill </summary>
+	bool TryStrikeOneBoxSet() {
+		var boxGroup = SimpleDI.Instance.Get<ToyBoxGroup>();
+		if(boxGroup == null || !boxGroup.IsInBoxSortMode)
+			return false;
+		return boxGroup.TryThunderFillOpenBox(SpawnThunderVfx, delayBetweenThunderAndDestroy + delayBetweenThunder);
+	}
+
+	void SpawnThunderVfx(ToyView toy) {
+		var thunderVfx = ObjectPool.SpawnObject(thunderStrikeVfxPrefab);
+		thunderVfx.transform.position = toy.transform.position;
+		thunderAudioCmd.Execute();
 	}
 
 	async UniTask SpawnThunderAndDestroyToy(ToyView toy) {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposeOnFinish: 0
   disposePreviousActions: 0
-  message: Collect Lighting Bolt to destroy 3 unneeded items
+  message: Collect Lightning Bolt to fill a box with 3 items
   popupPrefab: {fileID: 3419961905459486060, guid: 9bfa5ec06701edc428535a019056a578, type: 3}
   popupAnchorPosition: {x: 0, y: 270}
   activeBlackCoverScreen: 0

@@ -33,5 +33,5 @@ MonoBehaviour:
     decscription: Shuffle the board
   - boosterID: {fileID: 11400000, guid: 44a7b61003e98844b9dab4ef57ebb187, type: 2}
     displayName: Super Lighting
-    decscription: ZAP!! Destroy 12 unneeded items
+    decscription: ZAP!! Fill 4 boxes at the start
   isFailedConfig: 0

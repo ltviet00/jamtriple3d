@@ -8,9 +8,12 @@ using UnityEngine.SceneManagement;
 ///   adb shell "echo 499 > /sdcard/Android/data/[package]/files/debug_level.txt"
 /// The number is the level index (0-based, level 500 = 499). The file is deleted after use.
 /// Also refills lives (energy) so many levels can be tested in a row.
+/// Optional: mark tutorial tasks as done (one task id per line) to test a later tutorial directly:
+///   adb shell "echo Task1_UsingMagnet > /sdcard/Android/data/[package]/files/debug_tutorial_done.txt"
 /// </summary>
 public static class DebugLevelJump {
 	const string FILE_NAME = "debug_level.txt";
+	const string TUTORIAL_FILE_NAME = "debug_tutorial_done.txt";
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 	static void Register() {
@@ -24,6 +27,7 @@ public static class DebugLevelJump {
 	}
 
 	static void TryJump() {
+		TryMarkTutorialsDone();
 		var path = Path.Combine(Application.persistentDataPath, FILE_NAME);
 		if(!File.Exists(path))
 			return;
@@ -42,6 +46,25 @@ public static class DebugLevelJump {
 				energy.IncreaseOneEnergyAndSaveCurrentTime();
 		}
 		Debug.Log($"[DebugLevelJump] reachedLevel = {levelIndex}");
+	}
+
+	static void TryMarkTutorialsDone() {
+		var path = Path.Combine(Application.persistentDataPath, TUTORIAL_FILE_NAME);
+		if(!File.Exists(path))
+			return;
+		var tutorials = Resources.FindObjectsOfTypeAll<UserTutorialData>();
+		if(tutorials.Length == 0)
+			return;
+		var ids = File.ReadAllLines(path);
+		File.Delete(path);
+		foreach(var tutorial in tutorials) {
+			foreach(var line in ids) {
+				var id = line.Trim();
+				if(id.Length > 0 && !tutorial.IsTaskDone(id))
+					tutorial.AddToDoneTask(id);
+			}
+		}
+		Debug.Log($"[DebugLevelJump] tutorial done: {string.Join(", ", ids)}");
 	}
 }
 #endif

@@ -107,6 +107,19 @@ public class ToyBoxGroup : MonoBehaviour {
 
 	///<summary> Box sort mode: magnet booster. Fill the first open box by toys from slots first, then from the field. Return false if nothing to do </summary>
 	public bool TryMagnetFillOpenBox() {
+		return TryFillOpenBox(null, 0f);
+	}
+
+	///<summary> Box sort mode: lightning bolt (support toy / pre-game storm). Same as magnet, but the toys taken from the field
+	/// got struck first (strikeFieldToy: vfx, audio), then fly into the box after strikeDelay. Return false if nothing to do </summary>
+	public bool TryThunderFillOpenBox(Action<ToyView> strikeFieldToy, float strikeDelay) {
+		return TryFillOpenBox(strikeFieldToy, strikeDelay);
+	}
+
+	///<summary> Box sort mode is on (boxes of 3 + waiting slots) </summary>
+	public bool IsInBoxSortMode => !isFailedConfig && IsBoxSortMode;
+
+	bool TryFillOpenBox(Action<ToyView> strikeFieldToy, float strikeDelay) {
 		if(isFailedConfig || !IsBoxSortMode)
 			return false;
 		var box = TargetBar.GetFirstOpenBoxHasFreeSlot();
@@ -135,12 +148,33 @@ public class ToyBoxGroup : MonoBehaviour {
 			}
 			for(int n = 0; n < take.Count; n++) {
 				box.ReserveToy();
-				FlyToyIntoBox(take[n], box, true).Forget();
+				if(strikeFieldToy != null)
+					StrikeThenFlyToyIntoBox(take[n], box, strikeFieldToy, strikeDelay * (n + 1)).Forget();
+				else
+					FlyToyIntoBox(take[n], box, true).Forget();
 				moved = true;
 			}
 		}
 		return moved;
 	}
+	async UniTask StrikeThenFlyToyIntoBox(ToyView toy, TargetItemUI box, Action<ToyView> strike, float delay) {
+		// freeze it now: the user must not pick it, other toys must not push it while it got struck
+		toy.SetActivePhysics(false);
+		toyStats.RemoveToy(toy);
+		_flyingToBoxCount++;
+		try {
+			strike(toy);
+			await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: _cancelToken.Token);
+		}
+		catch(OperationCanceledException) {
+			_flyingToBoxCount = Mathf.Max(0, _flyingToBoxCount - 1);
+			return;
+		}
+		_flyingToBoxCount = Mathf.Max(0, _flyingToBoxCount - 1);
+		// already removed from stats above
+		await FlyToyIntoBox(toy, box, false, true);
+	}
+
 	///<summary> Raise when insert a toy to group (and not make any triple). currently use for lowSpaceNotification </summary>
 	public event Action OnInsertToyToBoxHandler;
 
@@ -478,7 +512,7 @@ public class ToyBoxGroup : MonoBehaviour {
 	}
 
 	///<summary> Fly the toy into the box UI, destroy it, update box. Raise successMatch when a box got completed </summary>
-	async UniTask FlyToyIntoBox(ToyView toy, TargetItemUI box, bool isFromField) {
+	async UniTask FlyToyIntoBox(ToyView toy, TargetItemUI box, bool isFromField, bool alreadyRemovedFromField = false) {
 		if(toy == null || box == null)
 			return;
 		_flyingToBoxCount++;
@@ -496,7 +530,7 @@ public class ToyBoxGroup : MonoBehaviour {
 			// keep the toy big while flying (reference video), shrink a bit only when going inside the crate
 			var fieldScale = toy.transform.localScale;
 			// toy waiting in a slot was scaled down, get back its field scale
-			if(!isFromField && animConfig.scaleForToyInsideBoxVar.Value > 0f)
+			if(!isFromField && !alreadyRemovedFromField && animConfig.scaleForToyInsideBoxVar.Value > 0f)
 				fieldScale /= animConfig.scaleForToyInsideBoxVar.Value;
 			var targetScale = fieldScale * FLY_SCALE;
 			var frontDepth = GetDepthInFrontOfUI(box);

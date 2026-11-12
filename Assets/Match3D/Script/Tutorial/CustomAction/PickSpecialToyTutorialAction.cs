@@ -17,11 +17,13 @@ public class PickSpecialToyTutorialAction : TutorialActionBase {
 	[SerializeField] SpecialToy specialToyType;
 	[SerializeField] GameObject instructionHandPrefab;
 	[SerializeField] float offsetHandToTarget = 3f;
+	[Tooltip("Support only: which support toy to point at (bolt, clock). Empty = any support toy")]
+	[SerializeField] SupportToyID supportToyId;
 
 	[Header("Validation")]
 	[SerializeField] bool isFailedConfig;
 	void OnValidate() {
-		isFailedConfig = this.CheckNullAllSerializedFields();
+		isFailedConfig = this.CheckNullAllSerializedFields(new[] { nameof(supportToyId) });
 	}
 	#endregion// Init config
 
@@ -49,12 +51,12 @@ public class PickSpecialToyTutorialAction : TutorialActionBase {
 	#region Private
 	async UniTask<bool> PickToyInstructionAsync() {
 		// level has no special toy (support / weekly): nothing to teach, skip (and no hand left on screen)
-		var hasToy = specialToyType == SpecialToy.Support ? toyStats.HasSupportToy
+		var hasToy = specialToyType == SpecialToy.Support ? PickSupportToy() != null
 			: specialToyType == SpecialToy.WeeklyEvent && toyStats.HasWeeklyEventToy;
 		if(!hasToy)
 			return true;
 		await TutorialToyHelper.WaitForToysToSettle(toyStats);
-		// pick special toy follow setting
+		// pick special toy follow setting (after settling, the pile has moved)
 		var toyForTut = PickSpecialToy();
 		if(toyForTut == null)
 			return true;
@@ -63,6 +65,8 @@ public class PickSpecialToyTutorialAction : TutorialActionBase {
 		// freeze everything and disable touch, only the selected toy can be touched
 		toyStats.SetActivePhysicsForAllToy(false);
 		TutorialToyHelper.MakeTouchableButFrozen(toyForTut);
+		// the special toy may be buried in the pile: put it on top so the user can see it
+		TutorialToyHelper.BringToTopOfPile(toyForTut, toyStats);
 
 		// hand follows the toy until the user touches it
 		var awaiter = new ClassVariableValueChangeAwaiter<ToyView>();
@@ -84,11 +88,29 @@ public class PickSpecialToyTutorialAction : TutorialActionBase {
 			case SpecialToy.WeeklyEvent:
 				return toyStats.GetRandomWeeklyEventToy();
 			case SpecialToy.Support:
-				return toyStats.GetRandomSupportToy();
+				return PickSupportToy();
 			default:
 				Log.Warning(false, this, $"Not handle for [{specialToyType}]");
 				return null;
 		}
+	}
+
+	///<summary> A support toy of the wanted kind (supportToyId), or any support toy when not set. Null if none </summary>
+	ToyView PickSupportToy() {
+		if(!toyStats.HasSupportToy)
+			return null;
+		if(supportToyId == null)
+			return toyStats.GetRandomSupportToy();
+		foreach(var item in toyStats.SupportMap) {
+			foreach(var toy in item.Value) {
+				if(toy == null)
+					continue;
+				var marker = toy.GetComponent<SupportToyMarker>();
+				if(marker != null && marker.supportToyID == supportToyId)
+					return toy;
+			}
+		}
+		return null;
 	}
 	#endregion//Private
 

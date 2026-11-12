@@ -17,6 +17,7 @@ MonoBehaviour:
   priority: 1
   conditions:
   - {fileID: 11400000, guid: 6267c28669f9f6644a515aca3fa1c4b6, type: 2}
+  - {fileID: 11400000, guid: 778bb1167fba458b86b4be501c6761df, type: 2}
   actions:
   - {fileID: 11400000, guid: 9c56e08f1ceb9c840bca5358ec4f02be, type: 2}
   - {fileID: 11400000, guid: 13684756cf464aa47b61dee9388d1b38, type: 2}

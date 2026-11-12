@@ -145,9 +145,10 @@ def main():
     for index, row in enumerate(rows):
         path = os.path.join(GENERATED_DIR, f"Level_{index}.asset")
         support = supports.get(index, [])
-        row["support"] = " ".join(f"{'bolt' if s['guid'].startswith('f6e2') else 'clock'}x{s['amount']}" for s in support)
+        row["support"] = " ".join(f"{'bolt' if s['guid'].startswith('2e7f') else 'clock'}x{s['amount']}" for s in support)
         write_level_asset(path, f"Level_{index}", row, support)
-    old_count = update_storage(LEVEL_COUNT)
+    old_count = update_storage(LEVEL_COUNT) c  
+    
     with open(CSV_PATH, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()

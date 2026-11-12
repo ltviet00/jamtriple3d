@@ -69,6 +69,13 @@ public class PreGameLightingStormBoosterAffector : MonoBehaviour {
 		await UniTask.Delay(TimeSpan.FromSeconds(zoomDuration));
 		Destroy(thunderIconVfx);
 
+		// box sort mode has no decoy toy: strike sets of 3 toys, they fly into the open boxes
+		var boxGroup = SimpleDI.Instance.Get<ToyBoxGroup>();
+		if(boxGroup != null && boxGroup.IsInBoxSortMode) {
+			await StrikeBoxSetsAsync(boxGroup, Mathf.Max(1, Mathf.CeilToInt(destroyToyAmountVar.Value / 3f)));
+			return;
+		}
+
 		// destroy toys
 		var toDestroyList = toyStats.GetRandomListOfDecoyToy(destroyToyAmountVar.Value);
 		// disable physics for all target toys first
@@ -88,6 +95,28 @@ public class PreGameLightingStormBoosterAffector : MonoBehaviour {
 
 
 	#region Private
+	const float WAIT_NEXT_BOX_SECONDS = 3f;
+
+	///<summary> Fill [setCount] boxes, one by one. Only a few boxes are open at a time, wait for the next box to open when needed </summary>
+	async UniTask StrikeBoxSetsAsync(ToyBoxGroup boxGroup, int setCount) {
+		var strikeDelay = delayBetweenThunderAndDestroy + delayBetweenThunder;
+		for(int n = 0; n < setCount; n++) {
+			var waitUntil = Time.time + WAIT_NEXT_BOX_SECONDS;
+			while(!boxGroup.TryThunderFillOpenBox(SpawnThunderVfx, strikeDelay)) {
+				if(Time.time > waitUntil)
+					return;
+				await UniTask.Delay(TimeSpan.FromSeconds(0.2f), cancellationToken: _disableToken.Token);
+			}
+			await UniTask.Delay(TimeSpan.FromSeconds(strikeDelay * 3f), cancellationToken: _disableToken.Token);
+		}
+	}
+
+	void SpawnThunderVfx(ToyView toy) {
+		var thunderVfx = ObjectPool.SpawnObject(thunderStrikeVfxPrefab);
+		thunderVfx.transform.position = toy.transform.position;
+		thunderAudioCmd.Execute();
+	}
+
 	async UniTask SpawnThunderAndDestroyToy(ToyView toy) {
 		// thunder strike at toy, then delay a bit
 		var posForVfx = toy.transform.position;

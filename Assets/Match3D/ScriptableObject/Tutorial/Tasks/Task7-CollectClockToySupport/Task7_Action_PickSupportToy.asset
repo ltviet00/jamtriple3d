@@ -19,4 +19,5 @@ MonoBehaviour:
   specialToyType: 1
   instructionHandPrefab: {fileID: 2079414081731130550, guid: f0a0950f4dce78c479d9373a8fdfd033, type: 3}
   offsetHandToTarget: 3
+  supportToyId: {fileID: 11400000, guid: f6e25d2ecc1fb3445bd3d2d0e67cf5a8, type: 2}
   isFailedConfig: 0
