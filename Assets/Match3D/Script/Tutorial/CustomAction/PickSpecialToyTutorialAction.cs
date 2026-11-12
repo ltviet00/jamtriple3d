@@ -48,21 +48,30 @@ public class PickSpecialToyTutorialAction : TutorialActionBase {
 
 	#region Private
 	async UniTask<bool> PickToyInstructionAsync() {
+		// level has no special toy (support / weekly): nothing to teach, skip (and no hand left on screen)
+		var hasToy = specialToyType == SpecialToy.Support ? toyStats.HasSupportToy
+			: specialToyType == SpecialToy.WeeklyEvent && toyStats.HasWeeklyEventToy;
+		if(!hasToy)
+			return true;
+		await TutorialToyHelper.WaitForToysToSettle(toyStats);
+		// pick special toy follow setting
+		var toyForTut = PickSpecialToy();
+		if(toyForTut == null)
+			return true;
 		// spawn the Hand object
 		_handInstance = Instantiate(instructionHandPrefab);
-		// pick special toy follow setting
-		var toysForTut = PickSpecialToy();
-		// disable physics for others, keep physics for the one we want user to touch on
+		// freeze everything and disable touch, only the selected toy can be touched
 		toyStats.SetActivePhysicsForAllToy(false);
+		TutorialToyHelper.MakeTouchableButFrozen(toyForTut);
 
+		// hand follows the toy until the user touches it
 		var awaiter = new ClassVariableValueChangeAwaiter<ToyView>();
-		toysForTut.SetActivePhysics(true);
-		// show the hand at select toy, 
-		var posForHand = toysForTut.transform.position;
-		posForHand.z -= offsetHandToTarget;
-		_handInstance.transform.position = posForHand;
-		// wait for user to touch on it
-		await awaiter.Start(userPickToyVar);
+		var waitTouch = awaiter.Start(userPickToyVar);
+		while(!waitTouch.Status.IsCompleted()) {
+			if(_handInstance != null && toyForTut != null)
+				_handInstance.transform.position = TutorialToyHelper.HandPositionFor(toyForTut, offsetHandToTarget);
+			await UniTask.Yield();
+		}
 
 		// finish all toy, delete hand, release physics for all toys
 		Destroy(_handInstance);

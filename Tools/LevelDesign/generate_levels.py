@@ -21,6 +21,7 @@ Curve design:
 - Small deterministic jitter so neighbour levels never feel identical
 """
 import csv
+import json
 import math
 import os
 import random
@@ -32,6 +33,9 @@ DATA_DIR = "Assets/Match3D/ScriptableObject/ToyAndLevel/LevelData"
 GENERATED_DIR = os.path.join(DATA_DIR, "Generated")
 STORAGE_PATH = os.path.join(DATA_DIR, "LevelStorage.asset")
 CSV_PATH = "Tools/LevelDesign/levels_1000.csv"
+# support toys (lightning bolt, extra time clock) of the original level set, by level index.
+# Kept as is: booster tutorials and support toy pacing were designed on these levels
+SUPPORT_PATH = "Tools/LevelDesign/support_toys_original.json"
 
 # limits
 MIN_CRATES, MAX_CRATES = 4, 52      # max 156 toys on field, keeps physics/perf ok on low devices
@@ -96,7 +100,17 @@ def design_level(level, rng):
     }
 
 
-def write_level_asset(path, name, row):
+def support_block(support):
+    if not support:
+        return "  supportToyList: []\n"
+    lines = ["  supportToyList:\n"]
+    for item in support:
+        lines.append(f"  - id: {{fileID: 11400000, guid: {item['guid']}, type: 2}}\n")
+        lines.append(f"    amount: {item['amount']}\n")
+    return "".join(lines)
+
+
+def write_level_asset(path, name, row, support):
     text = open(path).read()
     head = text.split("  totalInfo:")[0]
     head = re.sub(r"m_Name: .*", f"m_Name: {name}", head)
@@ -107,7 +121,7 @@ def write_level_asset(path, name, row):
         "  targetInfo:\n"
         f"    totalTriad: {row['crates']}\n"
         f"    typeUsed: {row['types']}\n"
-        "  supportToyList: []\n"
+        + support_block(support) +
         f"  levelDuration: {row['duration']}\n"
     )
     open(path, "w").write(head + body)
@@ -127,9 +141,12 @@ def update_storage(level_count):
 def main():
     rng = random.Random(20261111)
     rows = [design_level(level, rng) for level in range(1, LEVEL_COUNT + 1)]
+    supports = {int(k): v for k, v in json.load(open(SUPPORT_PATH)).items()}
     for index, row in enumerate(rows):
         path = os.path.join(GENERATED_DIR, f"Level_{index}.asset")
-        write_level_asset(path, f"Level_{index}", row)
+        support = supports.get(index, [])
+        row["support"] = " ".join(f"{'bolt' if s['guid'].startswith('f6e2') else 'clock'}x{s['amount']}" for s in support)
+        write_level_asset(path, f"Level_{index}", row, support)
     old_count = update_storage(LEVEL_COUNT)
     with open(CSV_PATH, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))

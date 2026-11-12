@@ -50,6 +50,8 @@ public class LevelDataStorage : ScriptableObject {
 
 
 	#region Public
+	public int LevelCount => allLevelData != null ? allLevelData.Count : 0;
+
 	public LevelData GetLevelData(int index) {
 		if(isFailedConfig)
 			return null;

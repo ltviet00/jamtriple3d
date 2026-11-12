@@ -48,24 +48,33 @@ public class PickThreeTargeToyTutorialAction : TutorialActionBase {
 
 	#region Private
 	async UniTask<bool> PickToyInstructionAsync() {
+		// toys start as a pile that collapses, wait until it is still, otherwise the hand points to a moving toy
+		await TutorialToyHelper.WaitForToysToSettle(toyStats);
+		// pick 3 target toys that are really visible (on top of the pile)
+		var toysForTut = toyStats.GetVisibleTopTargetToys(3, Camera.main);
+		if(toysForTut.Count == 0)
+			toysForTut = toyStats.GetRandomListOfTargetToy(3);
+		if(toysForTut.Count == 0)
+			return true;
 		// spawn the Hand object
 		_handInstance = Instantiate(instructionHandPrefab);
-		// pick random 3 target toys for tutorial/
-		var toysForTut = toyStats.GetRandomListOfTargetToy(3);
-		// disable physics for others, keep physics for the one we want user to touch on
+		// freeze everything and disable touch, only the selected toy can be touched
 		toyStats.SetActivePhysicsForAllToy(false);
 
 		var awaiter = new ClassVariableValueChangeAwaiter<ToyView>();
 		for(int n = 0; n < toysForTut.Count; n++) {
-			// keep physics for the select toy only
 			var toy = toysForTut[n];
-			toy.SetActivePhysics(true);
-			// show the hand at select toy, 
-			var posForHand = toy.transform.position;
-			posForHand.z -= offsetHandToTarget;
-			_handInstance.transform.position = posForHand;
-			// wait for user to touch on it
-			await awaiter.Start(userPickToyVar);
+			if(toy == null)
+				continue;
+			// collider on (touchable) but still frozen: the toy under it has no collider now, it would fall through
+			TutorialToyHelper.MakeTouchableButFrozen(toy);
+			// hand follows the toy until the user touches it
+			var waitTouch = awaiter.Start(userPickToyVar);
+			while(!waitTouch.Status.IsCompleted()) {
+				if(_handInstance != null && toy != null)
+					_handInstance.transform.position = TutorialToyHelper.HandPositionFor(toy, offsetHandToTarget);
+				await UniTask.Yield();
+			}
 		}
 		// finish all toy, delete hand, release physics for all toys
 		Destroy(_handInstance);

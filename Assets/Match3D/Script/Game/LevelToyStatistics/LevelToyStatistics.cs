@@ -280,6 +280,79 @@ public class LevelToyStatistics : ScriptableObject {
 		return randomToyList.PickRandom();
 	}
 
+	public bool HasWeeklyEventToy => HasAnyToy(_eventMap);
+	public bool HasSupportToy => HasAnyToy(_supportMap);
+
+	static bool HasAnyToy(Dictionary<GameObject, List<ToyView>> map) {
+		if(map == null)
+			return false;
+		foreach(var list in map.Values) {
+			if(list != null && list.Count > 0)
+				return true;
+		}
+		return false;
+	}
+
+	///<summary> Fastest speed of all toys still on the field (used to wait for the start pile to settle) </summary>
+	public float GetMaxToySpeed() {
+		var max = 0f;
+		max = Mathf.Max(max, GetMaxSpeedInMap(_targetMap));
+		max = Mathf.Max(max, GetMaxSpeedInMap(_decoyMap));
+		max = Mathf.Max(max, GetMaxSpeedInMap(_supportMap));
+		max = Mathf.Max(max, GetMaxSpeedInMap(_eventMap));
+		return max;
+	}
+
+	static float GetMaxSpeedInMap(Dictionary<GameObject, List<ToyView>> map) {
+		var max = 0f;
+		if(map == null)
+			return max;
+		foreach(var list in map.Values) {
+			foreach(var toy in list) {
+				if(toy == null || toy.mainRigid == null || toy.mainRigid.isKinematic)
+					continue;
+				max = Mathf.Max(max, toy.mainRigid.velocity.magnitude);
+			}
+		}
+		return max;
+	}
+
+	///<summary> Target toys the user can really see (nothing on top of them), top of the pile first.
+	/// Pickable toys (match an open box) come first </summary>
+	public List<ToyView> GetVisibleTopTargetToys(int amount, Camera camera) {
+		var candidates = new List<ToyView>();
+		foreach(var list in _targetMap.Values) {
+			foreach(var toy in list) {
+				if(toy != null && toy.mainCollider != null && IsVisibleFromCamera(toy, camera))
+					candidates.Add(toy);
+			}
+		}
+		// pickable first, then closest to the camera (gravity is +z, smaller z = on top)
+		candidates.Sort((a, b) => {
+			var pickA = IsPickable(a) ? 0 : 1;
+			var pickB = IsPickable(b) ? 0 : 1;
+			if(pickA != pickB)
+				return pickA.CompareTo(pickB);
+			return a.transform.position.z.CompareTo(b.transform.position.z);
+		});
+		if(candidates.Count > amount)
+			candidates.RemoveRange(amount, candidates.Count - amount);
+		return candidates;
+	}
+
+	static bool IsVisibleFromCamera(ToyView toy, Camera camera) {
+		if(camera == null)
+			return true;
+		var center = toy.mainCollider.bounds.center;
+		var screenPos = camera.WorldToScreenPoint(center);
+		if(screenPos.x < 0f || screenPos.y < 0f || screenPos.x > Screen.width || screenPos.y > Screen.height)
+			return false;
+		var ray = camera.ScreenPointToRay(screenPos);
+		if(!Physics.Raycast(ray, out var hit, 1000f, ~0, QueryTriggerInteraction.Ignore))
+			return false;
+		return hit.collider == toy.mainCollider || hit.collider.GetComponentInParent<ToyView>() == toy;
+	}
+
 	public ToyView GetRandomWeeklyEventToy() {
 		var randomToyList = MathUtils.PickRandomMapValue(_eventMap);
 		return randomToyList.PickRandom();

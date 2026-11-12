@@ -18,5 +18,7 @@ MonoBehaviour:
   targetInfo:
     totalTriad: 30
     typeUsed: 8
-  supportToyList: []
+  supportToyList:
+  - id: {fileID: 11400000, guid: 2e7fa30ca4e00fd478ded4da9841b95f, type: 2}
+    amount: 1
   levelDuration: 360
