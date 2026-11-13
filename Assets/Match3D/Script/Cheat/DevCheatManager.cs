@@ -1,4 +1,4 @@
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR || CHEAT
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// Dev cheat menu, only compiled in Development builds and the Editor (gone in Release).
+/// Dev cheat menu, only compiled in Development builds, the Editor, or with the CHEAT scripting define (gone in Release).
 /// A small "CHEAT" button stays on screen, tap it to open the panel:
 /// - Level: -10, -1, +1, +10, jump to any level (1-based)
 /// - In game: Win, Lose
