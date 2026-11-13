@@ -72,6 +72,16 @@ public static class TutorialToyHelper {
 	public static Vector3 HandPositionFor(ToyView toy, float offsetToCamera) {
 		var pos = toy.mainCollider != null ? toy.mainCollider.bounds.center : toy.transform.position;
 		pos.z -= offsetToCamera;
+		// toys piled up higher than the offset (camera looks along +z) covered the hand: keep it above the highest toy
+		var highest = float.MaxValue;
+		foreach(var other in Object.FindObjectsOfType<ToyView>()) {
+			if(other.mainCollider != null && other.mainCollider.enabled)
+				highest = Mathf.Min(highest, other.mainCollider.bounds.min.z);
+		}
+		if(highest < float.MaxValue)
+			pos.z = Mathf.Min(pos.z, highest - HAND_MARGIN_ABOVE_PILE);
 		return pos;
 	}
+
+	const float HAND_MARGIN_ABOVE_PILE = 1f;
 }
