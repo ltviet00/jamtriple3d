@@ -67,9 +67,10 @@ public class ToySpawner : MonoBehaviour {
 		var (leftTopPos, areaSize) = CalculateSpawnArea();
 		// level data
 		var levelData = levelStorage.GetLevelData(userCurrentLevelVar.Value);
-		var toyGroup = toyStorage.SelectToyPrefabGroupForLevel(levelData);
+		// toy kinds mixed from several groups (more variety than one group per level)
+		var toyKinds = toyStorage.SelectToyPrefabsForLevel(levelData);
 		// decoy and target
-		var (decoySpawnInfo, targetSpawnInfo) = PrepareSpawnDataForDecoyAndTarget(levelData, toyGroup);
+		var (decoySpawnInfo, targetSpawnInfo) = PrepareSpawnDataForDecoyAndTarget(levelData, toyKinds);
 		// box sort mode (reference video): every toy on the field belongs to a box, no decoy
 		var targetBar = FindObjectOfType<TargetUIBar>();
 		if(targetBar != null && targetBar.IsBoxSortMode) {
@@ -135,11 +136,9 @@ public class ToySpawner : MonoBehaviour {
 		return (leftTopPos, areaSize);
 	}
 
-	(List<(ToyView, int)>, List<(ToyView, int)>) PrepareSpawnDataForDecoyAndTarget(LevelData levelData, ToyPrefabGroup toyGroup) {
-		// clone the toyList of levelData
-		var toyListclone = toyGroup.toyList.Clone();
+	(List<(ToyView, int)>, List<(ToyView, int)>) PrepareSpawnDataForDecoyAndTarget(LevelData levelData, List<ToyView> toyKinds) {
 		// take out enough prefab for level
-		var decoyToyPrefabs = MathUtils.TakeOutSubListWithRandomElement(toyListclone, levelData.totalInfo.typeUsed);
+		var decoyToyPrefabs = MathUtils.TakeOutSubListWithRandomElement(new List<ToyView>(toyKinds), Mathf.Min(levelData.totalInfo.typeUsed, toyKinds.Count));
 		// take out from it to use for target
 		var targetToyPrefabs = MathUtils.TakeOutSubListWithRandomElement(decoyToyPrefabs, levelData.targetInfo.typeUsed);
 
@@ -226,7 +225,7 @@ public class ToySpawner : MonoBehaviour {
 	#region Toy size
 	[Header("Toy size (level start)")]
 	[Tooltip("Visual size (world units, sqrt of the biggest face area) every toy kind is scaled to")]
-	[SerializeField] float toyTargetSize = 1f;
+	[SerializeField] float toyTargetSize = 1.56f;
 	[Tooltip("0 = all kinds exactly the same size, 1 = keep the original size differences")]
 	[Range(0f, 1f)]
 	[SerializeField] float toyKeepSizeDifference = 0f;
@@ -240,33 +239,49 @@ public class ToySpawner : MonoBehaviour {
 		toys.RemoveAll(toy => toy == null);
 		// measure one toy per kind
 		var sizeByKind = new Dictionary<GameObject, Vector3>();
+		var faceByKind = new Dictionary<GameObject, float>();
 		foreach(var toy in toys) {
 			var kind = toy.rootPrefab != null ? toy.rootPrefab : toy.gameObject;
 			if(sizeByKind.ContainsKey(kind))
 				continue;
 			var size = MeasureSortedSize(toy);
-			if(size.x > 0.01f)
+			if(size.x > 0.01f) {
 				sizeByKind.Add(kind, size);
+				faceByKind.Add(kind, VisualFaceSize(toy, kind, size));
+			}
 		}
 		if(sizeByKind.Count == 0)
 			return;
 		// median size of the kinds in this level
 		var sizes = new List<float>();
-		foreach(var size in sizeByKind.Values)
-			sizes.Add(FaceSize(size));
+		foreach(var face in faceByKind.Values)
+			sizes.Add(face);
 		sizes.Sort();
 		var median = sizes[sizes.Count / 2];
 		foreach(var toy in toys) {
 			var kind = toy.rootPrefab != null ? toy.rootPrefab : toy.gameObject;
 			if(!sizeByKind.TryGetValue(kind, out var size))
 				continue;
-			var faceSize = FaceSize(size);
+			var faceSize = faceByKind[kind];
 			var wantedSize = toyTargetSize * Mathf.Pow(faceSize / median, toyKeepSizeDifference);
 			var scale = wantedSize / faceSize;
 			scale = Mathf.Min(scale, toyTargetSize * toyMaxLongSideRatio / size.x);
 			toy.transform.localScale *= scale;
 		}
 		Physics.SyncTransforms();
+	}
+
+	///<summary> Face size from the measured silhouette (ToyVisualSizeTable): a toy filling less of its box (letters, figures) grows.
+	/// A toy with the median fill keeps the box size. Fallback: box face size </summary>
+	static float VisualFaceSize(ToyView toy, GameObject kind, Vector3 sortedSize) {
+		var boxFace = FaceSize(sortedSize);
+		var table = ToyVisualSizeTable.Instance;
+		if(table == null || table.referenceFill <= 0f || !table.TryGet(kind, out var entry))
+			return boxFace;
+		var fill = entry.fill / table.referenceFill;
+		// only half the fill difference is made up: a hollow toy (bow, headphones, ring) sized by its area alone
+		// had a box much bigger than the others and looked huge
+		return boxFace * Mathf.Clamp(Mathf.Sqrt(fill), 0.75f, 1.25f);
 	}
 
 	///<summary> sqrt of the biggest face area (longest * middle side) </summary>
