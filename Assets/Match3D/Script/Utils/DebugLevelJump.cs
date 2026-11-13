@@ -48,6 +48,13 @@ public static class DebugLevelJump {
 		Debug.Log($"[DebugLevelJump] reachedLevel = {levelIndex}");
 	}
 
+	///<summary> Name part of a toy group to force for every level (file kept), e.g. "Cartoon". Empty = random group as usual
+	///   adb shell "echo Cartoon > /sdcard/Android/data/[package]/files/debug_toy_group.txt" </summary>
+	public static string ForcedToyGroup() {
+		var path = Path.Combine(Application.persistentDataPath, "debug_toy_group.txt");
+		return File.Exists(path) ? File.ReadAllText(path).Trim() : "";
+	}
+
 	static void TryMarkTutorialsDone() {
 		var path = Path.Combine(Application.persistentDataPath, TUTORIAL_FILE_NAME);
 		if(!File.Exists(path))

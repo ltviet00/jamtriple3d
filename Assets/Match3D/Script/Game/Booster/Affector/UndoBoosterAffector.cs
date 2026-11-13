@@ -48,6 +48,15 @@ public class UndoBoosterAffector : MonoBehaviour {
 
 	#region Private
 	void OnRequestUndo() {
+		// box sort mode: this booster is "Extra Box", open the waiting crate as a 3rd open box (Undo not needed: toys wait in the slots)
+		var targetBar = SimpleDI.Instance.Get<TargetUIBar>();
+		if(targetBar != null && targetBar.IsBoxSortMode) {
+			if(!targetBar.TryOpenExtraBox()) {
+				// nothing to open, give back the booster deducted by the UI button
+				boosterInventory.AddBooster(undoBoosterID, 1);
+			}
+			return;
+		}
 		ExecuteUndoTask().Forget();
 	}
 

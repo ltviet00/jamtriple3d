@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a448d57ae335fba42b5ba870ec4604a0, type: 3}
+  m_Name: Group_Christmas
+  m_EditorClassIdentifier: 
+  groupName: Christmas
+  groupID: {fileID: 11400000, guid: f7b4d040fef0c4e61b422ef19e373e70, type: 2}
+  toyList:
+  - {fileID: 2965947388591075615, guid: 9a0f121dce0c54e099f19526efba1a99, type: 3}
+  - {fileID: 4673499355740293280, guid: aee878e17041d4918851d4b7aac1504a, type: 3}
+  - {fileID: 8730543909310235093, guid: d392796b4e9634bfea2a8fcc07949076, type: 3}
+  - {fileID: 5459908994748360688, guid: 15b5e857bb4ab4c64b2f54c1a1f78f27, type: 3}
+  - {fileID: 5388663339776739231, guid: 109ca63a89db54224a85db74020e5d2c, type: 3}
+  - {fileID: 4440596105930189976, guid: 9d49f76c4386c422ea63b44032c47785, type: 3}
+  - {fileID: 5788635265741711594, guid: 45be6c7866657428bb2106265c02aee8, type: 3}
+  - {fileID: 3800950260659245372, guid: 2b30a4681c9e3485da282f2d32ec03dd, type: 3}

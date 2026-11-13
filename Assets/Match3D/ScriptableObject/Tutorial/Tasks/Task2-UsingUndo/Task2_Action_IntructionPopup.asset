@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposeOnFinish: 0
   disposePreviousActions: 0
-  message: Use Undo to remove the last item from the bar
+  message: Use Extra Box to open one more box
   popupPrefab: {fileID: 4355879287741050682, guid: 275362f229fd87c448dddcc19cffb55d, type: 3}
   popupAnchorPosition: {x: -130, y: -550}
   activeBlackCoverScreen: 1

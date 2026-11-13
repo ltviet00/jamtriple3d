@@ -52,6 +52,16 @@ public class ToyStorage : ScriptableObject {
 	public ToyPrefabGroup SelectToyPrefabGroupForLevel(LevelData levelData) {
 		if(isFailedConfig)
 			return null;
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+		var forced = DebugLevelJump.ForcedToyGroup();
+		if(!string.IsNullOrEmpty(forced)) {
+			var group = allToyGroup.Find(g => g != null && g.name.Contains(forced));
+			if(group != null) {
+				Log.Info($"[Debug] forced toy group [{group.name}]");
+				return group;
+			}
+		}
+#endif
 		// currently, only one condition : enough required toyType count
 		var candidateList = new List<ToyPrefabGroup>();
 		for(int n = 0; n < allToyGroup.Count; n++) {

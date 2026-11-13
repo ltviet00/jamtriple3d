@@ -10,6 +10,7 @@ using UnityEngine.UI;
 /// A small "CHEAT" button stays on screen, tap it to open the panel:
 /// - Level: -10, -1, +1, +10, jump to any level (1-based)
 /// - In game: Win, Lose
+/// - Keyboard (emulator): N / Right / ] next level, P / Left / [ previous, Shift = 10 levels, R replay, W win, L lose
 /// Changing the level reloads the current scene (Home or Game) so the new level is used right away.
 /// </summary>
 public class DevCheatManager : MonoBehaviour {
@@ -61,6 +62,30 @@ public class DevCheatManager : MonoBehaviour {
 
 	void OnDestroy() {
 		SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	///<summary> Keyboard shortcuts (emulator / Editor):
+	/// N or Right or ] : next level, P or Left or [ : previous level, hold Shift (or PageUp/PageDown) : 10 levels,
+	/// R : replay this level, W : win, L : lose </summary>
+	void Update() {
+		if(!Input.anyKeyDown || (_jumpInput != null && _jumpInput.isFocused))
+			return;
+		var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+		var step = shift ? 10 : 1;
+		if(Input.GetKeyDown(KeyCode.N) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.RightBracket))
+			ChangeLevel(step);
+		else if(Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.LeftBracket))
+			ChangeLevel(-step);
+		else if(Input.GetKeyDown(KeyCode.PageUp))
+			ChangeLevel(10);
+		else if(Input.GetKeyDown(KeyCode.PageDown))
+			ChangeLevel(-10);
+		else if(Input.GetKeyDown(KeyCode.R))
+			ChangeLevel(0);
+		else if(Input.GetKeyDown(KeyCode.W) && IsInGame() && !_resultSent)
+			Win();
+		else if(Input.GetKeyDown(KeyCode.L) && IsInGame() && !_resultSent)
+			Lose();
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode) {

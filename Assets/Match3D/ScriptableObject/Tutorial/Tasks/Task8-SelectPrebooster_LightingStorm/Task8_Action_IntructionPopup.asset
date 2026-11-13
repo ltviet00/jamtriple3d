@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposeOnFinish: 0
   disposePreviousActions: 0
-  message: Start the game with a Lightning Storm to get rid of 10 junk items
+  message: Start the game with a Lightning Storm to fill 4 boxes
   popupPrefab: {fileID: 3419961905459486060, guid: 9bfa5ec06701edc428535a019056a578, type: 3}
   popupAnchorPosition: {x: 0, y: 780}
   activeBlackCoverScreen: 1

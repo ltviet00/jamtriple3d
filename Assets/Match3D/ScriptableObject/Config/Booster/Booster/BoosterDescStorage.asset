@@ -23,8 +23,8 @@ MonoBehaviour:
     displayName: Magnet
     decscription: Instantly collect 3 target items
   - boosterID: {fileID: 11400000, guid: 21ea06f570fec054ba795fbd47cf1cde, type: 2}
-    displayName: Undo
-    decscription: Remove last item from the bar
+    displayName: Extra Box
+    decscription: Open one more box
   - boosterID: {fileID: 11400000, guid: 016342dc5fd01f74c8991b9a0e4af57e, type: 2}
     displayName: Extra time
     decscription: Start the game with extra time!

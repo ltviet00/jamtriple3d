@@ -298,6 +298,8 @@ public class UIPageController : MonoBehaviour {
 
 	int OpenedPageCount => openPageList.Count;
 	UIPage LastOpenPage => openPageList[openPageList.Count - 1];
+	///<summary> Page on top of the open page stack, null if no page open </summary>
+	public UIPage TopOpenPage => openPageList != null && openPageList.Count > 0 ? LastOpenPage : null;
 
 	void AddToOpenPageListAtLast(UIPage page) => openPageList.Add(page);
 	bool ContainInOpenPageList(UIPage page) => openPageList.Contains(page);

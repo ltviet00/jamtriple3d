@@ -1,0 +1,82 @@
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Bottle_Juice_Apple_V2_00.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Can_Soda_Strawberry_V1_00.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Can_Beer_V1_07.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Can_Beer_V1_05.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Can_Soda_Grapefruit_V1_00.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Can_Soda_Grapefruit_V2_00.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Carton_Bottle_Juice_Grape_V2_00.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Carton_Bottle_Juice_Orange_V2_00.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Carton_Bottle_Milk_Chocolate_V2_0.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Carton_Cup_Coffee_V1_03.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Carton_Cup_Coffee_V1_02.prefab
+Assets/Beverage_Pack_Low_Poly_Cartoon_Items/Lost Panda Games/Beverage_Pack_Low_Poly_Cartoon_Items/Prefabs/Carton_Cup_Soda_V1_00.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Capsule.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_0.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_2.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_1.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_3.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_4.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_5.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_6.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_9.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_8.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_7.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_A.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_B.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_C.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_F.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_E.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_D.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_G.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_H.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_I.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_L.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_K.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_J.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_M.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_N.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_O.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_R.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_Q.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_P.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_S.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_V.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_W.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_X.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_U.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_T.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_Y.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/CartoonFont_Z.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/ChickenLeg.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Gift.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Ham.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/MagnifyingGlass.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/PaperBox.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/MiniBag.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Milk.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Pencil.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Pizza.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/PlusSymbol.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/Shield.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/TrafficCone.prefab
+Assets/Cartoon Items Pack Vol1/Prefabs/WoodBarrel.prefab
+Assets/Low Poly Christmas Pack Free/FBX/100 Snow_Ball.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/001 Snowman.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/036 Xmas_Tree.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/061 Santa_claus.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/063 Xmas_Girl.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/068 Santa_claus.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/067 Santa_claus.prefab
+Assets/Low Poly Christmas Pack Free/Prefabs/066 Xmas_Girl.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/bottle.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/diver's_mask.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/bowl.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/dice_blue.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/backpack.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/frying_pan.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/tape.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/watering_can.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/headphones.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/hat.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/idol.prefab
+Assets/Low-Poly_Objects_Pack/Prefabs/URP/piggy_bank.prefab

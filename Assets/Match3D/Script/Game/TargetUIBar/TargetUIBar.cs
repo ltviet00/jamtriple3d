@@ -38,6 +38,8 @@ public class TargetUIBar : MonoBehaviour {
 	[SerializeField] int openBoxCount = 2;
 	[Tooltip("Box sort mode: distance between 2 crates (crates are bigger than cards)")]
 	[SerializeField] float boxItemDistance = 320f;
+	[Tooltip("Box sort mode: Extra Box booster opens the waiting crate, at most this number at the same time. The row goes back to normal when a box completes")]
+	[SerializeField] int maxExtraOpenBoxes = 1;
 
 	[Header("Validation")]
 	[SerializeField] bool isFailedConfig;
@@ -110,6 +112,29 @@ public class TargetUIBar : MonoBehaviour {
 		return false;
 	}
 
+	///<summary> Box sort mode, Extra Box booster: open the waiting crate as one more open box. False if nothing to open (refund booster) </summary>
+	public bool TryOpenExtraBox() {
+		if(!IsBoxSortMode || openBoxCount <= 0 || _extraOpenBoxes >= maxExtraOpenBoxes || _cardStack.Count == 0)
+			return false;
+		_extraOpenBoxes++;
+		var entering = PopNextCard();
+		_activeCards.Insert(0, entering);
+		// all open crates are lit, no waiting crate shown until a box completes
+		SetWaitingCratesVisible(false);
+		for(int n = 0; n < _activeCards.Count; n++) {
+			var card = _activeCards[n];
+			if(card == null || _queuedDestroyCards.Contains(card))
+				continue;
+			var pos = GetAnchorPositionForCardAtIndex(n);
+			if(card == entering)
+				card.MoveToTargetAndFaceUp(pos);
+			else
+				card.MoveToTarget(pos);
+		}
+		UpdateAllowTargetToToyStats();
+		return true;
+	}
+
 	///<summary> Called from Mainflow, when finsh toy spawning, get data from LevelToyStats to generate target bar </summary>
 	public async UniTask Init(CancellationToken cancelToken) {
 		if(isFailedConfig)
@@ -119,6 +144,7 @@ public class TargetUIBar : MonoBehaviour {
 		_activeCards.Clear();
 		_toDestroyCards.Clear();
 		_queuedDestroyCards.Clear();
+		_extraOpenBoxes = 0;
 		var targetMap = toyStats.TargetMap;
 		var beginPostition = GetAnchorPositionForCardAtIndex(0);
 		// box sort mode: split each toy type into boxes
@@ -222,7 +248,7 @@ public class TargetUIBar : MonoBehaviour {
 	///<summary> If stack not empty, then we keep 1 facedown card on left, then increase distance for other card. Else, stack empty? then no facedown card </summary>
 	Vector2 GetAnchorPositionForCardAtIndex(int index) {
 		var result = Vector2.zero;
-		if(_cardStack.Count > 0) {
+		if(ShowWaitingSlot) {
 			index++;
 		}
 		// box sort mode: few boxes, center the row (open boxes + 1 face down slot)
@@ -231,7 +257,7 @@ public class TargetUIBar : MonoBehaviour {
 		var left = farLeftItemPosition;
 		if(isCrateRow) {
 			// stack not empty (or init): open crates + 1 face down crate. Else only the remain open crates, centered
-			var slotCount = _cardStack.Count > 0 || _activeCards.Count == 0 ? MaxActiveCards + 1 : _activeCards.Count;
+			var slotCount = ShowWaitingSlot || _activeCards.Count == 0 ? MaxActiveCards + 1 : _activeCards.Count;
 			left = -distance * (slotCount - 1) * 0.5f;
 		}
 		result.x = left + distance * index;
@@ -345,10 +371,20 @@ public class TargetUIBar : MonoBehaviour {
 				return;
 			toDestroy.DisappearAndDestroy();
 			await UniTask.Delay(TimeSpan.FromSeconds(toDestroy.AnimConfig.DestroyDuration), cancellationToken: _disableToken.Token);
+			// index may change during the animation (Extra Box booster insert a crate)
+			index = _activeCards.IndexOf(toDestroy);
+			if(index < 0)
+				return;
 			_activeCards.RemoveAt(index);
 			// waiting crate enter the conveyor at the leftmost open place
 			TargetItemUI entering = null;
-			if(_cardStack.Count > 0) {
+			// Extra Box booster was used: back to normal (2 open + waiting crate), no crate enters this time
+			if(_extraOpenBoxes > 0) {
+				_extraOpenBoxes--;
+				if(_extraOpenBoxes == 0)
+					SetWaitingCratesVisible(true);
+			}
+			else if(_cardStack.Count > 0) {
 				entering = PopNextCard();
 				_activeCards.Insert(0, entering);
 			}
@@ -372,9 +408,23 @@ public class TargetUIBar : MonoBehaviour {
 		}
 	}
 
+	int _extraOpenBoxes;
+
+	///<summary> Box sort mode: hide / show the face down waiting crates (hidden while the Extra Box booster is active) </summary>
+	void SetWaitingCratesVisible(bool visible) {
+		foreach(var card in _cardStack) {
+			if(card == null)
+				continue;
+			var group = card.GetComponent<CanvasGroup>();
+			if(group == null)
+				group = card.gameObject.AddComponent<CanvasGroup>();
+			group.alpha = visible ? 1f : 0f;
+		}
+	}
+
 	///<summary> Box sort mode: no face down crate left, move all open crates to the centered positions </summary>
 	void RealignCratesWhenStackEmpty() {
-		if(!IsBoxSortMode || openBoxCount <= 0 || _cardStack.Count > 0)
+		if(!IsBoxSortMode || openBoxCount <= 0 || ShowWaitingSlot)
 			return;
 		for(int n = 0; n < _activeCards.Count; n++) {
 			if(_activeCards[n] != null && !_queuedDestroyCards.Contains(_activeCards[n]))
@@ -382,7 +432,10 @@ public class TargetUIBar : MonoBehaviour {
 		}
 	}
 
-	int MaxActiveCards => IsBoxSortMode && openBoxCount > 0 ? openBoxCount : maxConcurrentTargetCfg.Value;
+	///<summary> Face down waiting crate keeps 1 place on the left (not while Extra Box booster is active) </summary>
+	bool ShowWaitingSlot => _cardStack.Count > 0 && _extraOpenBoxes == 0;
+
+	int MaxActiveCards => IsBoxSortMode && openBoxCount > 0 ? openBoxCount + _extraOpenBoxes : maxConcurrentTargetCfg.Value;
 
 	///<summary> Pop next card to open. Box sort mode: prefer a box whose toy type is not open yet, so 2 open boxes never ask for the same toy </summary>
 	TargetItemUI PopNextCard() {

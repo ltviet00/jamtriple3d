@@ -87,6 +87,10 @@ public class TutorialCanvas : MonoSingleton<TutorialCanvas> {
 		var ratio = renderCamera.orthographicSize / canvasCamera.orthographicSize;
 		var newPos = renderCamera.transform.position - offsetToCamera * ratio;
 
+		// keep the screen position (x, y) but put it on the tutorial canvas plane:
+		// the kept camera distance (10) equals the tutorial camera far clip (10), so the object was clipped (invisible) by float error
+		newPos.z = rootHighlightItems.position.z;
+
 		// move it to tutorial canvas
 		rectTrans.SetParent(rootHighlightItems, false);
 		rectTrans.position = newPos;

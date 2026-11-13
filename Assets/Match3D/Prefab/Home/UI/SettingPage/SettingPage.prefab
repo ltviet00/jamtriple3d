@@ -2056,7 +2056,7 @@ PrefabInstance:
     - target: {fileID: 1481360552162126492, guid: 7bacd14930158b94ca99ed794d22e079, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7014e04c22ec48d4da4810b0732feb26, type: 3}
+      objectReference: {fileID: 21300000, guid: c60af655fbb544b48816cf442f507916, type: 3}
     - target: {fileID: 1642247767779694333, guid: 7bacd14930158b94ca99ed794d22e079, type: 3}
       propertyPath: m_Name
       value: Booster_MagnifyGlass

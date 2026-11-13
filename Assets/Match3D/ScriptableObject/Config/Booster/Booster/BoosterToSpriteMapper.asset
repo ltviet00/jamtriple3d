@@ -18,7 +18,7 @@ MonoBehaviour:
   - boosterID: {fileID: 11400000, guid: c09543a03f887374abe35bab042ed2f2, type: 2}
     sprite: {fileID: 21300000, guid: e5f33a08adb0a874d91c33664df505bd, type: 3}
   - boosterID: {fileID: 11400000, guid: 21ea06f570fec054ba795fbd47cf1cde, type: 2}
-    sprite: {fileID: 21300000, guid: 7014e04c22ec48d4da4810b0732feb26, type: 3}
+    sprite: {fileID: 21300000, guid: c60af655fbb544b48816cf442f507916, type: 3}
   - boosterID: {fileID: 11400000, guid: f931891ca3dac27429a8e5bc1cae2828, type: 2}
     sprite: {fileID: 21300000, guid: 0503e625df89d2241bd47948a1a0bd23, type: 3}
   - boosterID: {fileID: 11400000, guid: 016342dc5fd01f74c8991b9a0e4af57e, type: 2}

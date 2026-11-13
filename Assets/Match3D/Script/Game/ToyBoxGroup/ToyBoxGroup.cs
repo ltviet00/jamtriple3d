@@ -69,9 +69,16 @@ public class ToyBoxGroup : MonoBehaviour {
 		}
 	}
 
+	void Update() {
+		if(isFailedConfig || !IsBoxSortMode)
+			return;
+		HideToysInFrontOfUIWhenPageCovered();
+	}
+
 	void OnDisable() {
 		if(isFailedConfig)
 			return;
+		ShowHiddenToys();
 		SimpleDI.UnRegisterType(this);
 		if(_current == this)
 			_current = null;
@@ -642,6 +649,54 @@ public class ToyBoxGroup : MonoBehaviour {
 		var depth = canvas.planeDistance * 0.5f;
 		return Mathf.Max(depth, cam.nearClipPlane + 0.5f);
 	}
+
+	#region Toys in front of UI vs popups
+	///<summary> Toys in the slots / flying to the crates are in front of the UI canvas (to be seen over the slot bar),
+	/// so they were also drawn over the popups (level failed, pause...). Hide them while another page covers the game page </summary>
+	readonly List<Renderer> _hiddenByPopup = new List<Renderer>();
+	UIPage _gamePage;
+	float _nextCoverCheck;
+
+	void HideToysInFrontOfUIWhenPageCovered() {
+		if(Time.unscaledTime < _nextCoverCheck)
+			return;
+		_nextCoverCheck = Time.unscaledTime + 0.1f;
+		if(_gamePage == null && TargetBar != null)
+			_gamePage = TargetBar.GetComponentInParent<UIPage>(true);
+		var covered = _gamePage != null && _gamePage.controller != null
+			&& _gamePage.controller.TopOpenPage != null && _gamePage.controller.TopOpenPage != _gamePage;
+		if(!covered) {
+			ShowHiddenToys();
+			return;
+		}
+		var canvas = TargetBar.GetComponentInParent<Canvas>();
+		var cam = Camera.main;
+		if(canvas == null || cam == null)
+			return;
+		canvas = canvas.rootCanvas;
+		if(canvas.renderMode != RenderMode.ScreenSpaceCamera)
+			return;
+		var uiDepth = canvas.planeDistance;
+		foreach(var toy in FindObjectsOfType<ToyView>()) {
+			foreach(var renderer in toy.GetComponentsInChildren<Renderer>()) {
+				if(!renderer.enabled || GetDepthOf(renderer.bounds.center) - renderer.bounds.extents.magnitude > uiDepth)
+					continue;
+				renderer.enabled = false;
+				_hiddenByPopup.Add(renderer);
+			}
+		}
+	}
+
+	void ShowHiddenToys() {
+		if(_hiddenByPopup.Count == 0)
+			return;
+		foreach(var renderer in _hiddenByPopup) {
+			if(renderer != null)
+				renderer.enabled = true;
+		}
+		_hiddenByPopup.Clear();
+	}
+	#endregion
 
 	float GetDepthOf(Vector3 worldPos) {
 		var cam = Camera.main;

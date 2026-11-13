@@ -225,69 +225,112 @@ public class ToySpawner : MonoBehaviour {
 
 	#region Toy size
 	[Header("Toy size (level start)")]
-	[Tooltip("Visual size (world units, biggest side seen from the camera) every toy kind is scaled to")]
-	[SerializeField] float toyTargetSize = 1.05f;
+	[Tooltip("Visual size (world units, sqrt of the biggest face area) every toy kind is scaled to")]
+	[SerializeField] float toyTargetSize = 1f;
 	[Tooltip("0 = all kinds exactly the same size, 1 = keep the original size differences")]
 	[Range(0f, 1f)]
-	[SerializeField] float toyKeepSizeDifference = 0.25f;
+	[SerializeField] float toyKeepSizeDifference = 0f;
+	[Tooltip("Long thin toys (pencil, bottle) grow to match the others, but their longest side stays under this * toyTargetSize")]
+	[SerializeField] float toyMaxLongSideRatio = 1.9f;
 
-	///<summary> Scale every toy kind so they look about the same size. Small kinds stay a bit smaller (toyKeepSizeDifference) </summary>
+	///<summary> Scale every toy kind so they look the same size.
+	/// Size = sqrt(area of the biggest face), so a tall thin toy is not shrunk because of its long side.
+	/// The longest side is capped so a long toy does not become huge </summary>
 	void NormalizeToySizes(List<ToyView> toys) {
 		toys.RemoveAll(toy => toy == null);
 		// measure one toy per kind
-		var sizeByKind = new Dictionary<GameObject, float>();
+		var sizeByKind = new Dictionary<GameObject, Vector3>();
 		foreach(var toy in toys) {
 			var kind = toy.rootPrefab != null ? toy.rootPrefab : toy.gameObject;
 			if(sizeByKind.ContainsKey(kind))
 				continue;
-			var size = MeasureVisualSize(toy);
-			if(size > 0.01f)
+			var size = MeasureSortedSize(toy);
+			if(size.x > 0.01f)
 				sizeByKind.Add(kind, size);
 		}
 		if(sizeByKind.Count == 0)
 			return;
 		// median size of the kinds in this level
-		var sizes = new List<float>(sizeByKind.Values);
+		var sizes = new List<float>();
+		foreach(var size in sizeByKind.Values)
+			sizes.Add(FaceSize(size));
 		sizes.Sort();
 		var median = sizes[sizes.Count / 2];
 		foreach(var toy in toys) {
 			var kind = toy.rootPrefab != null ? toy.rootPrefab : toy.gameObject;
 			if(!sizeByKind.TryGetValue(kind, out var size))
 				continue;
-			var wantedSize = toyTargetSize * Mathf.Pow(size / median, toyKeepSizeDifference);
-			toy.transform.localScale *= wantedSize / size;
+			var faceSize = FaceSize(size);
+			var wantedSize = toyTargetSize * Mathf.Pow(faceSize / median, toyKeepSizeDifference);
+			var scale = wantedSize / faceSize;
+			scale = Mathf.Min(scale, toyTargetSize * toyMaxLongSideRatio / size.x);
+			toy.transform.localScale *= scale;
 		}
 		Physics.SyncTransforms();
 	}
 
-	///<summary> Biggest side on the XY plane (what the camera sees), from the mesh renderers </summary>
-	static float MeasureVisualSize(ToyView toy) {
-		var renderers = toy.GetComponentsInChildren<Renderer>();
-		var hasBounds = false;
-		var bounds = new Bounds();
-		foreach(var renderer in renderers) {
-			if(!(renderer is MeshRenderer) && !(renderer is SkinnedMeshRenderer))
+	///<summary> sqrt of the biggest face area (longest * middle side) </summary>
+	static float FaceSize(Vector3 sortedSize) {
+		return Mathf.Sqrt(sortedSize.x * sortedSize.y);
+	}
+
+	///<summary> Size of the toy's meshes in its own space (not changed by rotation), sorted: x longest, z shortest </summary>
+	static Vector3 MeasureSortedSize(ToyView toy) {
+		// measure in the space of the biggest mesh, not the root: a mesh rotated inside the prefab (guitar at 45 degree)
+		// got a much bigger box in root space and was scaled down too much
+		var root = toy.transform;
+		var biggest = 0f;
+		foreach(var filter in toy.GetComponentsInChildren<MeshFilter>()) {
+			if(filter.sharedMesh == null)
 				continue;
-			if(!hasBounds) {
-				bounds = renderer.bounds;
-				hasBounds = true;
-			}
-			else {
-				bounds.Encapsulate(renderer.bounds);
+			var size = Vector3.Scale(filter.sharedMesh.bounds.size, filter.transform.lossyScale);
+			var volume = Mathf.Abs(size.x * size.y) + Mathf.Abs(size.y * size.z) + Mathf.Abs(size.x * size.z);
+			if(volume > biggest) {
+				biggest = volume;
+				root = filter.transform;
 			}
 		}
-		if(!hasBounds) {
-			foreach(var collider in toy.GetComponentsInChildren<Collider>()) {
+		var hasBounds = false;
+		var bounds = new Bounds();
+		foreach(var filter in toy.GetComponentsInChildren<MeshFilter>()) {
+			if(filter.sharedMesh == null)
+				continue;
+			var meshBounds = filter.sharedMesh.bounds;
+			for(int i = 0; i < 8; i++) {
+				var corner = meshBounds.center + Vector3.Scale(meshBounds.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
+				var p = root.InverseTransformPoint(filter.transform.TransformPoint(corner));
 				if(!hasBounds) {
-					bounds = collider.bounds;
+					bounds = new Bounds(p, Vector3.zero);
 					hasBounds = true;
 				}
 				else {
-					bounds.Encapsulate(collider.bounds);
+					bounds.Encapsulate(p);
 				}
 			}
 		}
-		return hasBounds ? Mathf.Max(bounds.size.x, bounds.size.y) : 0f;
+		if(!hasBounds) {
+			// no MeshFilter (skinned mesh): world bounds of the renderers
+			foreach(var renderer in toy.GetComponentsInChildren<Renderer>()) {
+				if(!(renderer is MeshRenderer) && !(renderer is SkinnedMeshRenderer))
+					continue;
+				if(!hasBounds) {
+					bounds = renderer.bounds;
+					hasBounds = true;
+				}
+				else {
+					bounds.Encapsulate(renderer.bounds);
+				}
+			}
+			if(!hasBounds)
+				return Vector3.zero;
+			var worldDims = new[] { bounds.size.x, bounds.size.y, bounds.size.z };
+			System.Array.Sort(worldDims);
+			return new Vector3(worldDims[2], worldDims[1], worldDims[0]);
+		}
+		var scale = root.lossyScale;
+		var dims = new[] { bounds.size.x * Mathf.Abs(scale.x), bounds.size.y * Mathf.Abs(scale.y), bounds.size.z * Mathf.Abs(scale.z) };
+		System.Array.Sort(dims);
+		return new Vector3(dims[2], dims[1], dims[0]);
 	}
 	#endregion//Toy size
 
