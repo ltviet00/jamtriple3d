@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5afb5ca301cad3045b32bb655b89f0b7, type: 3}
-  m_Name: ToyGroupID_Objects
+  m_Name: ToyGroupID_FoodDrink
   m_EditorClassIdentifier: 
-  groupName: Objects
+  groupName: FoodDrink

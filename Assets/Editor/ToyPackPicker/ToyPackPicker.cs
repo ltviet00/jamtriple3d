@@ -330,22 +330,20 @@ public static class ToyPackData {
 
 	static string SuggestedGroup(string pack) {
 		if(pack.Contains("Beverage"))
-			return "Drink";
-		if(pack.Contains("Christmas"))
-			return "Christmas";
+			return "FoodDrink";
 		if(pack.Contains("Cartoon"))
-			return "Cartoon";
-		return "Objects";
+			return "CartoonFont";
+		return "Stuff";
 	}
 
-	///<summary> Existing groups (Fruit, Kitchen...) plus the new ones (Drink, Christmas, Objects) </summary>
+	///<summary> Existing groups (Fruit, Kitchen...) plus the new ones (FoodDrink, Stuff, CartoonFont) </summary>
 	public static string[] GroupOptions(Selection selection) {
 		var names = new List<string>();
 		foreach(var guid in AssetDatabase.FindAssets("t:ToyPrefabGroup", new[] { GROUP_FOLDER })) {
 			var name = Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(guid));
 			names.Add(name.StartsWith("Group_") ? name.Substring(6) : name);
 		}
-		foreach(var extra in new[] { "Drink", "Christmas", "Objects", "Cartoon" })
+		foreach(var extra in new[] { "FoodDrink", "Stuff", "CartoonFont" })
 			if(!names.Contains(extra))
 				names.Add(extra);
 		return names.ToArray();
