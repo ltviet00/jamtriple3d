@@ -36,4 +36,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4654cded5ea614f5b8d6d4a0edc2e766, type: 2}
   - {fileID: 11400000, guid: 44bf768c464ff4aa48f83e46219578cc, type: 2}
   - {fileID: 11400000, guid: d2f90aae729d347f682b184f49a0b562, type: 2}
+  - {fileID: 11400000, guid: 5fc9a86539cef464bbeb27dcda6ddb2b, type: 2}
+  - {fileID: 11400000, guid: 3304fa0ebbb27400dab1760accc18da2, type: 2}
+  groupsPerLevel: 3
   isFailedConfig: 0

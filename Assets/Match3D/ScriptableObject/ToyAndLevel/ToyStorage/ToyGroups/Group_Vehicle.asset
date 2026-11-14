@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a448d57ae335fba42b5ba870ec4604a0, type: 3}
+  m_Name: Group_Vehicle
+  m_EditorClassIdentifier: 
+  groupName: Vehicle
+  groupID: {fileID: 11400000, guid: 4ef763339a06d4755b4a70511e178cd1, type: 2}
+  toyList:
+  - {fileID: 1865027125176081475, guid: 57a1a48bb962a42f7bcf7af928eb55ef, type: 3}
+  - {fileID: 7860143898354743879, guid: b1177cb3603204c03a1a89e0ac1898b2, type: 3}
+  - {fileID: 2226434946351051879, guid: d81433c6e5b644baea6d7d8e36bafdaf, type: 3}
+  - {fileID: 5198652677007702004, guid: 102060e5c08e4411887b231288dbd2db, type: 3}
+  - {fileID: 1590544879003788973, guid: 1c7b3a56629584b83b997144dbc84a94, type: 3}
+  - {fileID: 3871217168907274087, guid: c577a6d0339f54e86be9f134ebad7a0e, type: 3}
+  - {fileID: 183486221796402252, guid: 4b1ee311f551c4366b4206d985c5023b, type: 3}
+  - {fileID: 408481986223776943, guid: ba642edbfa19e403882d6ac0df108d7c, type: 3}
+  - {fileID: 1193762300998315267, guid: 800d8f561ad204785914b44bed6902fc, type: 3}
+  - {fileID: 6530985436168259464, guid: 9f187ca6abe4549aaa1c24ecf0b9da88, type: 3}
+  - {fileID: 4887787528436356999, guid: d08dc3c700d7c428fbf6bd2302ee4478, type: 3}
+  - {fileID: 211705147350350843, guid: 4ba156d9c9d9b4d289a3e405721596de, type: 3}
+  - {fileID: 6890998035921679027, guid: 5b5d433de375445b1b8b0748ef2a6e2e, type: 3}
+  - {fileID: 1129269680338483437, guid: 340375e938da04b049a132a050574991, type: 3}
+  - {fileID: 8141171211163775472, guid: be37cdecfea2f47f2aae000187edd2b3, type: 3}
+  - {fileID: 6428063228025071601, guid: e384604f6fb4b41c7b5431261ecc1236, type: 3}
+  - {fileID: 7504152165704878775, guid: 2748e82037c3741b596e24060a7ad6e0, type: 3}
+  - {fileID: 1613707287866736817, guid: f2445891d2db1489dbd55466bba8ff21, type: 3}
+  - {fileID: 3545065040972460493, guid: 72538db2275ee4e29abc392830a2d9e5, type: 3}
+  - {fileID: 7757110351985959484, guid: d5cd71e8600fe47eeb902988884c0a9d, type: 3}
+  - {fileID: 7936694975964248532, guid: b5e52ccd6d6764e06b55c1bfef779cba, type: 3}

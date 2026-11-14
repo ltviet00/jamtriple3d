@@ -63,6 +63,11 @@ public class ToyPackPickerWindow : EditorWindow {
 	bool _onlySelected;
 	float _cellSize = 110f;
 	Vector2 _scroll;
+	const float PREVIEW_WIDTH = 300f;
+	string _focusedPath;
+	Texture2D _bigPreview;
+	string _bigPreviewKey;
+	float _yaw, _pitch = 19f, _zoom = 1f;
 
 	void OnEnable() {
 		Rescan();
@@ -71,6 +76,8 @@ public class ToyPackPickerWindow : EditorWindow {
 
 	void OnDisable() {
 		EditorApplication.update -= RenderSomePreviews;
+		if(_bigPreview != null)
+			DestroyImmediate(_bigPreview);
 		_shooter?.Dispose();
 		_shooter = null;
 		foreach(var tex in _previews.Values)
@@ -82,6 +89,9 @@ public class ToyPackPickerWindow : EditorWindow {
 	void Rescan() {
 		_items = ToyPackData.ScanNewItems();
 		_selection = ToyPackData.LoadSelection();
+		// toys already added (or removed) are not listed: drop them from the selection too
+		var listed = new HashSet<string>(_items.Select(i => i.path));
+		_selection.items.RemoveAll(i => !listed.Contains(i.path));
 		_groupOptions = ToyPackData.GroupOptions(_selection);
 	}
 	#endregion// Init config
@@ -94,7 +104,10 @@ public class ToyPackPickerWindow : EditorWindow {
 			packs.Add($"{ToyPackData.ShortPackName(pack)} ({_items.Count(i => i.pack == pack)})");
 
 		using(new EditorGUILayout.HorizontalScope(EditorStyles.toolbar)) {
-			_packTab = GUILayout.Toolbar(_packTab, packs.ToArray(), EditorStyles.toolbarButton);
+			// many packs: a dropdown instead of tabs
+			GUILayout.Label("Pack:", GUILayout.Width(36));
+			_packTab = EditorGUILayout.Popup(_packTab, packs.ToArray(), EditorStyles.toolbarPopup, GUILayout.Width(260));
+			GUILayout.FlexibleSpace();
 		}
 		using(new EditorGUILayout.HorizontalScope()) {
 			GUILayout.Label("Tìm:", GUILayout.Width(30));
@@ -109,7 +122,11 @@ public class ToyPackPickerWindow : EditorWindow {
 
 		var visible = VisibleItems();
 		DrawGroupBar(visible);
-		DrawGrid(visible);
+		using(new EditorGUILayout.HorizontalScope()) {
+			using(new EditorGUILayout.VerticalScope())
+				DrawGrid(visible);
+			DrawPreviewPanel();
+		}
 		DrawBottomBar();
 	}
 
@@ -155,7 +172,7 @@ public class ToyPackPickerWindow : EditorWindow {
 	}
 
 	void DrawGrid(List<ToyPackData.Item> visible) {
-		var width = position.width - 20f;
+		var width = position.width - PREVIEW_WIDTH - 30f;
 		var columns = Mathf.Max(1, Mathf.FloorToInt(width / (_cellSize + 6f)));
 		var rows = Mathf.CeilToInt(visible.Count / (float)columns);
 		var cellHeight = _cellSize + 34f;
@@ -178,6 +195,8 @@ public class ToyPackPickerWindow : EditorWindow {
 		var selected = _selection.Has(item.path);
 		var imageRect = new Rect(rect.x, rect.y, _cellSize, _cellSize);
 		EditorGUI.DrawRect(rect, selected ? new Color(0.2f, 0.55f, 0.25f, 0.9f) : new Color(0f, 0f, 0f, 0.18f));
+		if(item.path == _focusedPath)
+			EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - 3, rect.width, 3), new Color(0.3f, 0.6f, 1f));
 		EditorGUI.DrawRect(new Rect(imageRect.x + 3, imageRect.y + 3, imageRect.width - 6, imageRect.height - 6), new Color(0.82f, 0.86f, 0.92f));
 
 		if(_previews.TryGetValue(item.path, out var tex) && tex != null)
@@ -195,13 +214,19 @@ public class ToyPackPickerWindow : EditorWindow {
 		if(selected)
 			GUI.Label(new Rect(rect.x, rect.y + _cellSize + 14, rect.width, 15), "→ " + _selection.GroupOf(item.path), nameStyle);
 
+		var tickRect = new Rect(imageRect.xMax - 24, imageRect.y + 3, 21, 21);
+		GUI.Label(tickRect, selected ? "☑" : "☐", new GUIStyle(EditorStyles.boldLabel) { fontSize = 17, alignment = TextAnchor.MiddleCenter });
 		var e = Event.current;
 		if(e.type == EventType.MouseDown && rect.Contains(e.mousePosition)) {
 			if(e.button == 0) {
-				if(selected)
-					_selection.Remove(item.path);
-				else
-					_selection.Add(item.path, _selection.DefaultGroupFor(item.pack));
+				// tick box, or a second click on the toy being previewed: select / unselect. Otherwise just preview it
+				if(tickRect.Contains(e.mousePosition) || _focusedPath == item.path) {
+					if(selected)
+						_selection.Remove(item.path);
+					else
+						_selection.Add(item.path, _selection.DefaultGroupFor(item.pack));
+				}
+				_focusedPath = item.path;
 			}
 			else if(e.button == 1) {
 				EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<GameObject>(item.path));
@@ -230,7 +255,62 @@ public class ToyPackPickerWindow : EditorWindow {
 			}
 			GUI.backgroundColor = Color.white;
 		}
-		GUILayout.Label("Click trái: chọn / bỏ chọn.  Click phải: tìm prefab trong Project.", EditorStyles.miniLabel);
+		GUILayout.Label("Click: xem 3D.  Click lần nữa hoặc ô ☐: chọn / bỏ chọn.  Click phải: tìm prefab trong Project.", EditorStyles.miniLabel);
+	}
+
+	///<summary> Rotatable 3D view of the clicked toy </summary>
+	void DrawPreviewPanel() {
+		using(new EditorGUILayout.VerticalScope(GUILayout.Width(PREVIEW_WIDTH))) {
+			var prefab = string.IsNullOrEmpty(_focusedPath) ? null : AssetDatabase.LoadAssetAtPath<GameObject>(_focusedPath);
+			if(prefab == null) {
+				GUILayout.Label("Bấm vào một món để xem 3D.\nKéo chuột trong khung để xoay.", EditorStyles.wordWrappedLabel);
+				return;
+			}
+			GUILayout.Label(prefab.name, EditorStyles.boldLabel);
+			// rendered with the same URP converted materials as the thumbnails (the pack materials are not URP: pink in Unity's preview)
+			var rect = GUILayoutUtility.GetRect(PREVIEW_WIDTH - 10, PREVIEW_WIDTH - 10);
+			var e = Event.current;
+			if(e.type == EventType.MouseDrag && rect.Contains(e.mousePosition)) {
+				_yaw -= e.delta.x * 0.6f;
+				_pitch = Mathf.Clamp(_pitch + e.delta.y * 0.6f, -89f, 89f);
+				e.Use();
+			}
+			else if(e.type == EventType.ScrollWheel && rect.Contains(e.mousePosition)) {
+				_zoom = Mathf.Clamp(_zoom * (e.delta.y > 0 ? 0.9f : 1.1f), 0.5f, 3f);
+				e.Use();
+			}
+			else if(e.type == EventType.MouseDown && e.clickCount == 2 && rect.Contains(e.mousePosition)) {
+				_yaw = 0f;
+				_pitch = 19f;
+				_zoom = 1f;
+				e.Use();
+			}
+			if(e.type == EventType.Repaint) {
+				var key = $"{_focusedPath}|{_yaw:F0}|{_pitch:F0}|{_zoom:F2}";
+				if(_bigPreview == null || _bigPreviewKey != key) {
+					if(_bigPreview != null)
+						DestroyImmediate(_bigPreview);
+					_shooter ??= new ToyThumbnailShooter();
+					_bigPreview = _shooter.Shoot(prefab, 512, true, ToyPackData.NeedsTurnAround(_focusedPath), _yaw, _pitch, _zoom);
+					_bigPreviewKey = key;
+				}
+				EditorGUI.DrawRect(rect, new Color(0.82f, 0.86f, 0.92f));
+				GUI.DrawTexture(rect, _bigPreview, ScaleMode.ScaleToFit);
+			}
+			GUILayout.Label("Kéo chuột để xoay, cuộn để zoom, double-click để đặt lại", EditorStyles.centeredGreyMiniLabel);
+			var selected = _selection.Has(_focusedPath);
+			var item = _items.FirstOrDefault(i => i.path == _focusedPath);
+			GUI.backgroundColor = selected ? new Color(1f, 0.6f, 0.6f) : new Color(0.5f, 1f, 0.5f);
+			if(item != null && GUILayout.Button(selected ? "Bỏ chọn món này" : "Chọn món này", GUILayout.Height(30))) {
+				if(selected)
+					_selection.Remove(item.path);
+				else
+					_selection.Add(item.path, _selection.DefaultGroupFor(item.pack));
+			}
+			GUI.backgroundColor = Color.white;
+			if(selected)
+				GUILayout.Label("→ nhóm " + _selection.GroupOf(_focusedPath), EditorStyles.miniLabel);
+		}
 	}
 	#endregion//GUI
 
@@ -262,10 +342,36 @@ public static class ToyPackData {
 		"Assets/Low Poly Christmas Pack Free",
 		"Assets/Low-Poly_Objects_Pack",
 		"Assets/Cartoon Items Pack Vol1",
+		"Assets/3D Props Ultimate Pack/3D Prop Kitchen",
+		"Assets/3D Props Ultimate Pack/3D Prop Camp",
+		"Assets/3D Props Ultimate Pack/3d Prop Art",
+		"Assets/3D Props Ultimate Pack/3D Prop Sport",
+		"Assets/ToysPack",
+		"Assets/ithappy/Cute_Furniture_Free",
+		"Assets/ithappy/Funny_Weapons_Free",
+		"Assets/ithappy/Cartoon_City_Free",
+		"Assets/ithappy/Creative_Characters_FREE",
+		"Assets/makemakex/Low_Poly_Vehicles_Pack",
+		"Assets/Gley/DeliveryVehiclesPack",
 	};
-	static readonly string[] SKIP_PATH_PARTS = { "/Built-in/", "/Colliders/", "/Scenes/", "/Demo/", "/Baked/", "Render_Pipeline_Versions" };
+	///<summary> Short name of a pack: tab name and the folder under Model/NewToys </summary>
+	static readonly Dictionary<string, string> SHORT_NAMES = new Dictionary<string, string> {
+		{ "3D Prop Kitchen", "PropKitchen" },
+		{ "3D Prop Camp", "PropCamp" },
+		{ "3d Prop Art", "PropArt" },
+		{ "3D Prop Sport", "PropSport" },
+		{ "ToysPack", "ToysPack" },
+		{ "Cute_Furniture_Free", "Furniture" },
+		{ "Funny_Weapons_Free", "Weapons" },
+		{ "Cartoon_City_Free", "City" },
+		{ "Creative_Characters_FREE", "Characters" },
+		{ "Low_Poly_Vehicles_Pack", "Vehicles" },
+		{ "DeliveryVehiclesPack", "Delivery" },
+	};
+	static readonly string[] SKIP_PATH_PARTS = { "/Built-in/", "/Colliders/", "/Scenes/", "/Demo/", "/Baked/", "Render_Pipeline_Versions", "Render_Pipeline_Convert", "/Demo_Profiles/" };
 	static readonly string[] SKIP_NAMES = { "plane", "floor", "ground", "camera", "light", "scene" };
 	public const string SELECTION_FILE = "Tools/ToyPackPicker/selection.json";
+	public const string REJECTED_LOG = "Tools/ToyPackPicker/rejected.txt";
 	public const string TOY_STORAGE_PATH = "Assets/Match3D/ScriptableObject/ToyAndLevel/ToyStorage/ToyStorage.asset";
 	public const string GROUP_FOLDER = "Assets/Match3D/ScriptableObject/ToyAndLevel/ToyStorage/ToyGroups";
 
@@ -317,6 +423,8 @@ public static class ToyPackData {
 	}
 
 	public static string ShortPackName(string pack) {
+		if(SHORT_NAMES.TryGetValue(Path.GetFileName(pack), out var shortName))
+			return shortName;
 		if(pack.Contains("Beverage"))
 			return "Beverage";
 		if(pack.Contains("Christmas"))
@@ -329,6 +437,8 @@ public static class ToyPackData {
 	}
 
 	static string SuggestedGroup(string pack) {
+		if(SHORT_NAMES.ContainsKey(Path.GetFileName(pack)))
+			return "Stuff";
 		if(pack.Contains("Beverage"))
 			return "FoodDrink";
 		if(pack.Contains("Cartoon"))
@@ -376,6 +486,9 @@ public static class ToyPackData {
 	///<summary> Source prefabs that already became a toy (recorded by the importer), and prefabs directly in a toy group </summary>
 	static HashSet<string> UsedSourcePrefabPaths() {
 		var used = new HashSet<string>(ToyPackImporter.LoadAddedLog());
+		// toys removed with Toy Remover don't come back
+		if(File.Exists(REJECTED_LOG))
+			used.UnionWith(File.ReadAllLines(REJECTED_LOG).Where(l => l.Length > 0));
 		var storage = AssetDatabase.LoadAssetAtPath<ToyStorage>(TOY_STORAGE_PATH);
 		if(storage != null) {
 			foreach(var group in storage.AllToyGroup) {
@@ -533,7 +646,7 @@ public static class ToyPackImporter {
 		File.WriteAllLines("Tools/ToyPackPicker/last_import.txt", report);
 	}
 
-	static ToyPrefabGroup GetOrCreateGroup(string groupName, ToyStorage storage) {
+	public static ToyPrefabGroup GetOrCreateGroup(string groupName, ToyStorage storage) {
 		var groupPath = $"{ToyPackData.GROUP_FOLDER}/Group_{groupName}.asset";
 		var group = AssetDatabase.LoadAssetAtPath<ToyPrefabGroup>(groupPath);
 		if(group == null) {
@@ -770,6 +883,11 @@ public class ToyThumbnailShooter : IDisposable {
 	}
 
 	public Texture2D Shoot(GameObject prefab, int size, bool convertMaterials, bool turnAround = false) {
+		return Shoot(prefab, size, convertMaterials, turnAround, 0f, Mathf.Atan(0.35f) * Mathf.Rad2Deg, 1f);
+	}
+
+	///<summary> yaw / pitch: camera angle around the toy (degrees), zoom: bigger = closer </summary>
+	public Texture2D Shoot(GameObject prefab, int size, bool convertMaterials, bool turnAround, float yaw, float pitch, float zoom) {
 		var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, _scene);
 		instance.transform.position = Vector3.zero;
 		if(turnAround)
@@ -800,8 +918,8 @@ public class ToyThumbnailShooter : IDisposable {
 
 		// front view, a bit from above (like the toy thumbnails already in the game)
 		var radius = Mathf.Max(bounds.extents.magnitude, 0.001f);
-		var dir = new Vector3(0f, 0.35f, -1f).normalized;
-		var distance = radius / Mathf.Sin(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad) * 1.02f;
+		var dir = Quaternion.Euler(pitch, yaw, 0f) * Vector3.back;
+		var distance = radius / Mathf.Sin(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad) * 1.02f / Mathf.Max(0.2f, zoom);
 		_camera.transform.position = bounds.center + dir * distance;
 		_camera.transform.LookAt(bounds.center);
 		_camera.nearClipPlane = Mathf.Max(0.001f, distance - radius * 1.5f);
