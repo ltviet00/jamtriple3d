@@ -28,6 +28,7 @@ public static class DebugLevelJump {
 
 	static void TryJump() {
 		TryMarkTutorialsDone();
+		TryGiveUnlimitEnergy();
 		var path = Path.Combine(Application.persistentDataPath, FILE_NAME);
 		if(!File.Exists(path))
 			return;
@@ -53,6 +54,21 @@ public static class DebugLevelJump {
 	public static string ForcedToyGroup() {
 		var path = Path.Combine(Application.persistentDataPath, "debug_toy_group.txt");
 		return File.Exists(path) ? File.ReadAllText(path).Trim() : "";
+	}
+
+	///<summary> Give unlimited lives for N minutes (file deleted after use)
+	///   adb shell "echo 60 > /sdcard/Android/data/[package]/files/debug_unlimit_energy.txt" </summary>
+	static void TryGiveUnlimitEnergy() {
+		var path = Path.Combine(Application.persistentDataPath, "debug_unlimit_energy.txt");
+		if(!File.Exists(path) || !int.TryParse(File.ReadAllText(path).Trim(), out var minutes))
+			return;
+		var inventories = Resources.FindObjectsOfTypeAll<UserUnlimitEnergyInventory>();
+		if(inventories.Length == 0)
+			return;
+		File.Delete(path);
+		foreach(var inventory in inventories)
+			inventory.ExpandUnlimitDurationByMinutes(minutes);
+		Debug.Log($"[DebugLevelJump] unlimited energy +{minutes}m");
 	}
 
 	static void TryMarkTutorialsDone() {

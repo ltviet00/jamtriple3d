@@ -52,18 +52,17 @@ public class LevelFailedPage : MonoBehaviour {
 	public void In_OnPressRePlay() {
 		if(isFailedConfig)
 			return;
-		// unlimit? no deduct energy
-		if(unlimitEnergyInventory.IsInUnlimitEnergyDuration()) {
-			return;
+		// unlimit? replay without deducting energy
+		if(!unlimitEnergyInventory.IsInUnlimitEnergyDuration()) {
+			// not unlimit, check if not enough energy
+			if(energyInventory.IsEmpty()) {
+				var outOfLifePage = SimpleDI.Instance.Get<OutOfLifePage>();
+				outOfLifePage.Page.UI_KeepCurrentAndOpenMe();
+				return;
+			}
+			// enough energy, then deduct energy
+			energyInventory.DecreaseOneEnergy();
 		}
-		// not unlimit, check if not enough energy
-		if(energyInventory.IsEmpty()) {
-			var outOfLifePage = SimpleDI.Instance.Get<OutOfLifePage>();
-			outOfLifePage.Page.UI_KeepCurrentAndOpenMe();
-			return;
-		}
-		// enough energy, then deduct energy
-		energyInventory.DecreaseOneEnergy();
 		// save booster select
 		for(int n = 0; n < boosterButtons.Count; n++) {
 			boosterButtons[n].DeductBoosterInUserInventoryIfUserSelectBooster();

@@ -47,12 +47,9 @@ public class NextLevelPage : MonoBehaviour {
 	public void In_OnPressPlay() {
 		if(isFailedConfig)
 			return;
-		// unlimit? no deduct energy
-		if(unlimitEnergyInventory.IsInUnlimitEnergyDuration()) {
-			return;
-		}
-		// not unlimit, deduct energy
-		energyInventory.DecreaseOneEnergy();
+		// unlimit? no deduct energy (selected boosters are still used up)
+		if(!unlimitEnergyInventory.IsInUnlimitEnergyDuration())
+			energyInventory.DecreaseOneEnergy();
 		// save booster select
 		for(int n = 0; n < boosterButtons.Count; n++) {
 			boosterButtons[n].DeductBoosterInUserInventoryIfUserSelectBooster();
