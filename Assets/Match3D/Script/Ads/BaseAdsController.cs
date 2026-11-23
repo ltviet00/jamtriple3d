@@ -15,6 +15,8 @@ public abstract class BaseAdsController : ScriptableObject {
 	public abstract void LoadBanner();
 	public abstract void ShowBanner();
 	public abstract void HideBanner();
+	///<summary> Height of the loaded banner in screen pixels, 0 when there is none </summary>
+	public virtual float GetBannerHeightPixels() { return 0f; }
 	// reward
 	public abstract bool IsRewardVideoReady();
 	public abstract void LoadRewardVideo();

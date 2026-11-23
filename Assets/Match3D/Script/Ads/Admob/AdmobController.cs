@@ -70,10 +70,12 @@ public class AdmobController : BaseAdsController {
 			return;
 		}
 		_isInitializing = true;
+		_mainThread = System.Threading.SynchronizationContext.Current;
 		Log.Info($"Start init AdMob controller [{name}], time [{Time.time}]");
 
 		if(consentManager != null) {
-			consentManager.Prepare(InitializeMobileAds);
+			// the consent callback can come on a background thread; GMA Next-Gen needs MobileAds calls on the main thread
+			consentManager.Prepare(() => RunOnMainThread(InitializeMobileAds));
 		} else {
 			_canRequestAds = true;
 			InitializeMobileAds();
@@ -128,6 +130,12 @@ public class AdmobController : BaseAdsController {
 	public override void HideBanner() {
 		_shouldShowBanner = false;
 		_banner?.Hide();
+	}
+
+	public override float GetBannerHeightPixels() {
+		if(_banner == null || !_isBannerLoaded)
+			return 0f;
+		return _banner.GetHeightInPixels();
 	}
 
 	public override bool IsRewardVideoReady() {
@@ -241,6 +249,7 @@ public class AdmobController : BaseAdsController {
 		_isBannerLoading = false;
 		_isBannerLoaded = true;
 		_bannerRetryAttempt = 0;
+		Debug.Log($"[AdMob] Banner loaded ({_banner?.GetHeightInPixels()}px high), show: {bannerDisplayOnLoad || _shouldShowBanner}");
 		if(bannerDisplayOnLoad || _shouldShowBanner) {
 			_banner?.Show();
 		}
@@ -252,7 +261,8 @@ public class AdmobController : BaseAdsController {
 			Log.Warning(false, this, "Invalid adaptive banner width, fallback to standard banner.");
 			return AdSize.Banner;
 		}
-		return AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width);
+		// Large anchored adaptive (same as Triple Match 3D): taller banner, higher eCPM. UI keeps room for it via BannerSpace
+		return AdSize.GetCurrentOrientationLargeAnchoredAdaptiveBannerAdSizeWithWidth(width);
 	}
 
 	int GetSafeAreaWidthInDp() {
@@ -437,8 +447,16 @@ public class AdmobController : BaseAdsController {
 		RunOnMainThread(() => Log.Info($"AdMob paid event value [{adValue.Value}] currency [{adValue.CurrencyCode}] precision [{adValue.Precision}]"));
 	}
 
+	// Unity main thread, captured in Init(). GMA Next-Gen raises ad events on background threads, and
+	// MobileAdsEventExecutor.ExecuteInUpdate did not deliver them (banner never became ready)
+	System.Threading.SynchronizationContext _mainThread;
+
 	void RunOnMainThread(Action action) {
-		GoogleMobileAds.Common.MobileAdsEventExecutor.ExecuteInUpdate(action);
+		if(_mainThread == null || System.Threading.SynchronizationContext.Current == _mainThread) {
+			action();
+			return;
+		}
+		_mainThread.Post(_ => action(), null);
 	}
 
 	void DestroyAds() {

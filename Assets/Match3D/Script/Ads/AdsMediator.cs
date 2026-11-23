@@ -81,6 +81,16 @@ public class AdsMediator : ScriptableObject {
 		return PickAdsControllerReadyForAdsType(AdsType.Banner) != null;
 	}
 
+	///<summary> Tallest loaded banner among the networks, in screen pixels (0 when none loaded) </summary>
+	public float GetBannerHeightPixels() {
+		if(isFailedConfig || !IsAdsEnable())
+			return 0f;
+		var max = 0f;
+		for(int n = 0; n < adsControllerList.Length; n++)
+			max = Mathf.Max(max, adsControllerList[n].GetBannerHeightPixels());
+		return max;
+	}
+
 	[Obsolete("Use IsBannerReady instead.")]
 	public bool IsBannderReady() {
 		return IsBannerReady();

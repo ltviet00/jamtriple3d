@@ -1649,6 +1649,8 @@ MonoBehaviour:
   ignoreBottom: 0
   ignoreLeft: 0
   ignoreRight: 0
+  reserveBottomForBanner: 1
+  bannerFreeBottomUnits: 220
   isFailedConfig: 0
 --- !u!225 &3773315780163427135
 CanvasGroup:
