@@ -38,6 +38,21 @@ public class SafeAreaAdjuster : MonoBehaviour {
 	void Awake() {
 		if(isFailedConfig)
 			return;
+		Apply();
+	}
+
+	float _appliedBannerPixels = -1f;
+
+	///<summary> The page often opens before the banner has loaded (estimated height): follow the real height when it changes </summary>
+	void Update() {
+		if(isFailedConfig || !reserveBottomForBanner)
+			return;
+		if(Mathf.Abs(BannerSpace.BottomPixels - _appliedBannerPixels) > 0.5f)
+			Apply();
+	}
+
+	void Apply() {
+		_appliedBannerPixels = BannerSpace.BottomPixels;
 		// safeArea is a Rect that already ignore top&bottom avoid-display-parts on mobile device
 		// so let simply take the bottom-left point as anchorMin, and top-right point as anchorMax
 		var safeArea = Screen.safeArea;
