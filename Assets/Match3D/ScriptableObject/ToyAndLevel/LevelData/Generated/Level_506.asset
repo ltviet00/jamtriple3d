@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Level_506
   m_EditorClassIdentifier: 
   totalInfo:
-    totalTriad: 45
-    typeUsed: 11
+    totalTriad: 70
+    typeUsed: 13
   targetInfo:
-    totalTriad: 45
-    typeUsed: 11
+    totalTriad: 70
+    typeUsed: 13
   supportToyList: []
-  levelDuration: 425
+  levelDuration: 560

@@ -343,14 +343,8 @@ public class IAPConsumeProductPurchaser : ScriptableObject, IStoreListener, IDet
 	///<summary> Read more in https://docs.unity3d.com/Manual/UnityIAPRestoringTransactions.html.
 	/// Check the IAPButton.cs script from unity sample </summary>
 	void CheckRestoreTransaction() {
-		// microsoft platform
-		if(Application.platform == RuntimePlatform.WSAPlayerX86 ||
-			Application.platform == RuntimePlatform.WSAPlayerX64 ||
-			Application.platform == RuntimePlatform.WSAPlayerARM) {
-			_storeExtensionProvider.GetExtension<IMicrosoftExtensions>().RestoreTransactions();
-		}
-		// IOS
-		else if(Application.platform == RuntimePlatform.IPhonePlayer ||
+		// IOS (Microsoft store support was removed in IAP 5)
+		if(Application.platform == RuntimePlatform.IPhonePlayer ||
 				 Application.platform == RuntimePlatform.OSXPlayer ||
 				 Application.platform == RuntimePlatform.tvOS) {
 			_storeExtensionProvider.GetExtension<IAppleExtensions>().RestoreTransactions(OnRestoreTransactions);

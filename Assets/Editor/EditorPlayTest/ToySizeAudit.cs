@@ -12,7 +12,7 @@ using UnityEngine;
 [InitializeOnLoad]
 public static class ToySizeAudit {
 	const string TRIGGER = "Temp/toy_size_audit", RESULT = "Temp/toy_size_audit_result.txt";
-	const float TARGET = 1.56f, LONG_RATIO = 1.9f, FLAG = 1.25f;
+	const float TARGET = 1.25f, LONG_RATIO = 1.9f, FLAG = 1.25f;
 	static double _next;
 
 	static ToySizeAudit() {

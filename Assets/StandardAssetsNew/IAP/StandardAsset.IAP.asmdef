@@ -4,8 +4,8 @@
     "references": [
         "StandardAssets_asm",
         "Unity.TextMeshPro",
-        "UnityEngine.Purchasing",
-        "UnityEngine.Purchasing.Stores"
+        "Unity.Purchasing",
+        "Unity.Purchasing.Stores"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

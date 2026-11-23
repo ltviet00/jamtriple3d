@@ -225,7 +225,7 @@ public class ToySpawner : MonoBehaviour {
 	#region Toy size
 	[Header("Toy size (level start)")]
 	[Tooltip("Visual size (world units, sqrt of the biggest face area) every toy kind is scaled to")]
-	[SerializeField] float toyTargetSize = 1.56f;
+	[SerializeField] float toyTargetSize = 1.25f;
 	[Tooltip("0 = all kinds exactly the same size, 1 = keep the original size differences")]
 	[Range(0f, 1f)]
 	[SerializeField] float toyKeepSizeDifference = 0f;

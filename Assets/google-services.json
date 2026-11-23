@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "889214197272",
-    "project_id": "find-triple-3d",
-    "storage_bucket": "find-triple-3d.firebasestorage.app"
+    "project_number": "360491669715",
+    "project_id": "find-triple-3d-new",
+    "storage_bucket": "find-triple-3d-new.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:889214197272:android:7bba49c3785f5294256d6d",
+        "mobilesdk_app_id": "1:360491669715:android:e3b5641d775aca99505c26",
         "android_client_info": {
           "package_name": "master.triple3d.find"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAL5T-Ipb2on3FBgL8OxJAqZHkahYKDORM"
+          "current_key": "AIzaSyCW4m_5kVv_5ZVCgne3RyOeJO9MM37nFnY"
         }
       ],
       "services": {
@@ -26,23 +26,22 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:889214197272:android:d15d89855735c1ef256d6d",
+        "mobilesdk_app_id": "1:360491669715:android:d80360e39feea6e5505c26",
         "android_client_info": {
-          "package_name": "triple.tile.find.match3d"
+          "package_name": "master.triple3d.find.match"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAL5T-Ipb2on3FBgL8OxJAqZHkahYKDORM"
+          "current_key": "AIzaSyCW4m_5kVv_5ZVCgne3RyOeJO9MM37nFnY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": []
         }
-      },
-      "admob_app_id": "ca-app-pub-8137514119449962~4035715870"
+      }
     }
   ],
   "configuration_version": "1"
