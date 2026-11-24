@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +13,10 @@ namespace GoogleMobileAds.Editor
     private const string MobileAdsSettingsFile = "GoogleMobileAdsSettings";
 
     private const string MobileAdsSettingsFileExtension = ".asset";
+
+    // Project-relative path of the settings asset.
+    internal const string AssetPath =
+        MobileAdsSettingsResDir + "/" + MobileAdsSettingsFile + MobileAdsSettingsFileExtension;
 
     public enum GmaAndroidSdk
     {
@@ -67,6 +72,32 @@ namespace GoogleMobileAds.Editor
 
     [SerializeField]
     private int selectedGmaAndroidSdk = 0;
+
+    // The EDM opt-out depends on `enableExternalDependencyManager` and `edmPackageDetected`
+    // persisting in the settings asset, which is shared through version control and is not
+    // shipped in the `.unitypackage`. If they are lost or reset, `EdmDependencyInstaller` treats
+    // the project as a first-time import and adds EDM back, undoing the publisher's removal.
+    //
+    // When true, the plugin installs and uses Unity's External Dependency Manager package.
+    // Disabled automatically when the publisher removes the package after it was installed.
+    [SerializeField]
+    private bool enableExternalDependencyManager = true;
+
+    // Whether Unity's External Dependency Manager package has been detected in this project.
+    // Used to tell a publisher removal apart from a first-time import.
+    [SerializeField]
+    private bool edmPackageDetected;
+
+    // The version of EDM that the plugin most recently added to this project. If the plugin
+    // requires a different version, it adds EDM again at that version.
+    [SerializeField]
+    private string addedEdmVersion;
+
+    [SerializeField]
+    private int debugGeography = 0;
+
+    [SerializeField]
+    private List<string> testDeviceHashedIds = new List<string>();
 
     public string GoogleMobileAdsAndroidAppId
     {
@@ -136,6 +167,41 @@ namespace GoogleMobileAds.Editor
       get { return selectedGmaAndroidSdk; }
 
       set { selectedGmaAndroidSdk = value; }
+    }
+
+    public bool EnableExternalDependencyManager
+    {
+      get { return enableExternalDependencyManager; }
+
+      set { enableExternalDependencyManager = value; }
+    }
+
+    public bool EdmPackageDetected
+    {
+      get { return edmPackageDetected; }
+
+      set { edmPackageDetected = value; }
+    }
+
+    public string AddedEdmVersion
+    {
+      get { return addedEdmVersion; }
+
+      set { addedEdmVersion = value; }
+    }
+
+    public int DebugGeography
+    {
+      get { return debugGeography; }
+
+      set { debugGeography = value; }
+    }
+
+    public List<string> TestDeviceHashedIds
+    {
+      get { return testDeviceHashedIds ?? (testDeviceHashedIds = new List<string>()); }
+
+      set { testDeviceHashedIds = value ?? new List<string>(); }
     }
 
     /// <summary>

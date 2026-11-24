@@ -22,6 +22,8 @@ namespace GoogleMobileAds.Editor
     SerializedProperty _userTrackingUsageDescription;
     SerializedProperty _overrideDefaultGmaAndroidSdk;
     SerializedProperty _gmaAndroidSdk;
+    SerializedProperty _enableExternalDependencyManager;
+    bool _isInstalledViaUpm;
 
     // Using an ordered list of languages is computationally expensive when trying to create an
     // array out of them for purposes of showing a dropdown menu. Care should be taken to ensure
@@ -34,6 +36,18 @@ namespace GoogleMobileAds.Editor
     public static void OpenInspector()
     {
       Selection.activeObject = GoogleMobileAdsSettings.LoadInstance();
+    }
+
+    [MenuItem("Assets/Google Mobile Ads/Access documentation")]
+    public static void AccessDocumentation()
+    {
+      Application.OpenURL("https://developers.google.com/admob/unity/quick-start");
+    }
+
+    [MenuItem("Assets/Google Mobile Ads/Raise an issue")]
+    public static void RaiseAnIssue()
+    {
+      Application.OpenURL("https://support.google.com/admob/contact/contact_us_gma_sdk");
     }
 
     public void OnEnable()
@@ -51,6 +65,9 @@ namespace GoogleMobileAds.Editor
       _userLanguage = serializedObject.FindProperty("userLanguage");
       _userTrackingUsageDescription =
           serializedObject.FindProperty("userTrackingUsageDescription");
+      _enableExternalDependencyManager =
+          serializedObject.FindProperty("enableExternalDependencyManager");
+      _isInstalledViaUpm = EdmDependencyInstaller.IsInstalledViaUpm();
 
       selectedIndex = Array.IndexOf(languageCodes, _userLanguage.stringValue);
       selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
@@ -191,7 +208,6 @@ namespace GoogleMobileAds.Editor
             MessageType.Info);
       }
 
-
       EditorGUILayout.PropertyField(
           _disableOptimizeInitialization,
           new GUIContent(localization.ForKey("DISABLE_OPTIMIZE_INITIALIZATION_SETTING")));
@@ -214,6 +230,37 @@ namespace GoogleMobileAds.Editor
       EditorGUI.indentLevel--;
       EditorGUILayout.Separator();
 
+      bool reinstallEdm = false;
+      if (!_isInstalledViaUpm)
+      {
+        EditorGUIUtility.labelWidth = 325.0f;
+        EditorGUILayout.LabelField(localization.ForKey("EDM_SETTINGS_LABEL"),
+                                   EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+
+        bool wasEdmEnabled = _enableExternalDependencyManager.boolValue;
+        EditorGUI.BeginDisabledGroup(wasEdmEnabled);
+        EditorGUILayout.PropertyField(
+            _enableExternalDependencyManager,
+            new GUIContent(localization.ForKey("ENABLE_EDM_SETTING")));
+        EditorGUI.EndDisabledGroup();
+        reinstallEdm = !wasEdmEnabled && _enableExternalDependencyManager.boolValue;
+
+        if (_enableExternalDependencyManager.boolValue)
+        {
+          EditorGUILayout.HelpBox(localization.ForKey("DISABLE_EDM_HELPBOX"),
+                                  MessageType.Info);
+        }
+        else
+        {
+          EditorGUILayout.HelpBox(localization.ForKey("ENABLE_EDM_HELPBOX"),
+                                  MessageType.Info);
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUILayout.Separator();
+      }
+
       EditorGUIUtility.labelWidth = 300.0f;
       EditorGUILayout.LabelField(localization.ForKey("UMP_SPECIFIC_SETTINGS_LABEL"),
                                  EditorStyles.boldLabel);
@@ -230,6 +277,13 @@ namespace GoogleMobileAds.Editor
       EditorGUILayout.Separator();
 
       serializedObject.ApplyModifiedProperties();
+
+      // Re-enabling the setting reinstalls EDM. Otherwise the installer would see the package
+      // missing on the next Editor load and treat it as a publisher removal again.
+      if (reinstallEdm)
+      {
+        EdmDependencyInstaller.ReinstallEdm();
+      }
     }
   }
 }

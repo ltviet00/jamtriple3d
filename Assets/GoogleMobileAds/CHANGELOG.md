@@ -1,6 +1,48 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version 11.7.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.12.0.
+- Updated the GMA Android Next-Gen SDK dependency version to 1.6.0.
+- Unity External Dependency Manager 2.1.1.
+- Enabled support for Swift Package Manager (SPM).
+- Added `GetAdUnitID` API to `PictureInPictureAd` format.
+
+**************
+Version 11.6.0
+**************
+
+- Breaking change: Updated the minimum supported Unity version to Unity 2022 LTS (2022.3).
+- Updated the GMA iOS SDK dependency version to ~> 13.11.
+- Updated the GMA Android SDK dependency version to 25.5.0.
+- Updated the GMA Android Next-Gen SDK dependency version to 1.5.0.
+- Added support for Unity External Dependency Manager (`com.unity.external-dependency-manager@2.1.0`).
+- Added support for Picture-in-Picture ads.
+- Updated the min Android API level to 24.
+
+**************
+Version 11.5.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.9.0.
+- Updated the GMA Android Next-Gen SDK dependency version to 1.4.0.
+- Added menu items for Access documentation and Raise an issue.
+
+**************
+Version 11.4.0
+**************
+
+- Updated the GMA iOS SDK dependency version to 13.7.0.
+- Updated the GMA Android SDK dependency version to 25.4.0.
+- Updated the GMA Android Next-Gen SDK dependency version to 1.3.1.
+- Added support for forwarding request extras to Android ad request builders when using the Next-Gen SDK.
+- Added PeekAdResponseInfo() support for Preloading APIs to inspect first ad object in cache without removing it.
+- Added fix to handle destroying banner ad before the ad finishes loading when using the next gen SDK.
+- Updated External Dependency Manager for Unity dependency to use 1.2.188
+
+**************
 Version 11.3.0
 **************
 

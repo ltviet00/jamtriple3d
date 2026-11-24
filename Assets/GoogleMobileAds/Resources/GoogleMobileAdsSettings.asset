@@ -25,3 +25,6 @@ MonoBehaviour:
   userLanguage: en
   overrideDefaultGmaAndroidSdk: 1
   selectedGmaAndroidSdk: 1
+  enableExternalDependencyManager: 0
+  edmPackageDetected: 0
+  addedEdmVersion: 

@@ -20,6 +20,9 @@ public class AdmobController : BaseAdsController {
 	[SerializeField] bool preloadRewardAfterInit = true;
 	[SerializeField] bool preloadInterstitialAfterInit = true;
 	[SerializeField] bool bannerDisplayOnLoad = true;
+	[Tooltip("Ads preloading API: the SDK keeps interstitial/rewarded ads buffered and refills them after each show. Falls back to manual loading when unavailable.")]
+	[SerializeField] bool usePreloadingApi = true;
+	[SerializeField] uint preloadBufferSize = 2;
 
 	[Header("Validation")]
 	[SerializeField] bool isFailedConfig;
@@ -46,6 +49,12 @@ public class AdmobController : BaseAdsController {
 	bool _showInterstitialWhenLoaded;
 	int _interstitialRetryAttempt;
 
+	const string PreloadIdReward = "match3d_rewarded";
+	const string PreloadIdInterstitial = "match3d_interstitial";
+	bool _rewardPreloadStarted;
+	bool _interstitialPreloadStarted;
+	bool _preloadingUnavailable;
+
 	void OnValidate() {
 		isFailedConfig = IsPlacementMissing(placementAndroid) || IsPlacementMissing(placementIOS);
 	}
@@ -53,6 +62,7 @@ public class AdmobController : BaseAdsController {
 	void OnDisable() {
 		_requestGeneration++;
 		DestroyAds();
+		DestroyPreloaders();
 		_isInitialized = false;
 		_isInitializing = false;
 		_canRequestAds = false;
@@ -142,6 +152,9 @@ public class AdmobController : BaseAdsController {
 		if(!CanLoadAds()) {
 			return false;
 		}
+		if(_videoReward == null && IsPreloadingActive && _rewardPreloadStarted) {
+			TakePreloadedReward(_requestGeneration);
+		}
 		return _videoReward != null && _videoReward.CanShowAd();
 	}
 
@@ -157,7 +170,10 @@ public class AdmobController : BaseAdsController {
 			return;
 		}
 		if(_videoReward == null || !_videoReward.CanShowAd()) {
+			// with preloading this takes a buffered ad right away
 			CheckRequestVideoReward();
+		}
+		if(_videoReward == null || !_videoReward.CanShowAd()) {
 			InvokeRewardFailedEvent();
 			return;
 		}
@@ -171,6 +187,9 @@ public class AdmobController : BaseAdsController {
 	public override bool IsVideoReady() {
 		if(!CanLoadAds()) {
 			return false;
+		}
+		if(_videoInterstitial == null && IsPreloadingActive && _interstitialPreloadStarted) {
+			TakePreloadedInterstitial(_requestGeneration);
 		}
 		return _videoInterstitial != null && _videoInterstitial.CanShowAd();
 	}
@@ -187,6 +206,7 @@ public class AdmobController : BaseAdsController {
 			return;
 		}
 		if(_videoInterstitial == null || !_videoInterstitial.CanShowAd()) {
+			// with preloading this takes a buffered ad (and shows it) right away
 			CheckRequestVideoInterstitial();
 			return;
 		}
@@ -297,8 +317,12 @@ public class AdmobController : BaseAdsController {
 			return;
 		}
 		int generation = _requestGeneration;
-		_isLoadingReward = true;
 		SafeDestroyReward();
+		if(StartRewardPreload()) {
+			TakePreloadedReward(generation);
+			return;
+		}
+		_isLoadingReward = true;
 		RewardedAd.Load(PlacementIdReward, BuildAdRequest(), (ad, error) => {
 			RunOnMainThread(() => {
 				if(generation != _requestGeneration) {
@@ -312,15 +336,99 @@ public class AdmobController : BaseAdsController {
 					return;
 				}
 				_rewardRetryAttempt = 0;
-				_videoReward = ad;
-				_videoReward.OnAdFullScreenContentOpened += () => RunOnMainThread(() => Log.Info("AdMob rewarded opened"));
-				_videoReward.OnAdFullScreenContentClosed += () => RunOnMainThread(() => OnRewardClosed(generation));
-				_videoReward.OnAdFullScreenContentFailed += error => RunOnMainThread(() => OnRewardFailedToShow(error, generation));
-				_videoReward.OnAdClicked += () => RunOnMainThread(() => Log.Info("AdMob rewarded clicked"));
-				_videoReward.OnAdImpressionRecorded += () => RunOnMainThread(() => Log.Info("AdMob rewarded impression recorded"));
-				_videoReward.OnAdPaid += OnAdPaid;
+				AttachReward(ad, generation);
 			});
 		});
+	}
+
+	void AttachReward(RewardedAd ad, int generation) {
+		_videoReward = ad;
+		_videoReward.OnAdFullScreenContentOpened += () => RunOnMainThread(() => Log.Info("AdMob rewarded opened"));
+		_videoReward.OnAdFullScreenContentClosed += () => RunOnMainThread(() => OnRewardClosed(generation));
+		_videoReward.OnAdFullScreenContentFailed += error => RunOnMainThread(() => OnRewardFailedToShow(error, generation));
+		_videoReward.OnAdClicked += () => RunOnMainThread(() => Log.Info("AdMob rewarded clicked"));
+		_videoReward.OnAdImpressionRecorded += () => RunOnMainThread(() => Log.Info("AdMob rewarded impression recorded"));
+		_videoReward.OnAdPaid += OnAdPaid;
+	}
+
+	// ---------- Ads preloading API ----------
+
+	bool IsPreloadingActive => usePreloadingApi && !_preloadingUnavailable;
+
+	PreloadConfiguration BuildPreloadConfiguration(string adUnitId, AdFormat format) {
+		return new PreloadConfiguration {
+			AdUnitId = adUnitId,
+			Format = format,
+			Request = BuildAdRequest(),
+			BufferSize = Math.Max(1u, preloadBufferSize),
+		};
+	}
+
+	bool StartRewardPreload() {
+		if(!IsPreloadingActive) return false;
+		if(_rewardPreloadStarted) return true;
+		try {
+			_rewardPreloadStarted = RewardedAdPreloader.Preload(PreloadIdReward,
+				BuildPreloadConfiguration(PlacementIdReward, AdFormat.REWARDED),
+				(id, info) => RunOnMainThread(() => {
+					Debug.Log("[AdMob] Rewarded preloaded");
+					if(_videoReward == null && !_isShowingReward) TakePreloadedReward(_requestGeneration);
+				}),
+				(id, error) => RunOnMainThread(() => Debug.Log($"[AdMob] Rewarded preload failed [{error?.GetMessage()}]")),
+				id => RunOnMainThread(() => Log.Info("AdMob rewarded preload buffer exhausted")));
+		} catch(Exception e) {
+			Debug.LogWarning($"[AdMob] Rewarded preloading unavailable, using manual loading: {e.Message}");
+			_rewardPreloadStarted = false;
+		}
+		if(!_rewardPreloadStarted) _preloadingUnavailable = true;
+		return _rewardPreloadStarted;
+	}
+
+	void TakePreloadedReward(int generation) {
+		if(_videoReward != null || _isShowingReward || !RewardedAdPreloader.IsAdAvailable(PreloadIdReward)) return;
+		var ad = RewardedAdPreloader.DequeueAd(PreloadIdReward);
+		if(ad == null) return;
+		_rewardRetryAttempt = 0;
+		AttachReward(ad, generation);
+	}
+
+	bool StartInterstitialPreload() {
+		if(!IsPreloadingActive) return false;
+		if(_interstitialPreloadStarted) return true;
+		try {
+			_interstitialPreloadStarted = InterstitialAdPreloader.Preload(PreloadIdInterstitial,
+				BuildPreloadConfiguration(PlacementIdVideo, AdFormat.INTERSTITIAL),
+				(id, info) => RunOnMainThread(() => {
+					Debug.Log("[AdMob] Interstitial preloaded");
+					if(_videoInterstitial == null && !_isShowingInterstitial) TakePreloadedInterstitial(_requestGeneration);
+				}),
+				(id, error) => RunOnMainThread(() => Debug.Log($"[AdMob] Interstitial preload failed [{error?.GetMessage()}]")),
+				id => RunOnMainThread(() => Log.Info("AdMob interstitial preload buffer exhausted")));
+		} catch(Exception e) {
+			Debug.LogWarning($"[AdMob] Interstitial preloading unavailable, using manual loading: {e.Message}");
+			_interstitialPreloadStarted = false;
+		}
+		if(!_interstitialPreloadStarted) _preloadingUnavailable = true;
+		return _interstitialPreloadStarted;
+	}
+
+	void TakePreloadedInterstitial(int generation) {
+		if(_videoInterstitial != null || _isShowingInterstitial || !InterstitialAdPreloader.IsAdAvailable(PreloadIdInterstitial)) return;
+		var ad = InterstitialAdPreloader.DequeueAd(PreloadIdInterstitial);
+		if(ad == null) return;
+		_interstitialRetryAttempt = 0;
+		AttachInterstitial(ad, generation);
+	}
+
+	void DestroyPreloaders() {
+		try {
+			if(_rewardPreloadStarted) RewardedAdPreloader.Destroy(PreloadIdReward);
+			if(_interstitialPreloadStarted) InterstitialAdPreloader.Destroy(PreloadIdInterstitial);
+		} catch(Exception e) {
+			Log.Info($"AdMob destroy preloaders failed [{e.Message}]");
+		}
+		_rewardPreloadStarted = false;
+		_interstitialPreloadStarted = false;
 	}
 
 	void OnRewardClosed(int generation) {
@@ -353,8 +461,12 @@ public class AdmobController : BaseAdsController {
 			return;
 		}
 		int generation = _requestGeneration;
-		_isLoadingInterstitial = true;
 		SafeDestroyInterstitial();
+		if(StartInterstitialPreload()) {
+			TakePreloadedInterstitial(generation);
+			return;
+		}
+		_isLoadingInterstitial = true;
 		InterstitialAd.Load(PlacementIdVideo, BuildAdRequest(), (ad, error) => {
 			RunOnMainThread(() => {
 				if(generation != _requestGeneration) {
@@ -368,20 +480,24 @@ public class AdmobController : BaseAdsController {
 					return;
 				}
 				_interstitialRetryAttempt = 0;
-				_videoInterstitial = ad;
-				_videoInterstitial.OnAdFullScreenContentOpened += () => RunOnMainThread(() => Log.Info("AdMob interstitial opened"));
-				_videoInterstitial.OnAdFullScreenContentClosed += () => RunOnMainThread(() => OnInterstitialClosed(generation));
-				_videoInterstitial.OnAdFullScreenContentFailed += error => RunOnMainThread(() => OnInterstitialFailedToShow(error, generation));
-				_videoInterstitial.OnAdClicked += () => RunOnMainThread(() => Log.Info("AdMob interstitial clicked"));
-				_videoInterstitial.OnAdImpressionRecorded += () => RunOnMainThread(() => Log.Info("AdMob interstitial impression recorded"));
-				_videoInterstitial.OnAdPaid += OnAdPaid;
-				if(_showInterstitialWhenLoaded && !_isShowingInterstitial && _videoInterstitial.CanShowAd()) {
-					_showInterstitialWhenLoaded = false;
-					_isShowingInterstitial = true;
-					_videoInterstitial.Show();
-				}
+				AttachInterstitial(ad, generation);
 			});
 		});
+	}
+
+	void AttachInterstitial(InterstitialAd ad, int generation) {
+		_videoInterstitial = ad;
+		_videoInterstitial.OnAdFullScreenContentOpened += () => RunOnMainThread(() => Log.Info("AdMob interstitial opened"));
+		_videoInterstitial.OnAdFullScreenContentClosed += () => RunOnMainThread(() => OnInterstitialClosed(generation));
+		_videoInterstitial.OnAdFullScreenContentFailed += error => RunOnMainThread(() => OnInterstitialFailedToShow(error, generation));
+		_videoInterstitial.OnAdClicked += () => RunOnMainThread(() => Log.Info("AdMob interstitial clicked"));
+		_videoInterstitial.OnAdImpressionRecorded += () => RunOnMainThread(() => Log.Info("AdMob interstitial impression recorded"));
+		_videoInterstitial.OnAdPaid += OnAdPaid;
+		if(_showInterstitialWhenLoaded && !_isShowingInterstitial && _videoInterstitial.CanShowAd()) {
+			_showInterstitialWhenLoaded = false;
+			_isShowingInterstitial = true;
+			_videoInterstitial.Show();
+		}
 	}
 
 	void OnInterstitialClosed(int generation) {
