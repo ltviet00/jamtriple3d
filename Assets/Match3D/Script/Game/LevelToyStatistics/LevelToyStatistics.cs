@@ -62,7 +62,8 @@ public class LevelToyStatistics : ScriptableObject {
 		// first stats
 		_remainTargetcount = GetToyCountInMap(_targetMap);
 		_remainDecoyCount = GetToyCountInMap(_decoyMap);
-		// create the allmap
+		// create the allmap (this asset lives across levels: drop the maps of the previous levels first)
+		_allMaps.Clear();
 		_allMaps.Add(decoyMap);
 		_allMaps.Add(targetMap);
 	}

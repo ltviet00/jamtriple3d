@@ -252,9 +252,10 @@ public class DevCheatManager : MonoBehaviour {
 		gameObject.AddComponent<GraphicRaycaster>();
 		var root = (RectTransform)transform;
 
-		// toggle button: small, left edge, a bit under the middle so it does not cover the game HUD
+		// toggle button: small, top left corner (over the LEVEL label), outside the toy field:
+		// on the left edge it took the taps meant for toys under it (invisible with HIDE_TOGGLE)
 		var toggle = CreateButton(root, "CHEAT", TOGGLE_COLOR, TogglePanel);
-		Place(toggle, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(70f, -260f), new Vector2(130f, 64f));
+		Place(toggle, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(130f, 64f));
 		toggle.GetComponentInChildren<Text>().fontSize = 26;
 
 		// panel
